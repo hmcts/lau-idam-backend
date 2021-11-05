@@ -6,7 +6,7 @@ import uk.gov.hmcts.contino.GradleBuilder
 
 def type = "java"
 def product = "lau"
-def component = "case-backend"
+def component = "idam-backend"
 def branchesToSync = ['demo']
 
 def secrets = [
