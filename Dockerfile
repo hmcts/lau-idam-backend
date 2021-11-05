@@ -8,4 +8,4 @@ COPY lib/AI-Agent.xml /opt/app/
 COPY build/libs/spring-boot-template.jar /opt/app/
 
 EXPOSE 4550
-CMD [ "spring-boot-template.jar" ]
+CMD [ "lau-idam-backend.jar" ]

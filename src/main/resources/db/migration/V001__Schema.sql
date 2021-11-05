@@ -1,0 +1,41 @@
+
+  -- logon_audit table
+  CREATE TABLE idam_logons_audit (
+   id SERIAL PRIMARY KEY,
+   user_id VARCHAR(64) NOT NULL,
+   email_address VARCHAR(70) NOT NULL,
+   service VARCHAR(70) NOT NULL,
+   ip_address VARCHAR(39),
+   log_timestamp TIMESTAMP WITHOUT TIME ZONE NOT NULL
+  );
+
+  -- case_action_audit comments
+  comment on column idam_logons_audit.id is 'Unique lau idam id';
+  comment on column idam_logons_audit.user_id is 'User id performing the logon action';
+  comment on column idam_logons_audit.email_address is 'User email address';
+  comment on column idam_logons_audit.service is 'The used service';
+  comment on column idam_logons_audit.ip_address is 'User ip address';
+  comment on column idam_logons_audit.log_timestamp is 'Logon action timestamp';
+
+  -- logon_audit indexes
+  CREATE INDEX logon_audit_user_id_idx ON idam_logons_audit (user_id);
+  CREATE INDEX logon_audit_email_adr_idx ON idam_logons_audit (email_address);
+  CREATE INDEX logon_audit_service_idx ON idam_logons_audit (service);
+  CREATE INDEX logon_audit_ip_address_idx ON idam_logons_audit (ip_address);
+  CREATE INDEX logon_audit_log_timestamp_idx ON idam_logons_audit (log_timestamp);
+
+
+  -- create user for application access
+  DO
+  $do$
+  BEGIN
+     IF NOT EXISTS (
+        SELECT FROM pg_catalog.pg_roles  -- SELECT list can be empty for this
+        WHERE  rolname = 'lauuser') THEN
+        CREATE ROLE lauuser LOGIN PASSWORD '${LAU_IDAM_DB_PASSWORD}';
+     END IF;
+  END
+  $do$;
+--
+  GRANT USAGE, SELECT ON SEQUENCE idam_logons_audit_id_seq TO lauuser;
+  GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE idam_logons_audit, flyway_schema_history TO lauuser;

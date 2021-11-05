@@ -1,0 +1,96 @@
+#!groovy
+
+@Library("Infrastructure")
+
+import uk.gov.hmcts.contino.GradleBuilder
+
+def type = "java"
+def product = "lau"
+def component = "case-backend"
+def branchesToSync = ['demo']
+
+def secrets = [
+        'lau-${env}': [
+                secret('idam-backend-POSTGRES-USER', 'FLYWAY_USER'),
+                secret('idam-backend-POSTGRES-PASS', 'LAU_IDAM_DB_ADMIN_PASSWORD'),
+                secret('idam-backend-POSTGRES-PASS', 'FLYWAY_PASSWORD'),
+                secret('idam-backend-app-db-password', 'FLYWAY_PLACEHOLDERS_LAU_IDAM_DB_PASSWORD'),
+                secret('idam-backend-app-db-password', 'LAU_IDAM_DB_PASSWORD')
+        ]
+]
+
+static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
+    [$class     : 'AzureKeyVaultSecret',
+     secretType : 'Secret',
+     name       : secretName,
+     version    : '',
+     envVariable: envVar
+    ]
+}
+
+GradleBuilder builder = new GradleBuilder(this, product)
+
+withPipeline(type, product, component) {
+    env.TEST_URL = "http://lau-idam-backend-aat.service.core-compute-aat.internal"
+    env.TEST_S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
+
+    after('test') {
+        // Run integration tests
+        builder.gradle('integration')
+    }
+
+    loadVaultSecrets(secrets)
+    enableDbMigration('lau')
+    enableSlackNotifications('#lau-builds')
+    enableAksStagingDeployment()
+    disableLegacyDeployment()
+    syncBranchesWithMaster(branchesToSync)
+
+    after('test') {
+
+        junit 'build/test-results/test/**/*.xml'
+        archiveArtifacts 'build/reports/tests/test/index.html'
+
+        publishHTML target: [
+                allowMissing         : true,
+                alwaysLinkToLastBuild: true,
+                keepAll              : true,
+                reportDir            : "build/reports/tests/test",
+                reportFiles          : "index.html",
+                reportName           : "lau-idam-backend Test Report"
+        ]
+
+        publishHTML target: [
+                allowMissing         : true,
+                alwaysLinkToLastBuild: true,
+                keepAll              : true,
+                reportDir            : "build/reports/jacoco",
+                reportFiles          : "index.html",
+                reportName           : "lau-idam-backend Code Coverage Report"
+        ]
+
+    }
+
+    after('functionalTest:aat') {
+        publishHTML target: [
+                reportDir            : "target/site/serenity/",
+                reportFiles          : "index.html",
+                reportName           : "AAT Functional Tests",
+                alwaysLinkToLastBuild: true
+        ]
+
+        steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
+    }
+
+    after('functionalTest:preview') {
+        publishHTML target: [
+                reportDir            : "target/site/serenity/",
+                reportFiles          : "index.html",
+                reportName           : "Preview Functional Tests",
+                alwaysLinkToLastBuild: true
+        ]
+
+        steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
+    }
+
+}

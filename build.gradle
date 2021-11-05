@@ -1,14 +1,34 @@
-plugins {
-  id 'application'
-  id 'checkstyle'
-  id 'pmd'
-  id 'jacoco'
-  id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-  id 'org.springframework.boot' version '2.5.6'
-  id 'org.owasp.dependencycheck' version '6.4.1.1'
-  id 'com.github.ben-manes.versions' version '0.39.0'
-  id 'org.sonarqube' version '3.3'
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+        maven {
+            url = 'https://repo.maven.apache.org/maven2'
+        }
+    }
+    dependencies {
+        classpath("net.serenity-bdd:serenity-gradle-plugin:2.4.24")
+    }
 }
+
+plugins {
+    id 'application'
+    id 'checkstyle'
+    id 'pmd'
+    id 'jacoco'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'org.springframework.boot' version '2.5.6'
+    id 'org.owasp.dependencycheck' version '6.2.2'
+    id 'com.github.ben-manes.versions' version '0.39.0'
+    id 'org.sonarqube' version '3.3'
+    id "info.solidsoft.pitest" version '1.6.0'
+    id 'com.gorylenko.gradle-git-properties' version '2.3.1'
+    id 'org.flywaydb.flyway' version '7.13.0'
+}
+
+apply plugin: "com.gorylenko.gradle-git-properties"
+apply plugin: 'net.serenity-bdd.aggregator'
+apply plugin: "info.solidsoft.pitest"
 
 group = 'uk.gov.hmcts.reform'
 version = '0.0.1'
@@ -18,15 +38,31 @@ allprojects {
   targetCompatibility = '11'
 }
 
+gitProperties {
+    gitPropertiesDir = new File("${project.rootDir}/src/main/resources/uk/gov/hmcts/reform/laubackend/idam/gitcommit")
+    keys = ['git.commit.id', 'git.commit.time']
+    dateFormat = "yyyy-MM-dd'T'HH:mmZ"
+    dateFormatTimeZone = "GMT"
+}
+
 sourceSets {
-  functionalTest {
-    java {
-      compileClasspath += main.output
-      runtimeClasspath += main.output
-      srcDir file('src/functionalTest/java')
+    test {
+        java {
+            compileClasspath += main.output
+            runtimeClasspath += main.output
+            srcDir file('src/test/java')
+        }
+        resources.srcDir file('src/test/resources')
     }
-    resources.srcDir file('src/functionalTest/resources')
-  }
+
+    functionalTest {
+        java {
+            compileClasspath += main.output
+            runtimeClasspath += main.output
+            srcDir file('src/functionalTest/java')
+        }
+        resources.srcDir file('src/functionalTest/resources')
+    }
 
   integrationTest {
     java {
@@ -51,37 +87,52 @@ tasks.withType(JavaCompile) {
   options.compilerArgs << "-Xlint:unchecked" << "-Werror"
 }
 
-tasks.withType(Test) {
-  useJUnitPlatform()
-
-  testLogging {
-    exceptionFormat = 'full'
-  }
+test {
+    useJUnitPlatform()
+    failFast = true
 }
 
-test {
-  failFast = true
+configurations {
+    integrationTestCompile.extendsFrom testCompile
+    integrationTestRuntime.extendsFrom testRuntime
+    functionalTestCompile.extendsFrom testCompile
+    functionalTestRuntime.extendsFrom testRuntime
+}
+
+task unit(type: Test, description: 'Runs the unit tests.', group: 'Verification') {
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    useJUnitPlatform()
 }
 
 task functional(type: Test) {
-  description = "Runs functional tests"
-  group = "Verification"
-  testClassesDirs = sourceSets.functionalTest.output.classesDirs
-  classpath = sourceSets.functionalTest.runtimeClasspath
+
+    systemProperty "scenario", System.getProperty('scenario')
+
+    description = "Runs functional tests"
+    group = "Verification"
+    testClassesDirs = sourceSets.functionalTest.output.classesDirs
+    classpath = sourceSets.functionalTest.runtimeClasspath
+    finalizedBy aggregate
 }
 
 task integration(type: Test) {
-  description = "Runs integration tests"
-  group = "Verification"
-  testClassesDirs = sourceSets.integrationTest.output.classesDirs
-  classpath = sourceSets.integrationTest.runtimeClasspath
-  failFast = true
+    description = "Runs integration tests"
+    group = "Verification"
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
 }
 
 task smoke(type: Test) {
-  description = "Runs Smoke Tests"
-  testClassesDirs = sourceSets.smokeTest.output.classesDirs
-  classpath = sourceSets.smokeTest.runtimeClasspath
+    description = "Runs Smoke Tests"
+    testClassesDirs = sourceSets.smokeTest.output.classesDirs
+    classpath = sourceSets.smokeTest.runtimeClasspath
+}
+
+task fortifyScan(type: JavaExec) {
+    main = "uk.gov.hmcts.fortifyclient.FortifyClientMainApp"
+    classpath += sourceSets.test.runtimeClasspath
+    jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
 }
 
 checkstyle {
@@ -99,6 +150,8 @@ pmd {
   ruleSetFiles = files("config/pmd/ruleset.xml")
 }
 
+project.tasks['jacocoTestReport'].dependsOn test, integration
+
 jacocoTestReport {
   executionData(test, integration)
   reports {
@@ -108,14 +161,48 @@ jacocoTestReport {
   }
 }
 
+pitest {
+    pitestVersion.set('1.4.11')
+    junit5PluginVersion.set('0.12')
+    targetClasses = ['uk.gov.hmcts.reform.laubackend.*']
+    excludedClasses = [
+            'uk.gov.hmcts.reform.laubackend.idam.madeup.*'
+    ]
+    threads = 10
+    enableDefaultIncrementalAnalysis = true
+    outputFormats = ['XML', 'HTML']
+    timestampedReports = false
+    mutationThreshold = 50
+    timeoutConstInMillis = 30000
+    mutators.set([
+            'CONDITIONALS_BOUNDARY',
+            'INCREMENTS',
+            'INVERT_NEGS',
+            'MATH',
+            'NEGATE_CONDITIONALS',
+            'VOID_METHOD_CALLS',
+            'EMPTY_RETURNS',
+            'FALSE_RETURNS',
+            'NULL_RETURNS',
+            'PRIMITIVE_RETURNS',
+            'TRUE_RETURNS',
+            'REMOVE_CONDITIONALS'
+    ])
+}
+
+project.tasks['pitest'].group = "Verification"
+
 project.tasks['sonarqube'].dependsOn jacocoTestReport
 
 sonarqube {
-  properties {
-    property "sonar.projectName", "Reform :: spring-boot-template"
-    property "sonar.projectKey", "uk.gov.hmcts.reform:spring-boot-template"
-    property "sonar.coverage.jacoco.xmlReportPaths", "${jacocoTestReport.reports.xml.destination.path}"
-  }
+    properties {
+        property "sonar.projectName", "Reform :: lau-idam-backend"
+        property "sonar.projectKey", "uk.gov.hmcts.reform:lau-idam-backend"
+        property "sonar.coverage.jacoco.xmlReportPaths", "${jacocoTestReport.reports.xml.destination.path}"
+        property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
+        property "sonar.pitest.mode", "reuseReport"
+        property "sonar.pitest.reportsDirectory", "build/reports/pitest"
+    }
 }
 
 // before committing a change, make sure task still works
@@ -143,49 +230,179 @@ dependencyCheck {
   }
 }
 
+dependencyManagement {
+    dependencies {
+        dependency group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.69'
+        // CVE-2018-10237 - Unbounded memory allocation
+        dependencySet(group: 'com.google.guava', version: '30.1.1-jre') {
+            entry 'guava'
+        }
+    }
+    imports {
+        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:2020.0.3'
+    }
+}
+
 repositories {
   mavenLocal()
   mavenCentral()
   maven { url 'https://jitpack.io' }
 }
 
-ext {
-  reformLoggingVersion = "5.1.9"
-}
+def versions = [
+        junit             : '5.7.2',
+        junitPlatform     : '1.7.2',
+        reformLogging     : '5.1.7',
+        springBoot        : springBoot.class.package.implementationVersion,
+        springfoxSwagger  : '3.0.0',
+        serenity          : '2.5.10',
+        gradlePitest      : '1.6.0',
+        pitest            : '1.6.3',
+        sonarPitest       : '0.5',
+        lombok            : '1.18.12',
+        testcontainers    : '1.15.1',
+        restAssured       : '4.4.0',
+        serviceAuthVersion: '4.0.0',
+        commonsIo         : '2.7'
+]
+
+ext.libraries = [
+        junit5: [
+                "org.junit.jupiter:junit-jupiter-api:${versions.junit}",
+                "org.junit.jupiter:junit-jupiter-engine:${versions.junit}",
+                "org.junit.jupiter:junit-jupiter-params:${versions.junit}",
+                "org.junit.platform:junit-platform-commons:${versions.junitPlatform}",
+                "org.junit.platform:junit-platform-engine:${versions.junitPlatform}"
+        ]
+]
 
 dependencies {
-  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
-  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
-  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
-  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-json'
 
-  implementation group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
+    // exclude spring-cloud-context as it is already included in spring-cloud-starter-netflix-hystrix
+    def withoutSpringCloudContext = {
+        exclude group: 'org.springframework.cloud', module: 'spring-cloud-context'
+    }
 
-  implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: reformLoggingVersion
-  implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: reformLoggingVersion
+    implementation group: 'commons-io', name: 'commons-io', version: versions.commonsIo
 
-  implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.1'
-  implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: '2.14.1'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-json'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'
 
-  testImplementation(platform('org.junit:junit-bom:5.8.1'))
-  testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', {
-    exclude group: 'junit', module: 'junit'
-    exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-  }
+    implementation group: 'io.springfox', name: 'springfox-swagger2', version: versions.springfoxSwagger
+
+    implementation group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.reformLogging
+    implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformLogging
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.7.RELEASE'
+
+    implementation group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.1.0', withoutSpringCloudContext
+
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security'
+
+    implementation group: 'org.flywaydb', name: 'flyway-core', version: '7.13.0'
+    implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.18'
+
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.1'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: '2.14.1'
+
+    implementation group: "com.networknt", name: "json-schema-validator", version: "1.0.49"
+    implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
+    implementation("org.springframework.boot:spring-boot-devtools")
+
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
+
+
+    testCompile group: 'org.pitest', name: 'pitest', version: versions.pitest
+    testCompile group: 'info.solidsoft.gradle.pitest', name: 'gradle-pitest-plugin', version: versions.gradlePitest
+    testCompile 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
+
+    testCompile group: 'org.testcontainers', name: 'testcontainers', version: versions.testcontainers
+    testCompile group: 'org.testcontainers', name: 'postgresql', version: versions.testcontainers
+
+
+    testCompile 'com.github.hmcts:fortify-client:1.2.0:all'
+
+    integrationTestCompile group: 'org.testcontainers', name: 'testcontainers', version: versions.testcontainers
+    integrationTestCompile group: 'org.testcontainers', name: 'postgresql', version: versions.testcontainers
+
+    integrationTestImplementation group: 'org.testcontainers', name: 'testcontainers', version: versions.testcontainers
+    integrationTestImplementation group: 'org.testcontainers', name: 'postgresql', version: versions.testcontainers
+    integrationTestImplementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
+    integrationTestAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
+
+
+    testImplementation libraries.junit5
+    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', {
+        exclude group: 'junit', module: 'junit'
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
 
   integrationTestImplementation sourceSets.main.runtimeClasspath
   integrationTestImplementation sourceSets.test.runtimeClasspath
 
-  functionalTestImplementation sourceSets.main.runtimeClasspath
+    functionalTestImplementation sourceSets.main.runtimeClasspath
+    functionalTestImplementation sourceSets.test.runtimeClasspath
 
-  smokeTestImplementation sourceSets.main.runtimeClasspath
-  smokeTestImplementation sourceSets.test.runtimeClasspath
+    smokeTestImplementation sourceSets.main.runtimeClasspath
+    smokeTestImplementation sourceSets.test.runtimeClasspath
+
+    functionalTestImplementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
+    functionalTestAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
+
+    smokeTestImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
+    smokeTestImplementation group: 'io.rest-assured', name: 'rest-assured-common', version: versions.restAssured
+    smokeTestImplementation group: 'io.rest-assured', name: 'json-path', version: versions.restAssured
+    smokeTestImplementation group: 'io.rest-assured', name: 'xml-path', version: versions.restAssured
+
+
+    implementation 'junit:junit:4.13.2'
 }
 
-mainClassName = 'uk.gov.hmcts.reform.demo.Application'
+test {
+    useJUnitPlatform()
+    failFast = true
+}
+
+flyway {
+    url = System.getenv('FLYWAY_URL')
+    user = System.getenv('FLYWAY_USER')
+    password = System.getenv('FLYWAY_PASSWORD')
+
+    if (project.hasProperty("flyway.password")) {
+        placeholders = [
+                'LAU_DB_PASSWORD': project.getProperty("flyway.password")
+        ]
+    }
+
+    baselineOnMigrate = true
+    baselineVersion = '000'
+}
+
+import org.flywaydb.gradle.task.FlywayMigrateTask
+
+task migratePostgresDatabase(type: FlywayMigrateTask) {
+    baselineOnMigrate = true
+    if (project.hasProperty("dburl")) {
+        url = "jdbc:postgresql://${dburl}"
+    }
+}
+
+//task fortifyScan(type: JavaExec)  {
+//  main = "uk.gov.hmcts.fortifyclient.FortifyClientMainApp"
+//  classpath += sourceSets.test.runtimeClasspath
+//  jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
+//}
+
+mainClassName = 'uk.gov.hmcts.reform.laubackend.idam.Application'
 
 bootJar {
-  archiveFileName = "spring-boot-template.jar"
+    getArchiveFileName().set(provider {
+        'lau-idam-backend.jar'
+    })
 
   manifest {
     attributes('Implementation-Version': project.version.toString())

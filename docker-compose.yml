@@ -1,7 +1,7 @@
 version: '2.1'
 
 services:
-  spring-boot-template:
+  lau-idam-backend:
     build:
       context: .
       args:
@@ -24,3 +24,32 @@ services:
       - LOGBACK_REQUIRE_ERROR_CODE=false
     ports:
       - $SERVER_PORT:$SERVER_PORT
+
+  lau-idam-database:
+    container_name: lau-idam-database
+    image: postgres:11-alpine
+    environment:
+      POSTGRES_USER: ${LAU_IDAM_DB_ADMIN_USERNAME}
+      POSTGRES_PASSWORD: ${LAU_IDAM_DB_ADMIN_PASSWORD}
+      POSTGRES_DB: ${LAU_IDAM_DB_NAME}
+    ports:
+      - 5054:5432
+    volumes:
+      - lau-idam-database-data:/var/lib/postgresql/data
+
+  service-auth-provider-api:
+    image: hmctspublic.azurecr.io/rpe/service-auth-provider:latest
+    healthcheck:
+      interval: 10s
+      timeout: 10s
+      retries: 10
+    environment:
+      SERVER_PORT: 8080
+      JWT_KEY: wThK0f0/lh3FlxFcL4xUWDMI5C1J9KyQBgXV4wseh1e5J1uYJIjvTvArHxQDrYoHJ23xFxjHkOnvNbR5dXRoxA==
+      MICROSERVICEKEYS_LAU_CASE_FRONTEND: "AAAAAAAAAAAAAAAA"
+      TESTING_SUPPORT_ENABLED: "true"
+    ports:
+      - 4502:8080
+
+volumes:
+  lau-idam-database-data:
