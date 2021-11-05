@@ -121,6 +121,7 @@ task integration(type: Test) {
     group = "Verification"
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
+    useJUnitPlatform()
 }
 
 task smoke(type: Test) {
@@ -334,8 +335,6 @@ dependencies {
 
     integrationTestImplementation group: 'org.testcontainers', name: 'testcontainers', version: versions.testcontainers
     integrationTestImplementation group: 'org.testcontainers', name: 'postgresql', version: versions.testcontainers
-    integrationTestImplementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
-    integrationTestAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
 
     testImplementation libraries.junit5
@@ -377,7 +376,7 @@ flyway {
 
     if (project.hasProperty("flyway.password")) {
         placeholders = [
-                'LAU_DB_PASSWORD': project.getProperty("flyway.password")
+                'LAU_IDAM_DB_PASSWORD': project.getProperty("flyway.password")
         ]
     }
 
@@ -415,6 +414,10 @@ bootJar {
 // Gradle 7.x issue, workaround from: https://github.com/gradle/gradle/issues/17236#issuecomment-894768083
 rootProject.tasks.named("processSmokeTestResources") {
   duplicatesStrategy = 'include'
+}
+
+rootProject.tasks.named("processIntegrationTestResources") {
+    duplicatesStrategy = 'include'
 }
 
 wrapper {
