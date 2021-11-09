@@ -8,13 +8,13 @@ java:
   ingressHost: lau-idam-backend-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
   aadIdentityName: lau
   environment:
-    LAU_DB_NAME: idam
-    LAU_DB_HOST: lau-idam-backend-{{ .Values.global.environment }}.postgres.database.azure.com
-    LAU_DB_PORT: "5432"
+    LAU_IDAM_DB_NAME: lau_idam
+    LAU_IDAM_DB_HOST: lau-idam-backend-{{ .Values.global.environment }}.postgres.database.azure.com
+    LAU_IDAM_DB_PORT: "5432"
     FLYWAY_URL: jdbc:postgresql://lau-idam-backend-{{ .Values.global.environment }}.postgres.database.azure.com:5432/lau_idam?sslmode=require
     FLYWAY_USER: lauadmin@lau-idam-backend-{{ .Values.global.environment }}
     FLYWAY_NOOP_STRATEGY: "false"
-    LAU_DB_CONN_OPTIONS: "?sslmode=require"
+    LAU_IDAM_DB_CONN_OPTIONS: "?sslmode=require"
     S2S_URL: "http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal"
   keyVaults:
     lau:
