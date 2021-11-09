@@ -29,7 +29,7 @@ api-config-params:
 #If you use a database then uncomment below lines and update db properties accordingly
 spring:
   application:
-    name: LAU Case Backend
+    name: LAU Idam Backend
   datasource:
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
     url: jdbc:tc:postgresql://localhost/lau-idam
