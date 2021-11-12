@@ -259,7 +259,7 @@ def versions = [
         reformLogging     : '5.1.7',
         springBoot        : springBoot.class.package.implementationVersion,
         springfoxSwagger  : '3.0.0',
-        serenity          : '2.5.10',
+        serenity          : '2.4.24',
         gradlePitest      : '1.6.0',
         pitest            : '1.6.3',
         sonarPitest       : '0.5',
@@ -316,6 +316,11 @@ dependencies {
     implementation group: "com.networknt", name: "json-schema-validator", version: "1.0.49"
     implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
     implementation("org.springframework.boot:spring-boot-devtools")
+
+//    implementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
+//    implementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
+//    implementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
+//    implementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
 
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
@@ -419,7 +424,6 @@ rootProject.tasks.named("processSmokeTestResources") {
 rootProject.tasks.named("processIntegrationTestResources") {
     duplicatesStrategy = 'include'
 }
-
 wrapper {
     distributionType = Wrapper.DistributionType.ALL
 }
