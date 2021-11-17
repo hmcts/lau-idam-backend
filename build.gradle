@@ -347,8 +347,9 @@ dependencies {
         exclude group: 'junit', module: 'junit'
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
+    testImplementation('com.h2database:h2')
 
-  integrationTestImplementation sourceSets.main.runtimeClasspath
+    integrationTestImplementation sourceSets.main.runtimeClasspath
   integrationTestImplementation sourceSets.test.runtimeClasspath
 
     functionalTestImplementation sourceSets.main.runtimeClasspath
@@ -426,6 +427,10 @@ rootProject.tasks.named("processIntegrationTestResources") {
 }
 
 rootProject.tasks.named("processFunctionalTestResources") {
+    duplicatesStrategy = 'include'
+}
+
+rootProject.tasks.named("processTestResources") {
     duplicatesStrategy = 'include'
 }
 
