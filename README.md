@@ -6,7 +6,7 @@
 
 This is the Log and Audit Idam Back-End application that will provide an endpoint to capture idam log actions to the database.
 
-## What's inside
+##  What's inside
 
 The application exposes health endpoint (http://localhost:4550/health).
 
