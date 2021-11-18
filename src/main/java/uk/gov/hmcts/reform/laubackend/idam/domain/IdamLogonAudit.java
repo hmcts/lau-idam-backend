@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.laubackend.idam.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnTransformer;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,13 +31,21 @@ public class IdamLogonAudit implements Serializable {
     @Column(name = "user_id", nullable = false)
     private String userId;
 
-    @Column(name = "email_address", nullable = false)
+    @ColumnTransformer(
+            read = "pgp_sym_decrypt(decode(email_address, 'base64'), '${LAU_IDAM_ENCRIPTION_KEY}')",
+            write = "encode(pgp_sym_encrypt(?, '${LAU_IDAM_ENCRIPTION_KEY}'), 'base64')"
+    )
+    @Column(name = "email_address", nullable = false, columnDefinition = "bytea")
     private String emailAddress;
 
     @Column(name = "service", nullable = false)
     private String service;
 
-    @Column(name = "ip_address", nullable = false)
+    @ColumnTransformer(
+            read = "pgp_sym_decrypt(decode(ip_address, 'base64'), '${LAU_IDAM_ENCRIPTION_KEY}')",
+            write = "encode(pgp_sym_encrypt(?, '${LAU_IDAM_ENCRIPTION_KEY}'), 'base64')"
+    )
+    @Column(name = "ip_address", nullable = false,columnDefinition = "bytea")
     private String ipAddress;
 
     @Column(name = "log_timestamp", nullable = false)
