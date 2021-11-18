@@ -25,7 +25,7 @@ import static uk.gov.hmcts.reform.laubackend.idam.utils.NotEmptyInputParamsVerif
 
 @RestController
 @Slf4j
-@Api(tags = "Case search database operations.", value = "This is the Log and Audit "
+@Api(tags = "IdAM logon database operations.", value = "This is the Log and Audit "
         + "Back-End API that will audit IdAM logons. "
         + "The API will be invoked by IdAM service.")
 public class IdamLogonAuditController {

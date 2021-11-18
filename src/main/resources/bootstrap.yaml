@@ -11,3 +11,4 @@ spring:
         idam-backend-app-db-password: ${LAU_IDAM_DB_PASSWORD:LAU_IDAM_DB_PASSWORD}
         idam-backend-app-db-user: ${LAU_IDAM_DB_USERNAME:LAU_IDAM_DB_USERNAME}
         idam-backend-flyway-password: flyway.password
+        backend-encryption-key: ${LAU_IDAM_ENCRIPTION_KEY:LAU_IDAM_ENCRIPTION_KEY}

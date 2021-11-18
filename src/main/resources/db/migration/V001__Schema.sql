@@ -3,9 +3,9 @@
   CREATE TABLE idam_logon_audit (
    id SERIAL PRIMARY KEY,
    user_id VARCHAR(64) NOT NULL,
-   email_address TEXT NOT NULL,
+   email_address VARCHAR(256) NOT NULL,
    service VARCHAR(70) NOT NULL,
-   ip_address TEXT NOT NULL,
+   ip_address VARCHAR(256) NOT NULL,
    log_timestamp TIMESTAMP WITHOUT TIME ZONE NOT NULL
   );
 
