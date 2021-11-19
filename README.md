@@ -76,7 +76,7 @@ The `.env` file has a list of the environment variables in use by the lau-idam-b
 * FLYWAY_USER
 * FLYWAY_PASSWORD
 * FLYWAY_NOOP_STRATEGY
-* LAU_IDAM_ENCRIPTION_KEY
+* LAU_IDAM_ENCRIPTION_KEY 
 
 There is no need to export these values if lau-idam-backend repo is checked out.
 If another service is using the lau-idam-backend application, the emnvironment values are available through a batch script:
