@@ -34,8 +34,8 @@ group = 'uk.gov.hmcts.reform'
 version = '0.0.1'
 
 allprojects {
-  sourceCompatibility = '11'
-  targetCompatibility = '11'
+    sourceCompatibility = '11'
+    targetCompatibility = '11'
 }
 
 gitProperties {
@@ -64,27 +64,27 @@ sourceSets {
         resources.srcDir file('src/functionalTest/resources')
     }
 
-  integrationTest {
-    java {
-      compileClasspath += main.output
-      runtimeClasspath += main.output
-      srcDir file('src/integrationTest/java')
+    integrationTest {
+        java {
+            compileClasspath += main.output
+            runtimeClasspath += main.output
+            srcDir file('src/integrationTest/java')
+        }
+        resources.srcDir file('src/integrationTest/resources')
     }
-    resources.srcDir file('src/integrationTest/resources')
-  }
 
-  smokeTest {
-    java {
-      compileClasspath += main.output
-      runtimeClasspath += main.output
-      srcDir file('src/smokeTest/java')
+    smokeTest {
+        java {
+            compileClasspath += main.output
+            runtimeClasspath += main.output
+            srcDir file('src/smokeTest/java')
+        }
+        resources.srcDir file('src/smokeTest/resources')
     }
-    resources.srcDir file('src/smokeTest/resources')
-  }
 }
 
 tasks.withType(JavaCompile) {
-  options.compilerArgs << "-Xlint:unchecked" << "-Werror"
+    options.compilerArgs << "-Xlint:unchecked" << "-Werror"
 }
 
 test {
@@ -121,8 +121,11 @@ task integration(type: Test) {
     group = "Verification"
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
-    useJUnitPlatform()
+    mustRunAfter test
 }
+
+check.dependsOn integration
+
 
 task smoke(type: Test) {
     description = "Runs Smoke Tests"
@@ -137,29 +140,29 @@ task fortifyScan(type: JavaExec) {
 }
 
 checkstyle {
-  maxWarnings = 0
-  toolVersion = '8.29'
-  getConfigDirectory().set(new File(rootDir, 'config/checkstyle'))
+    maxWarnings = 0
+    toolVersion = '8.29'
+    getConfigDirectory().set(new File(rootDir, 'config/checkstyle'))
 }
 
 pmd {
-  toolVersion = "6.39.0"
-  sourceSets = [sourceSets.main, sourceSets.test, sourceSets.functionalTest, sourceSets.integrationTest, sourceSets.smokeTest]
-  reportsDir = file("$project.buildDir/reports/pmd")
-  // https://github.com/pmd/pmd/issues/876
-  ruleSets = []
-  ruleSetFiles = files("config/pmd/ruleset.xml")
+    toolVersion = "6.39.0"
+    sourceSets = [sourceSets.main, sourceSets.test, sourceSets.functionalTest, sourceSets.integrationTest, sourceSets.smokeTest]
+    reportsDir = file("$project.buildDir/reports/pmd")
+    // https://github.com/pmd/pmd/issues/876
+    ruleSets = []
+    ruleSetFiles = files("config/pmd/ruleset.xml")
 }
 
 project.tasks['jacocoTestReport'].dependsOn test, integration
 
 jacocoTestReport {
-  executionData(test, integration)
-  reports {
-    xml.required = true
-    csv.required = false
-    xml.destination file("${buildDir}/reports/jacoco/test/jacocoTestReport.xml")
-  }
+    executionData(test, integration)
+    reports {
+        xml.required = true
+        csv.required = false
+        xml.destination file("${buildDir}/reports/jacoco/test/jacocoTestReport.xml")
+    }
 }
 
 pitest {
@@ -208,27 +211,27 @@ sonarqube {
 
 // before committing a change, make sure task still works
 dependencyUpdates {
-  def isNonStable = { String version ->
-    def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { qualifier -> version.toUpperCase().contains(qualifier) }
-    def regex = /^[0-9,.v-]+$/
-    return !stableKeyword && !(version ==~ regex)
-  }
-  rejectVersionIf { selection -> // <---- notice how the closure argument is named
-    return isNonStable(selection.candidate.version) && !isNonStable(selection.currentVersion)
-  }
+    def isNonStable = { String version ->
+        def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { qualifier -> version.toUpperCase().contains(qualifier) }
+        def regex = /^[0-9,.v-]+$/
+        return !stableKeyword && !(version ==~ regex)
+    }
+    rejectVersionIf { selection -> // <---- notice how the closure argument is named
+        return isNonStable(selection.candidate.version) && !isNonStable(selection.currentVersion)
+    }
 }
 
 // https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/configuration.html
 dependencyCheck {
-  // Specifies if the build should be failed if a CVSS score above a specified level is identified.
-  // range of 0-10 fails the build, anything greater and it doesn't fail the build
-  failBuildOnCVSS = System.getProperty('dependencyCheck.failBuild') == 'true' ? 0 : 11
-  suppressionFile = 'config/owasp/suppressions.xml'
+    // Specifies if the build should be failed if a CVSS score above a specified level is identified.
+    // range of 0-10 fails the build, anything greater and it doesn't fail the build
+    failBuildOnCVSS = System.getProperty('dependencyCheck.failBuild') == 'true' ? 0 : 11
+    suppressionFile = 'config/owasp/suppressions.xml'
 
-  analyzers {
-    // Disable scanning of .NET related binaries
-    assemblyEnabled = false
-  }
+    analyzers {
+        // Disable scanning of .NET related binaries
+        assemblyEnabled = false
+    }
 }
 
 dependencyManagement {
@@ -267,7 +270,8 @@ def versions = [
         testcontainers    : '1.15.1',
         restAssured       : '4.4.0',
         serviceAuthVersion: '4.0.0',
-        commonsIo         : '2.11.0'
+        commonsIo         : '2.11.0',
+        cucumber          : '6.8.0'
 ]
 
 ext.libraries = [
@@ -322,6 +326,12 @@ dependencies {
     testImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
     testImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
 
+    testImplementation group: 'io.cucumber', name: 'cucumber-java8', version: versions.cucumber
+    testImplementation group: 'io.cucumber', name: 'cucumber-spring', version: versions.cucumber
+    testImplementation group: 'io.cucumber', name: 'cucumber-junit', version: versions.cucumber
+    testImplementation group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber
+    testImplementation group: 'io.cucumber', name: 'cucumber-spring', version: versions.cucumber
+
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
 
@@ -348,8 +358,8 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
 
-  integrationTestImplementation sourceSets.main.runtimeClasspath
-  integrationTestImplementation sourceSets.test.runtimeClasspath
+    integrationTestImplementation sourceSets.main.runtimeClasspath
+    integrationTestImplementation sourceSets.test.runtimeClasspath
 
     functionalTestImplementation sourceSets.main.runtimeClasspath
     functionalTestImplementation sourceSets.test.runtimeClasspath
@@ -411,14 +421,14 @@ bootJar {
         'lau-idam-backend.jar'
     })
 
-  manifest {
-    attributes('Implementation-Version': project.version.toString())
-  }
+    manifest {
+        attributes('Implementation-Version': project.version.toString())
+    }
 }
 
 // Gradle 7.x issue, workaround from: https://github.com/gradle/gradle/issues/17236#issuecomment-894768083
 rootProject.tasks.named("processSmokeTestResources") {
-  duplicatesStrategy = 'include'
+    duplicatesStrategy = 'include'
 }
 
 rootProject.tasks.named("processIntegrationTestResources") {
@@ -426,6 +436,10 @@ rootProject.tasks.named("processIntegrationTestResources") {
 }
 
 rootProject.tasks.named("processFunctionalTestResources") {
+    duplicatesStrategy = 'include'
+}
+
+rootProject.tasks.named("processTestResources") {
     duplicatesStrategy = 'include'
 }
 

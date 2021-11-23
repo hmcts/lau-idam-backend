@@ -1,5 +1,5 @@
 server:
-  port: 4450
+  port: 4550
 
 management:
   endpoint:
@@ -15,7 +15,6 @@ management:
 api-error-messages:
   bad_request: Invalid Request
   created: Successfully created
-  updated: Successfully updated
   accepted: Success
   internal_error: Unknown error occurred
 api-required-header-keys:
@@ -23,8 +22,6 @@ api-required-header-keys:
 api-schema-file:
   submitanswer-schema: JsonSchema/submitAnswersSchema.json
 api-version-number: 1
-api-config-params:
-  number_of_days_limit: 90
 
 #If you use a database then uncomment below lines and update db properties accordingly
 spring:
@@ -45,3 +42,5 @@ spring:
 flyway:
   noop:
     strategy: "false"
+
+targetInstance: ${TEST_URL:http://localhost:4550}
