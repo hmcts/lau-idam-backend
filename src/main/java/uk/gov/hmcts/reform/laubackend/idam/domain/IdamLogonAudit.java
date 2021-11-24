@@ -45,7 +45,7 @@ public class IdamLogonAudit implements Serializable {
             read = "pgp_sym_decrypt(decode(ip_address, 'base64'), '${LAU_IDAM_ENCRIPTION_KEY}')",
             write = "encode(pgp_sym_encrypt(?, '${LAU_IDAM_ENCRIPTION_KEY}'), 'base64')"
     )
-    @Column(name = "ip_address", nullable = false,columnDefinition = "bytea")
+    @Column(name = "ip_address", nullable = true, columnDefinition = "bytea")
     private String ipAddress;
 
     @Column(name = "log_timestamp", nullable = false)
