@@ -80,7 +80,7 @@ class InputParamsVerifierTest {
     }
 
     @Test
-    void shouldNotVerifyTimestampForCaseAction() {
+    void shouldNotVerifyTimestampForLogon() {
         try {
             final LogonLog logonLog = new LogonLog();
             logonLog.setTimestamp("2021-106-23T22:20:05");

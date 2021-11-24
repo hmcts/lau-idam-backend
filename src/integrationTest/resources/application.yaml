@@ -43,4 +43,12 @@ flyway:
   noop:
     strategy: "false"
 
+idam:
+  s2s-auth:
+    url: http://localhost:4554
+    secret-cs: AAAAAAAAAAAAAAAA
+    name-cs: ccd_data
+
+authorised.services: idam-web-admin,lau-idam-frontend
+
 targetInstance: ${TEST_URL:http://localhost:4550}

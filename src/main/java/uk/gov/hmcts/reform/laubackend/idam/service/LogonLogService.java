@@ -27,9 +27,9 @@ public class LogonLogService {
         idamLogonAudit.setEmailAddress(logonLog.getEmailAddress());
         idamLogonAudit.setTimestamp(timestampUtil.getUtcTimestampValue(logonLog.getTimestamp()));
 
-        final IdamLogonAudit caseActionAuditResponse = idamLogonAuditRepository.save(idamLogonAudit);
+        final IdamLogonAudit idamLogonAuditResponse = idamLogonAuditRepository.save(idamLogonAudit);
         final String timestamp = timestampUtil.timestampConvertor(idamLogonAudit.getTimestamp());
 
-        return new LogonLogPostResponse(new LogonLogResponse().toDto(caseActionAuditResponse, timestamp));
+        return new LogonLogPostResponse(new LogonLogResponse().toDto(idamLogonAuditResponse, timestamp));
     }
 }
