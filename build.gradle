@@ -241,6 +241,10 @@ dependencyManagement {
         dependencySet(group: 'com.google.guava', version: '31.0.1-jre') {
             entry 'guava'
         }
+        dependencySet(group: 'org.springframework.cloud', version: '3.0.5') {
+            entry 'spring-cloud-starter-openfeign'
+            entry 'spring-cloud-openfeign-core'
+        }
     }
     imports {
         mavenBom 'org.springframework.cloud:spring-cloud-dependencies:2020.0.4'
