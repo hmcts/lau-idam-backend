@@ -241,6 +241,10 @@ dependencyManagement {
         dependencySet(group: 'com.google.guava', version: '31.0.1-jre') {
             entry 'guava'
         }
+        dependencySet(group: 'org.springframework.cloud', version: '3.0.5') {
+            entry 'spring-cloud-starter-openfeign'
+            entry 'spring-cloud-openfeign-core'
+        }
     }
     imports {
         mavenBom 'org.springframework.cloud:spring-cloud-dependencies:2020.0.4'
@@ -271,7 +275,8 @@ def versions = [
         restAssured       : '4.4.0',
         serviceAuthVersion: '4.0.0',
         commonsIo         : '2.11.0',
-        cucumber          : '6.8.0'
+        cucumber          : '6.8.0',
+        wiremock          : '2.21.0'
 ]
 
 ext.libraries = [
@@ -304,7 +309,7 @@ dependencies {
 
     implementation group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.reformLogging
     implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformLogging
-    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.9.RELEASE'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.10.RELEASE'
 
     implementation group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.1.0', withoutSpringCloudContext
 
@@ -320,6 +325,9 @@ dependencies {
     implementation group: "com.networknt", name: "json-schema-validator", version: "1.0.64"
     implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
     implementation("org.springframework.boot:spring-boot-devtools")
+    implementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
+
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '3.0.5'
 
     testImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
     testImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
@@ -331,6 +339,8 @@ dependencies {
     testImplementation group: 'io.cucumber', name: 'cucumber-junit', version: versions.cucumber
     testImplementation group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber
     testImplementation group: 'io.cucumber', name: 'cucumber-spring', version: versions.cucumber
+    testImplementation group: 'com.github.tomakehurst', name: 'wiremock-jre8-standalone', version: versions.wiremock
+
 
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
@@ -350,7 +360,8 @@ dependencies {
 
     integrationTestImplementation group: 'org.testcontainers', name: 'testcontainers', version: versions.testcontainers
     integrationTestImplementation group: 'org.testcontainers', name: 'postgresql', version: versions.testcontainers
-
+    integrationTestImplementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
+    integrationTestAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
     testImplementation libraries.junit5
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', {
