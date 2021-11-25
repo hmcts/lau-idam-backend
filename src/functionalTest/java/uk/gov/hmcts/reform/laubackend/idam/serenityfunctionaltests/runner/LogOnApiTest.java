@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.laubackend.idam.serenityFunctionalTests.runner;
+package uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.runner;
 
 
 import io.restassured.response.Response;
@@ -8,10 +8,10 @@ import net.thucydides.core.annotations.Title;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.testng.Assert;
-import uk.gov.hmcts.reform.laubackend.idam.serenityFunctionalTests.model.LogOnRequestVO;
-import uk.gov.hmcts.reform.laubackend.idam.serenityFunctionalTests.steps.LogOnGetApiSteps;
-import uk.gov.hmcts.reform.laubackend.idam.serenityFunctionalTests.steps.LogOnPostApiSteps;
-import uk.gov.hmcts.reform.laubackend.idam.serenityFunctionalTests.utils.TestConstants;
+import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.model.LogOnRequestVO;
+import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.steps.LogOnGetApiSteps;
+import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.steps.LogOnPostApiSteps;
+import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants;
 
 @RunWith(SerenityRunner.class)
 public class LogOnApiTest {
@@ -21,7 +21,6 @@ public class LogOnApiTest {
     LogOnPostApiSteps logOnPostApiSteps;
     @Steps
     LogOnGetApiSteps logOnGetApiSteps;
-
 
     @Test
     @Title("Assert response code of 201 for POST Request LogonApi")

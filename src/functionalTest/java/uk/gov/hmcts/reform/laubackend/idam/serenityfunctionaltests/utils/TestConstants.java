@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.laubackend.idam.serenityFunctionalTests.utils;
+package uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils;
 
 public final class TestConstants {
 

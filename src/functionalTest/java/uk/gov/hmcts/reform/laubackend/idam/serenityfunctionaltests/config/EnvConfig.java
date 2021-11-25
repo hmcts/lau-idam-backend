@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.laubackend.idam.serenityFunctionalTests.config;
+package uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.config;
 
 public final class EnvConfig {
 

@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.laubackend.idam.serenityFunctionalTests.steps;
+package uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.steps;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,6 +12,8 @@ import io.restassured.specification.RequestSpecification;
 import net.serenitybdd.rest.SerenityRest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.config.EnvConfig;
+import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -21,8 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-import uk.gov.hmcts.reform.laubackend.idam.serenityFunctionalTests.config.EnvConfig;
-import uk.gov.hmcts.reform.laubackend.idam.serenityFunctionalTests.utils.TestConstants;
+
 
 
 public class BaseSteps {

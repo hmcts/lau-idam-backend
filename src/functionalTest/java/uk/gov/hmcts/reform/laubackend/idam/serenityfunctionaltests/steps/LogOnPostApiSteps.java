@@ -1,14 +1,15 @@
-package uk.gov.hmcts.reform.laubackend.idam.serenityFunctionalTests.steps;
+package uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.steps;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.restassured.response.Response;
 import net.thucydides.core.annotations.Step;
-import uk.gov.hmcts.reform.laubackend.idam.serenityFunctionalTests.model.LogOnRequestVO;
-import uk.gov.hmcts.reform.laubackend.idam.serenityFunctionalTests.model.LogonLog;
-import uk.gov.hmcts.reform.laubackend.idam.serenityFunctionalTests.utils.TestConstants;
+import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.model.LogOnRequestVO;
+import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.model.LogonLog;
+import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants;
 
 public class LogOnPostApiSteps extends BaseSteps {
 
+    @SuppressWarnings({"PMD.AvoidUsingHardCodedIP"})
     @Step("Given the POST service body is generated")
     public LogOnRequestVO generateLogOnPostRequestBody() {
         LogonLog logonLog = new LogonLog();

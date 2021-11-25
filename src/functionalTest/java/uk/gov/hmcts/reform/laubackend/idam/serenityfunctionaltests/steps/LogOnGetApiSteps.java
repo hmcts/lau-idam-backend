@@ -1,9 +1,9 @@
-package uk.gov.hmcts.reform.laubackend.idam.serenityFunctionalTests.steps;
+package uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.steps;
 
 import io.restassured.response.Response;
 import net.thucydides.core.annotations.Step;
 import org.junit.Assert;
-import uk.gov.hmcts.reform.laubackend.idam.serenityFunctionalTests.utils.TestConstants;
+import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants;
 
 public class LogOnGetApiSteps extends BaseSteps {
 
