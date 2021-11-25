@@ -5,7 +5,7 @@
    user_id VARCHAR(64) NOT NULL,
    email_address VARCHAR(256) NOT NULL,
    service VARCHAR(70) NOT NULL,
-   ip_address VARCHAR(256) NOT NULL,
+   ip_address VARCHAR(256),
    log_timestamp TIMESTAMP WITHOUT TIME ZONE NOT NULL
   );
 
