@@ -47,11 +47,11 @@ class IdamLogonAuditControllerTest {
                 "2021-08-23T22:20:05.023Z");
 
 
-        final LogonLogPostRequest caseActionPostRequest = new LogonLogPostRequest();
-        caseActionPostRequest.setLogonLog(logonLog);
+        final LogonLogPostRequest logonLogPostRequest = new LogonLogPostRequest();
+        logonLogPostRequest.setLogonLog(logonLog);
 
         final ResponseEntity<LogonLogPostResponse> responseEntity = idamLogonAuditController.saveLogonLog(
-                caseActionPostRequest
+                logonLogPostRequest
         );
 
         verify(logonLogService, times(1)).saveLogonLog(logonLog);
@@ -67,10 +67,10 @@ class IdamLogonAuditControllerTest {
                 "2021-08-23T22:20:05.023Z");
 
 
-        final LogonLogPostRequest caseActionPostRequest = new LogonLogPostRequest();
-        caseActionPostRequest.setLogonLog(logonLog);
+        final LogonLogPostRequest logonLogPostRequest = new LogonLogPostRequest();
+        logonLogPostRequest.setLogonLog(logonLog);
         final ResponseEntity<LogonLogPostResponse> responseEntity = idamLogonAuditController.saveLogonLog(
-                caseActionPostRequest
+                logonLogPostRequest
         );
         assertThat(responseEntity.getStatusCode()).isEqualTo(BAD_REQUEST);
     }
@@ -84,14 +84,14 @@ class IdamLogonAuditControllerTest {
                 "2021-08-23T22:20:05.023Z");
 
 
-        final LogonLogPostRequest caseActionPostRequest = new LogonLogPostRequest();
-        caseActionPostRequest.setLogonLog(logonLog);
+        final LogonLogPostRequest logonLogPostRequest = new LogonLogPostRequest();
+        logonLogPostRequest.setLogonLog(logonLog);
 
         given(logonLogService.saveLogonLog(any()))
                 .willAnswer(invocation -> new Exception("Some terrible exception happened"));
 
         final ResponseEntity<LogonLogPostResponse> responseEntity = idamLogonAuditController.saveLogonLog(
-                caseActionPostRequest
+                logonLogPostRequest
         );
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(INTERNAL_SERVER_ERROR);

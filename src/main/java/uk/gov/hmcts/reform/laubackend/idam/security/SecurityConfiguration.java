@@ -40,7 +40,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                                                                                              .SC_UNAUTHORIZED))
             .and()
             .authorizeRequests()
-            .antMatchers("/lau/cases/s**").authenticated();
+            .antMatchers("/audit/logon/s**").authenticated();
 
         Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
     }
