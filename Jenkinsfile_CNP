@@ -15,7 +15,8 @@ def secrets = [
                 secret('idam-backend-POSTGRES-PASS', 'LAU_IDAM_DB_ADMIN_PASSWORD'),
                 secret('idam-backend-POSTGRES-PASS', 'FLYWAY_PASSWORD'),
                 secret('idam-backend-app-db-password', 'FLYWAY_PLACEHOLDERS_LAU_IDAM_DB_PASSWORD'),
-                secret('idam-backend-app-db-password', 'LAU_IDAM_DB_PASSWORD')
+                secret('idam-backend-app-db-password', 'LAU_IDAM_DB_PASSWORD'),
+                secret('backend-encryption-key', 'LAU_IDAM_ENCRIPTION_KEY'),
         ]
 ]
 
