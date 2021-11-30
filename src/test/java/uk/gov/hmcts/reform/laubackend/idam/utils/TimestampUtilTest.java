@@ -20,4 +20,22 @@ class TimestampUtilTest {
 
         assertThat(convertedTimestamp).isEqualTo("2000-08-23T22:20:05.000Z");
     }
+
+    @Test
+    void shouldReturnTimestampFromString() {
+        final TimestampUtil timestampUtil = new TimestampUtil();
+        final String stringTimestamp = "2000-08-23T22:20:05.200";
+        final Timestamp convertedTimestamp = timestampUtil.getTimestampValue(stringTimestamp);
+
+        assertThat(convertedTimestamp.toString()).isEqualTo("2000-08-23 22:20:05.2");
+    }
+
+    @Test
+    void shouldReturnUtcTimestampFromString() {
+        final TimestampUtil timestampUtil = new TimestampUtil();
+        final String stringTimestamp = "2000-08-23T22:20:05.200Z";
+        final Timestamp convertedTimestamp = timestampUtil.getUtcTimestampValue(stringTimestamp);
+
+        assertThat(convertedTimestamp.toString()).isEqualTo("2000-08-23 22:20:05.2");
+    }
 }

@@ -43,12 +43,16 @@ flyway:
   noop:
     strategy: "false"
 
+security:
+  db:
+    backend-encryption-key: ${LAU_IDAM_ENCRYPTION_KEY:ThisIsATestKeyForEncryption}
+
 idam:
   s2s-auth:
     url: http://localhost:4554
     secret-cs: AAAAAAAAAAAAAAAA
-    name-cs: ccd_data
+    name-cs: ccd_data,lau_idam_frontend
 
-authorised.services: idam-web-admin,lau-idam-frontend
+authorised.services: idam-web-admin,lau_idam_frontend
 
 targetInstance: ${TEST_URL:http://localhost:4550}

@@ -8,9 +8,33 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.reform.laubackend.idam.helper.RestConstants.AUTH_TOKEN;
 import static uk.gov.hmcts.reform.laubackend.idam.helper.RestConstants.SERVICE_AUTHORISATION_HEADER;
 
-public final class RestHelper {
+public class RestHelper {
 
-    private RestHelper() {
+    public static Response getResponseWithoutHeader(final String path) {
+
+        return RestAssured
+            .given()
+            .relaxedHTTPSValidation()
+            .baseUri(path)
+            .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+            .when()
+            .get()
+            .andReturn();
+    }
+
+    public Response getResponse(final String path,
+                                final String parameterName,
+                                final String parameterValue) {
+        return RestAssured
+            .given()
+            .relaxedHTTPSValidation()
+            .baseUri(path)
+            .queryParam(parameterName, parameterValue)
+            .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+            .header(SERVICE_AUTHORISATION_HEADER, "Bearer " + AUTH_TOKEN)
+            .when()
+            .get()
+            .andReturn();
     }
 
     public static Response postObject(final Object object,

@@ -32,8 +32,8 @@ public class IdamLogonAudit implements Serializable {
     private String userId;
 
     @ColumnTransformer(
-            read = "pgp_sym_decrypt(decode(email_address, 'base64'), '${LAU_IDAM_ENCRIPTION_KEY}')",
-            write = "encode(pgp_sym_encrypt(?, '${LAU_IDAM_ENCRIPTION_KEY}'), 'base64')"
+            read = "pgp_sym_decrypt(decode(email_address, 'base64'), '${encryption.key}')",
+            write = "encode(pgp_sym_encrypt(?, '${encryption.key}'), 'base64')"
     )
     @Column(name = "email_address", nullable = false, columnDefinition = "bytea")
     private String emailAddress;
@@ -42,8 +42,8 @@ public class IdamLogonAudit implements Serializable {
     private String service;
 
     @ColumnTransformer(
-            read = "pgp_sym_decrypt(decode(ip_address, 'base64'), '${LAU_IDAM_ENCRIPTION_KEY}')",
-            write = "encode(pgp_sym_encrypt(?, '${LAU_IDAM_ENCRIPTION_KEY}'), 'base64')"
+            read = "pgp_sym_decrypt(decode(ip_address, 'base64'), '${encryption.key}')",
+            write = "encode(pgp_sym_encrypt(?, '${encryption.key}'), 'base64')"
     )
     @Column(name = "ip_address", nullable = true, columnDefinition = "bytea")
     private String ipAddress;

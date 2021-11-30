@@ -9,9 +9,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.laubackend.idam.dto.LogonLog;
 import uk.gov.hmcts.reform.laubackend.idam.request.LogonLogPostRequest;
+import uk.gov.hmcts.reform.laubackend.idam.response.LogonLogGetResponse;
 import uk.gov.hmcts.reform.laubackend.idam.response.LogonLogPostResponse;
 import uk.gov.hmcts.reform.laubackend.idam.service.LogonLogService;
 
+import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -22,6 +24,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.OK;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -32,6 +35,42 @@ class IdamLogonAuditControllerTest {
 
     @InjectMocks
     private IdamLogonAuditController idamLogonAuditController;
+
+    @Test
+    void shouldReturnResponseEntityForGetRequest() {
+        final String userId = "1";
+        final String emailAddress = "2";
+        final LogonLogGetResponse logonLogGetResponse = mock(LogonLogGetResponse.class);
+
+        when(logonLogService.getLogonLog(any())).thenReturn(
+            logonLogGetResponse);
+
+        final ResponseEntity<LogonLogGetResponse> responseEntity = idamLogonAuditController.getLogonLog(
+            userId,
+            emailAddress,
+            null,
+            null,
+            null,
+            null
+        );
+
+        verify(logonLogService, times(1)).getLogonLog(any());
+        assertThat(responseEntity.getStatusCode()).isEqualTo(OK);
+    }
+
+    @Test
+    void shouldReturnBadRequestResponseEntityForGetRequest() {
+        final ResponseEntity<LogonLogGetResponse> responseEntity = idamLogonAuditController.getLogonLog(
+            "1",
+            "2",
+            "3",
+            null,
+            null,
+            null
+        );
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(BAD_REQUEST);
+    }
 
     @Test
     void shouldReturnResponseEntityForPostRequest() {

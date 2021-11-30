@@ -1,6 +1,7 @@
 
 package uk.gov.hmcts.reform.laubackend.idam.utils;
 
+import uk.gov.hmcts.reform.laubackend.idam.dto.LogonInputParamsHolder;
 import uk.gov.hmcts.reform.laubackend.idam.dto.LogonLog;
 import uk.gov.hmcts.reform.laubackend.idam.exceptions.InvalidRequestException;
 
@@ -22,6 +23,16 @@ public final class NotEmptyInputParamsVerifier {
             throw new InvalidRequestException("You need to populate all required parameters - "
                     + "userId, email, service, ipAddress and timestamp ",
                     BAD_REQUEST);
+        }
+    }
+
+    public static void verifyRequestLogonParamsAreNotEmpty(final LogonInputParamsHolder inputParamsHolder)
+        throws InvalidRequestException {
+        if (isEmpty(inputParamsHolder.getUserId())
+            && isEmpty(inputParamsHolder.getEmailAddress())
+            && isEmpty(inputParamsHolder.getStartTime())
+            && isEmpty(inputParamsHolder.getEndTime())) {
+            throw new InvalidRequestException("At least one path parameter must be present", BAD_REQUEST);
         }
     }
 }
