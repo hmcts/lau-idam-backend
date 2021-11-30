@@ -43,7 +43,7 @@ class NotEmptyInputParamsVerifierTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenGetRequestParamsAreEmptyForLogonLog() {
+    void shouldThrowExceptionWhenGetRequestParamsAreEmptyForLogonLog() {
         try {
             verifyRequestLogonParamsAreNotEmpty(new LogonInputParamsHolder(null,
                                                                null,
@@ -59,7 +59,7 @@ class NotEmptyInputParamsVerifierTest {
     }
 
     @Test
-    public void shouldVerifyRequestParamsAreNotEmptyForUserIdLogonLog() {
+    void shouldVerifyRequestParamsAreNotEmptyForUserIdLogonLog() {
         assertDoesNotThrow(() -> verifyRequestLogonParamsAreNotEmpty(new LogonInputParamsHolder(randomNumeric(71),
                                                                                                   null,
                                                                                                   null,
@@ -69,7 +69,7 @@ class NotEmptyInputParamsVerifierTest {
     }
 
     @Test
-    public void shouldVerifyRequestParamsAreNotEmptyForEmailAddressLogonLog() {
+    void shouldVerifyRequestParamsAreNotEmptyForEmailAddressLogonLog() {
         assertDoesNotThrow(() -> verifyRequestLogonParamsAreNotEmpty(new LogonInputParamsHolder(null,
                                                                                                 "test@test.com",
                                                                                                 null,
@@ -79,7 +79,7 @@ class NotEmptyInputParamsVerifierTest {
     }
 
     @Test
-    public void shouldVerifyRequestParamsAreNotEmptyForStartTimeLogonLog() {
+    void shouldVerifyRequestParamsAreNotEmptyForStartTimeLogonLog() {
         assertDoesNotThrow(() -> verifyRequestLogonParamsAreNotEmpty(new LogonInputParamsHolder(null,
                                                                                                 null,
                                                                                                 "345",
@@ -89,7 +89,7 @@ class NotEmptyInputParamsVerifierTest {
     }
 
     @Test
-    public void shouldVerifyRequestParamsAreNotEmptyForEndTimeLogonLog() {
+    void shouldVerifyRequestParamsAreNotEmptyForEndTimeLogonLog() {
         assertDoesNotThrow(() -> verifyRequestLogonParamsAreNotEmpty(new LogonInputParamsHolder(null,
                                                                                                 null,
                                                                                                 null,

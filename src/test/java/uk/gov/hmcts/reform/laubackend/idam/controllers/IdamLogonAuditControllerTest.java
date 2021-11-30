@@ -13,7 +13,6 @@ import uk.gov.hmcts.reform.laubackend.idam.response.LogonLogGetResponse;
 import uk.gov.hmcts.reform.laubackend.idam.response.LogonLogPostResponse;
 import uk.gov.hmcts.reform.laubackend.idam.service.LogonLogService;
 
-import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;

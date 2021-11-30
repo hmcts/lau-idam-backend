@@ -42,6 +42,7 @@ import static uk.gov.hmcts.reform.laubackend.idam.utils.NotEmptyInputParamsVerif
 @Api(tags = "IdAM logon database operations.", value = "This is the Log and Audit "
         + "Back-End API that will audit IdAM logons. "
         + "The API will be invoked by IdAM service.")
+@SuppressWarnings("PMD.ExcessiveImports")
 public class IdamLogonAuditController {
 
     @Autowired

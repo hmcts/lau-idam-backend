@@ -15,10 +15,10 @@ import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageCons
 import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifier.verifyRequestLogonParamsConditions;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class LogonInputParamsVerifierGetExceptionTest {
+class LogonInputParamsVerifierGetExceptionTest {
 
     @Test
-    public void shouldNotVerifyUserId() {
+    void shouldNotVerifyUserId() {
         try {
             final LogonInputParamsHolder inputParamsHolder = new LogonInputParamsHolder(randomAlphanumeric(65),
                                                                                          null,
@@ -37,7 +37,7 @@ public class LogonInputParamsVerifierGetExceptionTest {
     }
 
     @Test
-    public void shouldNotVerifyEmailAddress() {
+    void shouldNotVerifyEmailAddress() {
         try {
             final LogonInputParamsHolder inputParamsHolder = new LogonInputParamsHolder(null,
                      randomAlphanumeric(71),
@@ -56,7 +56,7 @@ public class LogonInputParamsVerifierGetExceptionTest {
     }
 
     @Test
-    public void shouldNotVerifyTimestamp() {
+    void shouldNotVerifyTimestamp() {
         try {
             final LogonInputParamsHolder inputParamsHolder = new LogonInputParamsHolder(null,
                     null,
