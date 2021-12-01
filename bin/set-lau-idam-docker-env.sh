@@ -10,7 +10,7 @@ export LAU_IDAM_DB_USERNAME=lauuser
 export LAU_IDAM_DB_PASSWORD=laupass
 export LAU_IDAM_DB_ADMIN_USERNAME=lauadmin
 export LAU_IDAM_DB_ADMIN_PASSWORD=laupass
-export LAU_IDAM_ENCRIPTION_KEY=my_very_secure_key
+export LAU_IDAM_ENCRYPTION_KEY=my_very_secure_key
 
 export FLYWAY_PLACEHOLDERS_LAU_IDAM_DB_USERNAME=lauuser
 export FLYWAY_PLACEHOLDERS_LAU_IDAM_DB_PASSWORD=laupass

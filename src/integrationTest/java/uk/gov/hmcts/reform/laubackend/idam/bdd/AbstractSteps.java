@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.laubackend.idam.bdd;
 
 import com.google.gson.Gson;
 import org.springframework.boot.web.server.LocalServerPort;
+import uk.gov.hmcts.reform.laubackend.idam.helper.RestHelper;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
@@ -12,6 +13,7 @@ import static uk.gov.hmcts.reform.laubackend.idam.bdd.WiremokInstantiator.INSTAN
 public class AbstractSteps {
     private static final String JSON_RESPONSE = "application/json;charset=UTF-8";
     public final WiremokInstantiator wiremokInstantiator = INSTANCE;
+    protected final RestHelper restHelper = new RestHelper();
     public final Gson jsonReader = new Gson();
 
     @LocalServerPort
@@ -26,6 +28,6 @@ public class AbstractSteps {
                 .willReturn(aResponse()
                         .withHeader(CONTENT_TYPE_HEADER, JSON_RESPONSE)
                         .withStatus(200)
-                        .withBody("lau-idam-frontend")));
+                        .withBody("lau_idam_frontend")));
     }
 }

@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 import static java.sql.Timestamp.valueOf;
+import static java.time.LocalDateTime.parse;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 @SuppressWarnings("PMD.SimpleDateFormatNeedsLocale")
 @Service
@@ -26,5 +28,12 @@ public class TimestampUtil {
                 .toLocalDateTime();
 
         return valueOf(localDateTime);
+    }
+
+    public Timestamp getTimestampValue(final String timestamp) {
+        if (!isEmpty(timestamp)) {
+            return valueOf(parse(timestamp));
+        }
+        return null;
     }
 }

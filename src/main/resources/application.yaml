@@ -62,11 +62,16 @@ spring:
     placeholders:
       LAU_IDAM_DB_PASSWORD: ${LAU_IDAM_DB_PASSWORD:}
 
+security:
+  db:
+    backend-encryption-key: ${LAU_IDAM_ENCRYPTION_KEY:ThisIsATestKeyForEncryption}
+    encryption-enabled: ${LAU_IDAM_ENCRYPTION_ENABLED:Yes}
+
 idam:
   s2s-auth:
     url: ${S2S_URL:http://localhost:4502}
 
-authorised.services: idam-web-admin,lau-idam-frontend
+authorised.services: idam_web_admin,lau_idam_frontend
 
 azure:
   application-insights:
