@@ -41,7 +41,7 @@ public class LogOnGetApiSteps extends BaseSteps {
     @Step("When valid params are supplied for Get Logon API")
     public Map<String, String> givenValidParamsAreSuppliedForGetLogonApi() {
         HashMap<String, String> queryParamMap = new HashMap<>();
-        queryParamMap.put("userId", "3734564");
+        queryParamMap.put("userId", "3734574");
         queryParamMap.put("emailAddress", "firstname.lastname@company.com");
         queryParamMap.put("service", "idam-web-admin");
         queryParamMap.put("ipAddress", "192.158.1.38");
