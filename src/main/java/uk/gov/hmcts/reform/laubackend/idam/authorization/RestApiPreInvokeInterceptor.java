@@ -3,22 +3,25 @@ package uk.gov.hmcts.reform.laubackend.idam.authorization;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
-import uk.gov.hmcts.reform.laubackend.idam.exceptions.InvalidAuthenticationException;
+import uk.gov.hmcts.reform.laubackend.idam.exceptions.InvalidAuthorizationException;
+import uk.gov.hmcts.reform.laubackend.idam.exceptions.InvalidServiceAuthorizationException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
+import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @Slf4j
 public class RestApiPreInvokeInterceptor implements HandlerInterceptor {
 
     @Autowired
-    private AuthService authService;
+    private ServiceAuthorizationAuthenticator serviceAuthorizationAuthenticator;
 
     @Autowired
-    private AuthorisedServices authorisedServices;
+    private AuthorizationAuthenticator authorizationAuthenticator;
 
     @Override
     public boolean preHandle(final HttpServletRequest request,
@@ -26,21 +29,29 @@ public class RestApiPreInvokeInterceptor implements HandlerInterceptor {
                              final Object handler) throws IOException {
 
         try {
-            final String serviceAuthHeader = request.getHeader("ServiceAuthorization");
-            final String serviceName = authService.authenticate(serviceAuthHeader);
+            serviceAuthorizationAuthenticator.authorizeServiceToken(request);
 
-            if (!authorisedServices.hasService(serviceName)) {
-                log.info("Service {} has NOT been authorised!", serviceName);
-                throw new InvalidAuthenticationException("Unable to authenticate service request.");
+            if (request.getMethod().equalsIgnoreCase(GET.name())) {
+                authorizationAuthenticator.authorizeAuthorizationToken(request);
             }
-        } catch (final Exception exception) {
-            log.error("Token authorisation failed due to error - {}",
+
+        } catch (final InvalidServiceAuthorizationException exception) {
+            log.error("Service authorization token failed due to error - {}",
                     exception.getMessage(),
                     exception);
             response.sendError(SC_FORBIDDEN, exception.getMessage());
+
+            return false;
+
+        } catch (final InvalidAuthorizationException exception) {
+            log.error("Authorization token failed due to error - {}",
+                    exception.getMessage(),
+                    exception);
+            response.sendError(SC_UNAUTHORIZED, exception.getMessage());
 
             return false;
         }
         return true;
     }
 }
+

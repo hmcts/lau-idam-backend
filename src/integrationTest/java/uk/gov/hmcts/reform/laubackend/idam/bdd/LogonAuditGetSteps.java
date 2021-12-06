@@ -24,11 +24,11 @@ public class LogonAuditGetSteps extends AbstractSteps {
 
     @Before
     public void setUp() {
-        setupServiceAuthorisationStub();
+        setupAuthorisationStub();
     }
 
     @When("I POST multiple records to {string} endpoint using {string} userIds")
-    public void postCaseActionForUserIds(final String path, final String pathParam) {
+    public void postAuditLogonForUserIds(final String path, final String pathParam) {
         final List<String> pathParams = asList(pathParam.split(","));
         pathParams.forEach(userId -> {
             final Response response = restHelper.postObject(getLogonLogPostRequest(userId,
@@ -43,15 +43,15 @@ public class LogonAuditGetSteps extends AbstractSteps {
     }
 
     @When("I POST multiple records to {string} endpoint using {string} emailAddresses")
-    public void postCaseActionForEmailAddresses(final String path, final String pathParam) {
+    public void postIdamLogonForEmailAddresses(final String path, final String pathParam) {
         final List<String> pathParams = asList(pathParam.split(","));
         pathParams.forEach(emailAddress -> {
             final Response response = restHelper.postObject(getLogonLogPostRequest(null,
-                                                                                   emailAddress,
-                                                                                   null,
-                                                                                   null,
-                                                                                   null),
-                                                            baseUrl() + path);
+                            emailAddress,
+                            null,
+                            null,
+                            null),
+                    baseUrl() + path);
 
             assertThat(response.getStatusCode()).isEqualTo(CREATED.value());
         });
@@ -62,11 +62,11 @@ public class LogonAuditGetSteps extends AbstractSteps {
         final List<String> pathParams = asList(timestamp.split(","));
         pathParams.forEach(timestampParam -> {
             final Response response = restHelper.postObject(getLogonLogPostRequest(null,
-                                                                                     null,
-                                                                                     null,
-                                                                                     null,
-                                                                                     timestampParam),
-                                                            baseUrl() + path);
+                            null,
+                            null,
+                            null,
+                            timestampParam),
+                    baseUrl() + path);
 
             assertThat(response.getStatusCode()).isEqualTo(CREATED.value());
         });
@@ -108,7 +108,7 @@ public class LogonAuditGetSteps extends AbstractSteps {
     @Then("a single logon response body is returned for emailAddress {string}")
     public void assertEmailAddressResponse(final String emailAddress) {
         final LogonLogGetResponse logonLogGetResponse = jsonReader
-            .fromJson(logonLogPostResponseBody, LogonLogGetResponse.class);
+                .fromJson(logonLogPostResponseBody, LogonLogGetResponse.class);
         final LogonLogPostRequest logonLogPostRequest = getLogonLogPostRequest(null, emailAddress, null, null, null);
 
         assertObject(logonLogGetResponse, logonLogPostRequest);
@@ -117,7 +117,7 @@ public class LogonAuditGetSteps extends AbstractSteps {
     @Then("a single logon response body is returned for startTimestamp {string}")
     public void assertStartTimeResponse(final String startTimestamp) {
         final LogonLogGetResponse logonLogGetResponse = jsonReader
-            .fromJson(logonLogPostResponseBody, LogonLogGetResponse.class);
+                .fromJson(logonLogPostResponseBody, LogonLogGetResponse.class);
         final LogonLogPostRequest logonLogPostRequest = getLogonLogPostRequest(null, null, null, null, startTimestamp);
 
         assertObject(logonLogGetResponse, logonLogPostRequest);
@@ -126,7 +126,7 @@ public class LogonAuditGetSteps extends AbstractSteps {
     @Then("a single logon response body is returned for endTimestamp {string}")
     public void assertWithEndTimestamp(final String endTimestamp) {
         final LogonLogGetResponse logonLogGetResponse = jsonReader
-            .fromJson(logonLogPostResponseBody, LogonLogGetResponse.class);
+                .fromJson(logonLogPostResponseBody, LogonLogGetResponse.class);
         final LogonLogPostRequest logonLogPostRequest = getLogonLogPostRequest(null, null, null, null, endTimestamp);
 
         assertObject(logonLogGetResponse, logonLogPostRequest);

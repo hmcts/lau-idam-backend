@@ -23,7 +23,7 @@ public class LogonAuditPostSteps extends AbstractSteps {
 
     @Before
     public void setUp() {
-        setupServiceAuthorisationStub();
+        setupAuthorisationStub();
     }
 
     @When("I POST IdAM login using {string} endpoint using s2s")
