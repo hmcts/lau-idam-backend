@@ -153,9 +153,10 @@ public class LogOnGetApiSteps extends BaseSteps {
         return queryParamMap;
     }
 
+    @SuppressWarnings({"PMD.SimplifiableTestAssertion"})
     @Step("Then bad response is returned")
     public String thenBadResponseIsReturned(Response response, int expectedStatusCode) {
-        Assert.assertEquals(
+        Assert.assertTrue(
             "Response status code is not " + expectedStatusCode + ", but it is " + response.getStatusCode(),
             response.statusCode() == expectedStatusCode
         );
