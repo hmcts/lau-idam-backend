@@ -37,6 +37,7 @@ public class LogOnGetApiSteps extends BaseSteps {
         return TestConstants.SUCCESS;
     }
 
+    @SuppressWarnings({"PMD.AvoidUsingHardCodedIP"})
     @Step("When valid params are supplied for Get Logon API")
     public Map<String, String> givenValidParamsAreSuppliedForGetLogonApi() {
         HashMap<String, String> queryParamMap = new HashMap<>();
@@ -70,39 +71,39 @@ public class LogOnGetApiSteps extends BaseSteps {
         int startRecordNumber = logOnGetResponseVO.getStartRecordNumber();
         Assert.assertTrue(startRecordNumber > 0);
         List<LogonLog> logonLogList = logOnGetResponseVO.getLogonLog();
-        LogonLog LogonLogObj = logonLogList == null || logonLogList.get(0) == null
+        LogonLog logonLogObj = logonLogList == null || logonLogList.get(0) == null
             ? new LogonLog() : logonLogList.get(0);
         for (String queryParam : inputQueryParamMap.keySet()) {
 
             if ("userId".equals(queryParam)) {
-                String userId = LogonLogObj.getUserId();
+                String userId = logonLogObj.getUserId();
                 Assert.assertEquals(
                     "User Id is missing in the response",
                     inputQueryParamMap.get(queryParam), userId
                 );
             } else if ("emailAddress".equals(queryParam)) {
-                String emailAddress = LogonLogObj.getEmailAddress();
+                String emailAddress = logonLogObj.getEmailAddress();
                 Assert.assertEquals(
                     "emailAddress is missing in the response",
                     inputQueryParamMap.get(queryParam), emailAddress
                 );
 
             } else if ("service".equals(queryParam)) {
-                String service = LogonLogObj.getService();
+                String service = logonLogObj.getService();
                 Assert.assertEquals(
                     "service is missing in the response",
                     inputQueryParamMap.get(queryParam), service
                 );
 
             } else if ("ipAddress".equals(queryParam)) {
-                String ipAddress = LogonLogObj.getIpAddress();
+                String ipAddress = logonLogObj.getIpAddress();
                 Assert.assertEquals(
                     "ipAddress is missing in the response",
                     inputQueryParamMap.get(queryParam), ipAddress
                 );
 
             } else if ("timestamp".equals(queryParam)) {
-                String timestamp = LogonLogObj.getTimestamp();
+                String timestamp = logonLogObj.getTimestamp();
                 Assert.assertEquals(
                     "timestamp is missing in the response",
                     inputQueryParamMap.get(queryParam), timestamp
@@ -154,7 +155,7 @@ public class LogOnGetApiSteps extends BaseSteps {
 
     @Step("Then bad response is returned")
     public String thenBadResponseIsReturned(Response response, int expectedStatusCode) {
-        Assert.assertTrue(
+        Assert.assertEquals(
             "Response status code is not " + expectedStatusCode + ", but it is " + response.getStatusCode(),
             response.statusCode() == expectedStatusCode
         );

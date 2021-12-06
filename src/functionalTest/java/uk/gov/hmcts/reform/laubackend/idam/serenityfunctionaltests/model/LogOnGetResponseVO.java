@@ -7,7 +7,7 @@ import java.util.List;
 public class LogOnGetResponseVO {
 
     @JsonProperty("logonLog")
-    private List<LogonLog> logonLog = null;
+    private List<LogonLog> logonLog;
     @JsonProperty("startRecordNumber")
     private Integer startRecordNumber;
     @JsonProperty("moreRecords")

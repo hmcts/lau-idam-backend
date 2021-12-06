@@ -29,6 +29,7 @@ public class LogOnPostApiSteps extends BaseSteps {
     public Response whenThePostServiceIsInvoked(String serviceToken, Object logonLog) throws JsonProcessingException {
         return performPostOperation(TestConstants.LOGON_ENDPOINT, null, null, logonLog, serviceToken);
     }
+
     @Step("Given invalid POST service body is generated")
     public LogOnRequestVO generateInvalidLogonPostRequestBody() {
         LogonLog logonLog = new LogonLog();

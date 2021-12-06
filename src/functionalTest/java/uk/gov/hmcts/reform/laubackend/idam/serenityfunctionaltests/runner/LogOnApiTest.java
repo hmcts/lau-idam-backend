@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.runner;
 
 
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.response.Response;
@@ -31,7 +32,7 @@ public class LogOnApiTest {
     @Test
     @Title("Assert response code of 201 for POST Request LogonApi")
     public void assertHttpSuccessResponseCodeForPostRequestCaseViewApi()
-        throws com.fasterxml.jackson.core.JsonProcessingException {
+        throws JsonProcessingException {
 
         String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated();
         LogOnRequestVO logOnRequestVO = logOnPostApiSteps.generateLogOnPostRequestBody();
@@ -47,7 +48,7 @@ public class LogOnApiTest {
     @Test
     @Title("Assert response code of 400 for Invalid POST request body for LogonApi")
     public void assertHttpBadResponseCodeForInvalidPostRequestBodyLogonApi()
-        throws com.fasterxml.jackson.core.JsonProcessingException {
+        throws JsonProcessingException {
 
         String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated();
         LogOnRequestVO logOnRequestVO = logOnPostApiSteps.generateInvalidLogonPostRequestBody();
