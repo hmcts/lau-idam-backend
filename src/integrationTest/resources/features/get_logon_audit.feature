@@ -29,6 +29,12 @@ Feature: The application's GET audit logon endpoint
     When And I GET "/audit/logon" without service authorization header
     Then HTTP "403" Forbidden response is returned
 
+  Scenario: The backend is unable to process logon GET requests due to missing authorization
+    Given LAU IdAm backend application is healthy
+    When And I GET "/audit/logon" without authorization header
+    Then HTTP "401" Unauthorized response is returned
+
+
   Scenario: The backend is unable to process logon GET requests due to missing search params
     Given LAU IdAm backend application is healthy
     When I request GET "/audit/logon" endpoint without mandatory params

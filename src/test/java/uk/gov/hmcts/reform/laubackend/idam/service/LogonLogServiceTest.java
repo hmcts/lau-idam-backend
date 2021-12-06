@@ -49,8 +49,8 @@ class LogonLogServiceTest {
     @Test
     void shouldGetLogonRepositoryResponse() {
         final Timestamp timestamp = mock(Timestamp.class);
-        final List<IdamLogonAudit> caseActionAuditList = Arrays.asList(getIdamLogonAuditEntity(timestamp));
-        final Page<IdamLogonAudit> pageResults = new PageImpl<>(caseActionAuditList);
+        final List<IdamLogonAudit> idamLogonAudits = Arrays.asList(getIdamLogonAuditEntity(timestamp));
+        final Page<IdamLogonAudit> pageResults = new PageImpl<>(idamLogonAudits);
 
         final LogonInputParamsHolder inputParamsHolder = new LogonInputParamsHolder(
             "1",
