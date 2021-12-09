@@ -15,7 +15,7 @@ public class LogOnPostApiSteps extends BaseSteps {
     public LogOnRequestVO generateLogOnPostRequestBody() {
         LogonLog logonLog = new LogonLog();
         logonLog.setId("1");
-        logonLog.setUserId("3734574");
+        logonLog.setUserId("3734555");
         logonLog.setEmailAddress("firstname.lastname@company.com");
         logonLog.setService("idam-web-admin");
         logonLog.setIpAddress("192.158.1.38");
