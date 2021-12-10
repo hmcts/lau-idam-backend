@@ -52,7 +52,14 @@ idam:
     url: http://localhost:4554
     secret-cs: AAAAAAAAAAAAAAAA
     name-cs: ccd_data,lau_idam_frontend
+  api:
+    url: http://localhost:4554
+  client:
+    id: lau
+    secret: 12345678
+    redirect_uri: http://localhost:3451/oauth2redirect
 
 authorised.services: idam-web-admin,lau_idam_frontend
+authorised.roles: cft-audit-investigator
 
 targetInstance: ${TEST_URL:http://localhost:4550}

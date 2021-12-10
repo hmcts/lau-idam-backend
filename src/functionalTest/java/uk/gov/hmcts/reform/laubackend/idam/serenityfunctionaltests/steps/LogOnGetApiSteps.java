@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.steps;
 import io.restassured.response.Response;
 import net.thucydides.core.annotations.Step;
 import org.hamcrest.Matchers;
+import org.json.JSONException;
 import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +26,12 @@ public class LogOnGetApiSteps extends BaseSteps {
 
     @Step("Given a valid service token is generated")
     public String givenAValidServiceTokenIsGenerated() {
-        return getServiceToken(TestConstants.S2S_NAME);
+        return authorizationHeaderHelper.getServiceToken(TestConstants.S2S_NAME);
+    }
+
+    @Step("And valid Authorization token is generated")
+    public String validAuthorizationTokenIsGenerated() throws JSONException {
+        return authorizationHeaderHelper.getAuthorizationToken();
     }
 
     @Step("Then a success response is returned")
@@ -52,9 +58,10 @@ public class LogOnGetApiSteps extends BaseSteps {
 
     @Step("When the Logon GET service is invoked with the valid params")
     public Response whenTheGetLogonServiceIsInvokedWithTheGivenParams(String serviceToken,
+                                                                      String authorizationToken,
                                                                       Map<String, String> queryParamMap) {
         return performGetOperation(TestConstants.LOGON_ENDPOINT,
-                                   null, queryParamMap, serviceToken
+                                   null, queryParamMap, serviceToken,authorizationToken
         );
     }
 

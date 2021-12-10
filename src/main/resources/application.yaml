@@ -70,8 +70,15 @@ security:
 idam:
   s2s-auth:
     url: ${S2S_URL:http://localhost:4502}
+  api:
+    url: ${IDAM_API_URL:http://localhost:5000}
+  client:
+    id: ${IDAM_CLIENT_NAME:lau}
+    secret: ${IDAM_CLIENT_SECRET:12345678}
+    redirect_uri: ${IDAM_CLIENT_REDIRECT_URI:http://localhost:3451/oauth2redirect}
 
-authorised.services: idam_web_admin,lau_idam_frontend
+authorised.services: idam_web_admin,lau_idam_frontend,lau_frontend
+authorised.roles: cft-audit-investigator
 
 azure:
   application-insights:

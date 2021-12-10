@@ -8,6 +8,7 @@ import io.restassured.response.Response;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.Title;
+import org.json.JSONException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.testng.Assert;
@@ -63,12 +64,15 @@ public class LogOnApiTest {
 
     @Test
     @Title("Assert response code of 200 for GET LogonApi with valid headers and valid request params")
-    public void assertHttpSuccessResponseCodeForCaseViewApi() throws JsonProcessingException, ParseException {
+    public void assertHttpSuccessResponseCodeForCaseViewApi() throws JsonProcessingException, ParseException,
+        JSONException {
 
         String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated();
+        final String authorizationToken = logOnGetApiSteps.validAuthorizationTokenIsGenerated();
         Map<String, String> queryParamMap = logOnGetApiSteps.givenValidParamsAreSuppliedForGetLogonApi();
         Response response = logOnGetApiSteps.whenTheGetLogonServiceIsInvokedWithTheGivenParams(
             authServiceToken,
+            authorizationToken,
             queryParamMap
         );
         ObjectMapper objectMapper = new ObjectMapper();
@@ -91,11 +95,13 @@ public class LogOnApiTest {
 
     @Test
     @Title("Assert response code of 400 for GET LogonApi with Empty Params")
-    public void assertResponseCodeOf400WithInvalidParamsForLogonApi() {
+    public void assertResponseCodeOf400WithInvalidParamsForLogonApi() throws JSONException {
         String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated();
+        final String authorizationToken = logOnGetApiSteps.validAuthorizationTokenIsGenerated();
         Map<String, String> queryParamMap = logOnGetApiSteps.givenEmptyParamsAreSuppliedForGetLogon();
         Response response = logOnGetApiSteps.whenTheGetLogonServiceIsInvokedWithTheGivenParams(
             authServiceToken,
+            authorizationToken,
             queryParamMap
         );
         String successOrFailure = logOnGetApiSteps.thenBadResponseIsReturned(response, 400);
