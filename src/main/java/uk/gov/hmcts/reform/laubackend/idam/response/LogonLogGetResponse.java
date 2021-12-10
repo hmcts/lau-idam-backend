@@ -24,6 +24,9 @@ public class LogonLogGetResponse implements Serializable {
     @ApiModelProperty(notes = "Indicates whether there are more records beyond the current page in the full result set")
     private boolean moreRecords;
 
+    @ApiModelProperty(notes = "The total number of records in the full result set")
+    private long totalNumberOfRecords;
+
     public static LogonLogGetResponse logonLogResponse() {
         return new LogonLogGetResponse();
     }
@@ -43,11 +46,18 @@ public class LogonLogGetResponse implements Serializable {
         return this;
     }
 
+    public LogonLogGetResponse withTotalNumberOfRecords(final long totalNumberOfRecords) {
+        this.totalNumberOfRecords = totalNumberOfRecords;
+        return this;
+    }
+
+
     public LogonLogGetResponse build() {
         final LogonLogGetResponse logonLogGetResponse = new LogonLogGetResponse();
         logonLogGetResponse.setLogonLog(logonLog);
         logonLogGetResponse.setStartRecordNumber(startRecordNumber);
         logonLogGetResponse.setMoreRecords(moreRecords);
+        logonLogGetResponse.setTotalNumberOfRecords(totalNumberOfRecords);
         return logonLogGetResponse;
     }
 }

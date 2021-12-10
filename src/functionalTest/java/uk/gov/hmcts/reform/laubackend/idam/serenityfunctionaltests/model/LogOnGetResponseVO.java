@@ -13,6 +13,9 @@ public class LogOnGetResponseVO {
     @JsonProperty("moreRecords")
     private Boolean moreRecords;
 
+    @JsonProperty("totalNumberOfRecords")
+    private Long totalNumberOfRecords;
+
     @JsonProperty("logonLog")
     public List<LogonLog> getLogonLog() {
         return logonLog;
@@ -41,6 +44,16 @@ public class LogOnGetResponseVO {
     @JsonProperty("moreRecords")
     public void setMoreRecords(Boolean moreRecords) {
         this.moreRecords = moreRecords;
+    }
+
+    @JsonProperty("totalNumberOfRecords")
+    public Long getTotalNumberOfRecords() {
+        return totalNumberOfRecords;
+    }
+
+    @JsonProperty("totalNumberOfRecords")
+    public void setTotalNumberOfRecords(Long totalNumberOfRecords) {
+        this.totalNumberOfRecords = totalNumberOfRecords;
     }
 
 }
