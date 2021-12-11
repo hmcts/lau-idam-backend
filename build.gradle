@@ -292,6 +292,16 @@ ext.libraries = [
         ]
 ]
 
+configurations.all {
+  resolutionStrategy {
+    eachDependency { DependencyResolveDetails details ->
+      if (details.requested.group in ['org.apache.logging.log4j']) {
+        details.useVersion '2.15.0'
+      }
+    }
+  }
+}
+
 dependencies {
 
   // exclude spring-cloud-context as it is already included in spring-cloud-starter-netflix-hystrix
@@ -324,8 +334,8 @@ dependencies {
   implementation group: 'org.flywaydb', name: 'flyway-core', version: '7.13.0'
   implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.18'
 
-  implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.1'
-  implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: '2.14.1'
+  implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.15.0'
+  implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: '2.15.0'
 
 
     implementation group: "com.networknt", name: "json-schema-validator", version: "1.0.64"
