@@ -112,7 +112,7 @@ public class LogOnApiTest {
     @Title("Assert response code of 403 for GET LogonApi with missing ServiceAuthorization token")
     public void assertResponseCodeOf403ForMissingS2SForLogonApi() throws JSONException {
         final String authorizationToken = logOnGetApiSteps.validAuthorizationTokenIsGenerated();
-        Map<String, String> queryParamMap = logOnGetApiSteps.givenEmptyParamsAreSuppliedForGetLogon();
+        Map<String, String> queryParamMap = logOnGetApiSteps.givenValidParamsAreSuppliedForGetLogonApi();
         Response response = logOnGetApiSteps.whenTheGetLogonServiceIsInvokedWithTheGivenParams(
             "",
             authorizationToken,
@@ -126,7 +126,7 @@ public class LogOnApiTest {
     @Title("Assert response code of 401 for GET LogonApi with missing User Authorization token")
     public void assertResponseCodeOf401ForMissingAuthorizationTokenForLogonApi() throws JSONException {
         String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated();
-        Map<String, String> queryParamMap = logOnGetApiSteps.givenEmptyParamsAreSuppliedForGetLogon();
+        Map<String, String> queryParamMap = logOnGetApiSteps.givenValidParamsAreSuppliedForGetLogonApi();
         Response response = logOnGetApiSteps.whenTheGetLogonServiceIsInvokedWithTheGivenParams(
             authServiceToken,
             "",
@@ -141,7 +141,7 @@ public class LogOnApiTest {
     public void assertResponseCodeOf401ForInvalidAuthorizationTokenForLogonApi() throws JSONException {
         String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated();
         final String authorizationToken = logOnGetApiSteps.givenTheInvalidAuthorizationTokenIsGenerated();
-        Map<String, String> queryParamMap = logOnGetApiSteps.givenEmptyParamsAreSuppliedForGetLogon();
+        Map<String, String> queryParamMap = logOnGetApiSteps.givenValidParamsAreSuppliedForGetLogonApi();
         Response response = logOnGetApiSteps.whenTheGetLogonServiceIsInvokedWithTheGivenParams(
             authServiceToken,
             authorizationToken,
