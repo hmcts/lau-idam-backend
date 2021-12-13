@@ -20,6 +20,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+
+@SuppressWarnings("PMD.TooManyMethods")
 public class LogOnGetApiSteps extends BaseSteps {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LogOnGetApiSteps.class);
@@ -115,7 +117,6 @@ public class LogOnGetApiSteps extends BaseSteps {
                     "timestamp is missing in the response",
                     inputQueryParamMap.get(queryParam), timestamp
                 );
-
             }
         }
         return TestConstants.SUCCESS;
@@ -168,6 +169,12 @@ public class LogOnGetApiSteps extends BaseSteps {
             response.statusCode() == expectedStatusCode
         );
         return TestConstants.SUCCESS;
+    }
+
+    @Step("Given the invalid authorization token is generated")
+    public String givenTheInvalidAuthorizationTokenIsGenerated() throws JSONException {
+        String authServiceToken = validAuthorizationTokenIsGenerated();
+        return authServiceToken + "abc";
     }
 
 }
