@@ -25,6 +25,7 @@ def secrets = [
                 secret('idam-backend-app-db-password', 'FLYWAY_PLACEHOLDERS_LAU_IDAM_DB_PASSWORD'),
                 secret('idam-backend-app-db-password', 'LAU_IDAM_DB_PASSWORD'),
                 secret('backend-encryption-key', 'LAU_IDAM_ENCRYPTION_KEY'),
+                secret( 'idam-client-secret', 'IDAM_CLIENT_SECRET')
         ]
 ]
 
@@ -41,6 +42,9 @@ withNightlyPipeline(type, product, component) {
 
     env.TEST_URL = "http://lau-idam-backend-aat.service.core-compute-aat.internal"
     env.TEST_S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
+    env.TEST_IDAM_API_URL = 'https://idam-api.aat.platform.hmcts.net'
+    env.TEST_IDAM_CLIENT_REDIRECT_URI = 'https://lau-idam-backend-aat.service.core-compute-aat.internal/oauth2/callback'
+    env.TEST_IDAM_CLIENT_NAME = 'lau'
     env.Rules = params.SecurityRules
 
     loadVaultSecrets(secrets)

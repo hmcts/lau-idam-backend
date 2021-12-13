@@ -11,7 +11,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@ApiModel(description = "Logon GET Response")
+@ApiModel(description = "IdAM Logon GET Response")
 public class LogonLogGetResponse implements Serializable {
 
     public static final long serialVersionUID = 432973322;
