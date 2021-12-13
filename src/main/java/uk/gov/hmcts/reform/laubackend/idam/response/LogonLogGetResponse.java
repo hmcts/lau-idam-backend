@@ -11,7 +11,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@ApiModel(description = "Case Action GET Response")
+@ApiModel(description = "Logon GET Response")
 public class LogonLogGetResponse implements Serializable {
 
     public static final long serialVersionUID = 432973322;

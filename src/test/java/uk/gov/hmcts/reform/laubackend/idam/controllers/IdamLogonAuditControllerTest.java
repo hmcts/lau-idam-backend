@@ -45,6 +45,7 @@ class IdamLogonAuditControllerTest {
             logonLogGetResponse);
 
         final ResponseEntity<LogonLogGetResponse> responseEntity = idamLogonAuditController.getLogonLog(
+            null,
             userId,
             emailAddress,
             null,
@@ -60,6 +61,7 @@ class IdamLogonAuditControllerTest {
     @Test
     void shouldReturnBadRequestResponseEntityForGetRequest() {
         final ResponseEntity<LogonLogGetResponse> responseEntity = idamLogonAuditController.getLogonLog(
+            null,
             "1",
             "2",
             "3",
@@ -89,6 +91,7 @@ class IdamLogonAuditControllerTest {
         logonLogPostRequest.setLogonLog(logonLog);
 
         final ResponseEntity<LogonLogPostResponse> responseEntity = idamLogonAuditController.saveLogonLog(
+                null,
                 logonLogPostRequest
         );
 
@@ -108,6 +111,7 @@ class IdamLogonAuditControllerTest {
         final LogonLogPostRequest logonLogPostRequest = new LogonLogPostRequest();
         logonLogPostRequest.setLogonLog(logonLog);
         final ResponseEntity<LogonLogPostResponse> responseEntity = idamLogonAuditController.saveLogonLog(
+                null,
                 logonLogPostRequest
         );
         assertThat(responseEntity.getStatusCode()).isEqualTo(BAD_REQUEST);
@@ -129,6 +133,7 @@ class IdamLogonAuditControllerTest {
                 .willAnswer(invocation -> new Exception("Some terrible exception happened"));
 
         final ResponseEntity<LogonLogPostResponse> responseEntity = idamLogonAuditController.saveLogonLog(
+                null,
                 logonLogPostRequest
         );
 

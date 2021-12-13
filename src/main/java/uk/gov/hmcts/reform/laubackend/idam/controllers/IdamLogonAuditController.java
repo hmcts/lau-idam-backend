@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,6 +33,7 @@ import static uk.gov.hmcts.reform.laubackend.idam.constants.LogonLogConstants.PA
 import static uk.gov.hmcts.reform.laubackend.idam.constants.LogonLogConstants.START_TIME;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.LogonLogConstants.SIZE;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.LogonLogConstants.USER_ID;
+import static uk.gov.hmcts.reform.laubackend.idam.constants.CommonConstants.SERVICE_AUTHORISATION_HEADER;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifier.verifyRequestLogonLogParamsConditions;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifier.verifyRequestLogonParamsConditions;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.NotEmptyInputParamsVerifier.verifyLogonLogRequestAreNotEmpty;
@@ -42,7 +44,7 @@ import static uk.gov.hmcts.reform.laubackend.idam.utils.NotEmptyInputParamsVerif
 @Api(tags = "IdAM logon database operations.", value = "This is the Log and Audit "
         + "Back-End API that will audit IdAM logons. "
         + "The API will be invoked by IdAM service.")
-@SuppressWarnings("PMD.ExcessiveImports")
+@SuppressWarnings({"PMD.ExcessiveImports","PMD.UnnecessaryAnnotationValueElement"})
 public class IdamLogonAuditController {
 
     @Autowired
@@ -69,8 +71,10 @@ public class IdamLogonAuditController {
             consumes = APPLICATION_JSON_VALUE
     )
     @ResponseBody
-    public ResponseEntity<LogonLogPostResponse> saveLogonLog(@RequestBody final LogonLogPostRequest
-                                                                     logonLogPostRequest) {
+    public ResponseEntity<LogonLogPostResponse> saveLogonLog(
+        @ApiParam(value = "Service Authorisation", example = "Bearer eyJ0eXAiOiJK.........")
+        @RequestHeader(value = SERVICE_AUTHORISATION_HEADER) String authToken,
+        @RequestBody final LogonLogPostRequest logonLogPostRequest) {
         try {
             verifyLogonLogRequestAreNotEmpty(logonLogPostRequest.getLogonLog());
             verifyRequestLogonLogParamsConditions(logonLogPostRequest.getLogonLog());
@@ -113,9 +117,11 @@ public class IdamLogonAuditController {
     @SuppressWarnings({"PMD.UseObjectForClearerAPI"})
     @ResponseBody
     public ResponseEntity<LogonLogGetResponse> getLogonLog(
+        @ApiParam(value = "Service Authorisation", example = "Bearer eyJ0eXAiOiJK.........")
+        @RequestHeader(value = SERVICE_AUTHORISATION_HEADER) String authToken,
         @ApiParam(value = "User ID", example = "3748238")
         @RequestParam(value = USER_ID, required = false) final String userId,
-        @ApiParam(value = "Case Reference ID", example = "1615817621013640")
+        @ApiParam(value = "Email Address", example = "firstname.lastname@company.com")
         @RequestParam(value = EMAIL_ADDRESS, required = false) final String emailAddress,
         @ApiParam(value = "Start Timestamp", example = "2021-06-23 22:20:05")
         @RequestParam(value = START_TIME, required = false) final String startTime,
