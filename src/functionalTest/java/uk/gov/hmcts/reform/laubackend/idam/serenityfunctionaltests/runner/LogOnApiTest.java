@@ -92,6 +92,7 @@ public class LogOnApiTest {
                             "The assertion for GET Logon API response code 200 is not successful"
         );
     }
+
     @SuppressWarnings({"PMD.AvoidDuplicateLiterals"})
     @Test
     @Title("Assert response code of 400 for GET LogonApi with Empty Params")
