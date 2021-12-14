@@ -93,6 +93,7 @@ public class LogOnApiTest {
         );
     }
 
+    @SuppressWarnings({"PMD.AvoidDuplicateLiterals"})
     @Test
     @Title("Assert response code of 400 for GET LogonApi with Empty Params")
     public void assertResponseCodeOf400WithInvalidParamsForLogonApi() throws JSONException {
@@ -105,6 +106,49 @@ public class LogOnApiTest {
             queryParamMap
         );
         String successOrFailure = logOnGetApiSteps.thenBadResponseIsReturned(response, 400);
+        Assert.assertEquals(successOrFailure, TestConstants.SUCCESS, "The assertion is not successful");
+    }
+
+    @Test
+    @Title("Assert response code of 403 for GET LogonApi with missing ServiceAuthorization token")
+    public void assertResponseCodeOf403ForMissingS2SForLogonApi() throws JSONException {
+        final String authorizationToken = logOnGetApiSteps.validAuthorizationTokenIsGenerated();
+        Map<String, String> queryParamMap = logOnGetApiSteps.givenValidParamsAreSuppliedForGetLogonApi();
+        Response response = logOnGetApiSteps.whenTheGetLogonServiceIsInvokedWithTheGivenParams(
+            "",
+            authorizationToken,
+            queryParamMap
+        );
+        String successOrFailure = logOnGetApiSteps.thenBadResponseIsReturned(response, 403);
+        Assert.assertEquals(successOrFailure, TestConstants.SUCCESS, "The assertion is not successful");
+    }
+
+    @Test
+    @Title("Assert response code of 401 for GET LogonApi with missing User Authorization token")
+    public void assertResponseCodeOf401ForMissingAuthorizationTokenForLogonApi() throws JSONException {
+        String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated();
+        Map<String, String> queryParamMap = logOnGetApiSteps.givenValidParamsAreSuppliedForGetLogonApi();
+        Response response = logOnGetApiSteps.whenTheGetLogonServiceIsInvokedWithTheGivenParams(
+            authServiceToken,
+            "",
+            queryParamMap
+        );
+        String successOrFailure = logOnGetApiSteps.thenBadResponseIsReturned(response, 401);
+        Assert.assertEquals(successOrFailure, TestConstants.SUCCESS, "The assertion is not successful");
+    }
+
+    @Test
+    @Title("Assert response code of 401 for GET LogonApi with invalid User Authorization token")
+    public void assertResponseCodeOf401ForInvalidAuthorizationTokenForLogonApi() throws JSONException {
+        String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated();
+        final String authorizationToken = logOnGetApiSteps.givenTheInvalidAuthorizationTokenIsGenerated();
+        Map<String, String> queryParamMap = logOnGetApiSteps.givenValidParamsAreSuppliedForGetLogonApi();
+        Response response = logOnGetApiSteps.whenTheGetLogonServiceIsInvokedWithTheGivenParams(
+            authServiceToken,
+            authorizationToken,
+            queryParamMap
+        );
+        String successOrFailure = logOnGetApiSteps.thenBadResponseIsReturned(response, 401);
         Assert.assertEquals(successOrFailure, TestConstants.SUCCESS, "The assertion is not successful");
     }
 
