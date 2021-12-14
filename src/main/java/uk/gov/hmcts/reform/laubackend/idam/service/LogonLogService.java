@@ -34,11 +34,11 @@ public class LogonLogService {
     public LogonLogGetResponse getLogonLog(final LogonInputParamsHolder inputParamsHolder) {
 
         final Page<IdamLogonAudit> logonLog = idamLogonAuditRepository.findIdamLogon(
-            inputParamsHolder.getUserId(),
-            inputParamsHolder.getEmailAddress(),
-            timestampUtil.getTimestampValue(inputParamsHolder.getStartTime()),
-            timestampUtil.getTimestampValue(inputParamsHolder.getEndTime()),
-            getPage(inputParamsHolder.getSize(), inputParamsHolder.getPage())
+                inputParamsHolder.getUserId(),
+                inputParamsHolder.getEmailAddress(),
+                timestampUtil.getTimestampValue(inputParamsHolder.getStartTime()),
+                timestampUtil.getTimestampValue(inputParamsHolder.getEndTime()),
+                getPage(inputParamsHolder.getSize(), inputParamsHolder.getPage())
         );
 
         final List<LogonLog> logonLogList = new ArrayList<>();
@@ -46,15 +46,16 @@ public class LogonLogService {
         logonLog.getContent().forEach(logonLogAudit -> {
             final String timestamp = timestampUtil.timestampConvertor(logonLogAudit.getTimestamp());
             logonLogList.add(
-                new LogonLog().toDto(logonLogAudit, timestamp)
+                    new LogonLog().toDto(logonLogAudit, timestamp)
             );
         });
 
         return logonLogResponse()
-            .withLogonLog(logonLogList)
-            .withMoreRecords(logonLog.hasNext())
-            .withStartRecordNumber(calculateStartRecordNumber(logonLog))
-            .build();
+                .withLogonLog(logonLogList)
+                .withMoreRecords(logonLog.hasNext())
+                .withStartRecordNumber(calculateStartRecordNumber(logonLog))
+                .withTotalNumberOfRecords(logonLog.getTotalElements())
+                .build();
     }
 
     public LogonLogPostResponse saveLogonLog(final LogonLog logonLog) {
