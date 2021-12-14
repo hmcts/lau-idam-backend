@@ -33,6 +33,7 @@ import static uk.gov.hmcts.reform.laubackend.idam.constants.LogonLogConstants.PA
 import static uk.gov.hmcts.reform.laubackend.idam.constants.LogonLogConstants.START_TIME;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.LogonLogConstants.SIZE;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.LogonLogConstants.USER_ID;
+import static uk.gov.hmcts.reform.laubackend.idam.constants.CommonConstants.AUTHORISATION_HEADER;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.CommonConstants.SERVICE_AUTHORISATION_HEADER;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifier.verifyRequestLogonLogParamsConditions;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifier.verifyRequestLogonParamsConditions;
@@ -73,7 +74,7 @@ public class IdamLogonAuditController {
     @ResponseBody
     public ResponseEntity<LogonLogPostResponse> saveLogonLog(
         @ApiParam(value = "Service Authorisation", example = "Bearer eyJ0eXAiOiJK.........")
-        @RequestHeader(value = SERVICE_AUTHORISATION_HEADER) String authToken,
+        @RequestHeader(value = SERVICE_AUTHORISATION_HEADER) String serviceAuthToken,
         @RequestBody final LogonLogPostRequest logonLogPostRequest) {
         try {
             verifyLogonLogRequestAreNotEmpty(logonLogPostRequest.getLogonLog());
@@ -117,8 +118,10 @@ public class IdamLogonAuditController {
     @SuppressWarnings({"PMD.UseObjectForClearerAPI"})
     @ResponseBody
     public ResponseEntity<LogonLogGetResponse> getLogonLog(
+        @ApiParam(value = "Authorisation", example = "Bearer eyJ0eXAiOiJK.........")
+        @RequestHeader(value = AUTHORISATION_HEADER) String authToken,
         @ApiParam(value = "Service Authorisation", example = "Bearer eyJ0eXAiOiJK.........")
-        @RequestHeader(value = SERVICE_AUTHORISATION_HEADER) String authToken,
+        @RequestHeader(value = SERVICE_AUTHORISATION_HEADER) String serviceAuthToken,
         @ApiParam(value = "User ID", example = "3748238")
         @RequestParam(value = USER_ID, required = false) final String userId,
         @ApiParam(value = "Email Address", example = "firstname.lastname@company.com")
