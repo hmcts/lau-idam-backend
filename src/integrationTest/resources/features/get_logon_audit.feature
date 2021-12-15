@@ -24,6 +24,12 @@ Feature: The application's GET audit logon endpoint
     And And I GET "/audit/logon" using endTimestamp "2019-08-23T21:20:05" query param
     Then a single logon response body is returned for endTimestamp "2018-08-23T22:20:05.023Z"
 
+  Scenario: The backend is able to process case insensitive emailAddress logon GET requests
+    Given LAU IdAm backend application is healthy
+    When I POST multiple records to "/audit/logon" endpoint using "CASE_INSENSITIVE1@email.com,CASE_INSENSITIVE2@email.com,CASE_INSENSITIVE3@email.com" emailAddresses
+    And And I GET "/audit/logon" using emailAddress "case_insensitive1@email.com" query param
+    Then a single logon response body is returned for emailAddress "CASE_INSENSITIVE1@email.com"
+
   Scenario: The backend is unable to process logon GET requests due to missing s2s
     Given LAU IdAm backend application is healthy
     When And I GET "/audit/logon" without service authorization header
