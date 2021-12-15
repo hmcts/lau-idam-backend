@@ -5,10 +5,16 @@
   "10054_Cookie without SameSite Attribute_http://lau-idam-backend-aat.service.core-compute-aat.internal/v2/api-docs_GET": "ignore",
   "10096_Timestamp Disclosure - Unix_http://lau-idam-backend-aat.service.core-compute-aat.internal/_GET": "ignore",
   "10096_Timestamp Disclosure - Unix_http://lau-idam-backend-aat.service.core-compute-aat.internal/v2/api-docs_GET": "ignore",
+  "10096_Timestamp Disclosure - Unix_http://lau-idam-backend-aat.service.core-compute-aat.internal/audit/logon_POST": "ignore",
   "100001_Unexpected Content-Type was returned_http://lau-idam-backend-aat.service.core-compute-aat.internal/_GET\",\"detail": "ignore",
   "10021_X-Content-Type-Options Header Missing_http://lau-idam-backend-aat.service.core-compute-aat.internal/_GET": "ignore",
   "10021_X-Content-Type-Options Header Missing_http://lau-idam-backend-aat.service.core-compute-aat.internal/v2/api-docs_GET": "ignore",
+  "10024_Information Disclosure - Sensitive Information in URL_http://lau-idam-backend-aat.service.core-compute-aat.internal/audit/logon?emailAddress=firstname.lastname@company.com\u0026endTimestamp=2021-08-23%2022:20:05\u0026page=1\u0026size=500\u0026startTimestamp=2021-06-23%2022:20:05\u0026userId=3748238_GET": "ignore",
   "90033_Loosely Scoped Cookie_http://lau-idam-backend-aat.service.core-compute-aat.internal/_GET": "ignore",
   "90033_Loosely Scoped Cookie_http://lau-idam-backend-aat.service.core-compute-aat.internal/v2/api-docs_GET": "ignore",
-  "100001_Unexpected Content-Type was returned_http://lau-idam-backend-aat.service.core-compute-aat.internal/_GET": "ignore"
+  "90033_Loosely Scoped Cookie_http://lau-idam-backend-aat.service.core-compute-aat.internal/audit/logon?emailAddress=firstname.lastname@company.com\u0026endTimestamp=2021-08-23%2022:20:05\u0026page=1\u0026size=500\u0026startTimestamp=2021-06-23%2022:20:05\u0026userId=3748238_GET": "ignore",
+  "90033_Loosely Scoped Cookie_http://lau-idam-backend-aat.service.core-compute-aat.internal/audit/logon_POST": "ignore",
+  "100001_Unexpected Content-Type was returned_http://lau-idam-backend-aat.service.core-compute-aat.internal/_GET": "ignore",
+  "100000_A Client Error response code was returned by the server_http://lau-idam-backend-aat.service.core-compute-aat.internal/audit/logon?emailAddress=firstname.lastname@company.com\u0026endTimestamp=2021-08-23%2022:20:05\u0026page=1\u0026size=500\u0026startTimestamp=2021-06-23%2022:20:05\u0026userId=3748238_GET": "ignore",
+  "100000_A Client Error response code was returned by the server_http://lau-idam-backend-aat.service.core-compute-aat.internal/audit/logon_POST": "ignore" 
 }
