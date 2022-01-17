@@ -1,14 +1,10 @@
 buildscript {
-    repositories {
-        mavenLocal()
-        jcenter()
-        maven {
-            url = 'https://repo.maven.apache.org/maven2'
-        }
-    }
-    dependencies {
-        classpath("net.serenity-bdd:serenity-gradle-plugin:2.4.34")
-    }
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath("net.serenity-bdd:serenity-gradle-plugin:2.4.24")
+  }
 }
 
 plugins {
@@ -277,7 +273,7 @@ def versions = [
         lombok            : '1.18.12',
         testcontainers    : '1.16.2',
         restAssured       : '4.4.0',
-        serviceAuthVersion: '4.0.0',
+        serviceAuthVersion: '4.0.2',
         commonsIo         : '2.11.0',
         cucumber          : '6.8.0',
         wiremock          : '2.21.0'
@@ -318,20 +314,17 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-json'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security'
 
     implementation group: 'io.springfox', name: 'springfox-swagger2', version: versions.springfoxSwagger
-  implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: versions.springfoxSwaggerui
-
+    implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: versions.springfoxSwaggerui
 
     implementation group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.reformLogging
     implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformLogging
+
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.10.RELEASE'
-
-
-    implementation group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.1.0', withoutSpringCloudContext
-
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap'
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '3.0.5'
 
     implementation group: 'org.flywaydb', name: 'flyway-core', version: '8.2.2'
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.18'
@@ -339,23 +332,19 @@ dependencies {
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.15.0'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: '2.15.0'
 
-
     implementation group: "com.networknt", name: "json-schema-validator", version: "1.0.64"
     implementation group: "com.gilecode.yagson", name: "j9-reflection-utils", version: "1.0"
     implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
     implementation("org.springframework.boot:spring-boot-devtools")
-    implementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
+
+    implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
     implementation group: 'uk.gov.hmcts.reform', name: 'idam-client', version: '1.5.5'
-
-
-    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '3.0.5'
-
+    implementation group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.1.0', withoutSpringCloudContext
 
     testImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
     testImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
     testImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
     testImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
-
 
     testImplementation group: 'io.cucumber', name: 'cucumber-java8', version: versions.cucumber
     testImplementation group: 'io.cucumber', name: 'cucumber-spring', version: versions.cucumber
@@ -364,9 +353,7 @@ dependencies {
     testImplementation group: 'io.cucumber', name: 'cucumber-spring', version: versions.cucumber
     testImplementation group: 'com.github.tomakehurst', name: 'wiremock-jre8-standalone', version: versions.wiremock
 
-
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
-
 
     testCompile group: 'org.pitest', name: 'pitest', version: versions.pitest
     testCompile group: 'info.solidsoft.gradle.pitest', name: 'gradle-pitest-plugin', version: versions.gradlePitest
@@ -382,12 +369,10 @@ dependencies {
     integrationTestCompile group: 'org.testcontainers', name: 'testcontainers', version: versions.testcontainers
     integrationTestCompile group: 'org.testcontainers', name: 'postgresql', version: versions.testcontainers
 
-
     integrationTestImplementation group: 'org.testcontainers', name: 'testcontainers', version: versions.testcontainers
     integrationTestImplementation group: 'org.testcontainers', name: 'postgresql', version: versions.testcontainers
     integrationTestImplementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
     integrationTestAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
-
 
     testImplementation libraries.junit5
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', {
@@ -411,8 +396,7 @@ dependencies {
     smokeTestImplementation group: 'io.rest-assured', name: 'rest-assured-common', version: versions.restAssured
     smokeTestImplementation group: 'io.rest-assured', name: 'json-path', version: versions.restAssured
     smokeTestImplementation group: 'io.rest-assured', name: 'xml-path', version: versions.restAssured
-
-
+  
     implementation 'junit:junit:4.13.2'
 
 //Added for FN tests
