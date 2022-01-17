@@ -23,13 +23,13 @@ class NotEmptyInputParamsVerifierTest {
                     "2",
                     null,
                     "4",
-                    "5"));
+                    "5"));u
 
             fail("The method should have thrown InvalidRequestException when all required params are not populated");
         } catch (final InvalidRequestException invalidRequestException) {
             assertThat(invalidRequestException.getMessage())
                     .isEqualTo("You need to populate all required parameters - "
-                            + "userId, email, service, ipAddress and timestamp ");
+                            + "userId, email, service and timestamp ");
         }
     }
 
