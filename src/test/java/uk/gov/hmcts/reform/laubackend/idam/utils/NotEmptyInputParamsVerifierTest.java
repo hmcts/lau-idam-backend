@@ -23,7 +23,7 @@ class NotEmptyInputParamsVerifierTest {
                     "2",
                     null,
                     "4",
-                    "5"));u
+                    "5"));
 
             fail("The method should have thrown InvalidRequestException when all required params are not populated");
         } catch (final InvalidRequestException invalidRequestException) {
