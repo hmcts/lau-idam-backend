@@ -61,5 +61,6 @@ idam:
 
 authorised.services: idam-web-admin,lau_frontend
 authorised.roles: cft-audit-investigator
+db.allow.delete.record: ${DB_ALLOW_DELETE_RECORD:true}
 
 targetInstance: ${TEST_URL:http://localhost:4550}

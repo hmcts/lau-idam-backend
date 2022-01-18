@@ -53,23 +53,23 @@ class LogonLogServiceTest {
         final Page<IdamLogonAudit> pageResults = new PageImpl<>(idamLogonAudits);
 
         final LogonInputParamsHolder inputParamsHolder = new LogonInputParamsHolder(
-            "1",
-            "2",
-            null,
-            null,
-            null,
-            null);
+                "1",
+                "2",
+                null,
+                null,
+                null,
+                null);
 
         when(idamLogonAuditRepository
-                 .findIdamLogon("1", "2", null, null,
-                               PageRequest.of(0, parseInt("10000"), Sort.by("timestamp"))))
-            .thenReturn(pageResults);
+                .findIdamLogon("1", "2", null, null,
+                        PageRequest.of(0, parseInt("10000"), Sort.by("timestamp"))))
+                .thenReturn(pageResults);
 
         final LogonLogGetResponse logonLog = logonLogService.getLogonLog(inputParamsHolder);
 
         verify(idamLogonAuditRepository, times(1))
-            .findIdamLogon("1", "2", null, null,
-                          PageRequest.of(0, parseInt("10000"), Sort.by("timestamp")));
+                .findIdamLogon("1", "2", null, null,
+                        PageRequest.of(0, parseInt("10000"), Sort.by("timestamp")));
 
         assertThat(logonLog.getLogonLog().size()).isEqualTo(1);
         assertThat(logonLog.getLogonLog().get(0).getUserId()).isEqualTo("1");
@@ -106,6 +106,12 @@ class LogonLogServiceTest {
         assertThat(logonLogPostResponse.getLogonLog().getEmailAddress())
                 .isEqualTo("some.random.mail@supercoolmail.com");
         assertThat(logonLogPostResponse.getLogonLog().getIpAddress()).isEqualTo("random.ip.address");
+    }
+
+    @Test
+    void shouldDeleteIdamLogonId() {
+        logonLogService.deleteLogonLogById("1");
+        verify(idamLogonAuditRepository, times(1)).deleteById(Long.valueOf("1"));
     }
 
     private IdamLogonAudit getIdamLogonAuditEntity(final Timestamp timestamp) {

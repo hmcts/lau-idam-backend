@@ -28,3 +28,4 @@ api-version-number: 1
 api-config-params:
   number_of_days_limit: 90
 
+db.allow.delete.record: ${DB_ALLOW_DELETE_RECORD:true}

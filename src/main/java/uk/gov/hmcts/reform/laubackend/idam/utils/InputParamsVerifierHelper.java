@@ -48,4 +48,11 @@ public final class InputParamsVerifierHelper {
         }
     }
 
+    public static void verifyIdNotEmpty(final String id)
+            throws InvalidRequestException {
+        if (isEmpty(id)) {
+            throw new InvalidRequestException("Id must be present", BAD_REQUEST);
+        }
+    }
+
 }

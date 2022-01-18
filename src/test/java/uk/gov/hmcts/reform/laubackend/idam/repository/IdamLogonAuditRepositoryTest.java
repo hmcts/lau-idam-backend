@@ -25,6 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         "spring.flyway.enabled=true"
 })
 @Import({RemoveColumnTransformers.class})
+@SuppressWarnings({"PMD.AvoidDuplicateLiterals"})
 class IdamLogonAuditRepositoryTest {
 
     @Autowired
@@ -87,6 +88,36 @@ class IdamLogonAuditRepositoryTest {
         );
         assertThat(idamLogon.getTotalElements()).isEqualTo(20);
         assertThat(idamLogon.getContent().size()).isEqualTo(10);
+    }
+
+    @Test
+    void shouldDeleteIdamLogonRecord() {
+        idamLogonAuditRepository
+                .save(getIdamLogonAudit(
+                        "test@super-tester.com",
+                        "77777",
+                        valueOf(now())
+                ));
+        final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository
+                .findIdamLogon("77777",
+                        null,
+                        null,
+                        null,
+                        null);
+
+        assertThat(idamLogon.getContent().size()).isEqualTo(1);
+        assertThat(idamLogon.getContent().get(0).getUserId()).isEqualTo("77777");
+
+        idamLogonAuditRepository.deleteById(idamLogon.getContent().get(0).getId());
+
+        final Page<IdamLogonAudit> idamLogon1 = idamLogonAuditRepository
+                .findIdamLogon("77777",
+                        null,
+                        null,
+                        null,
+                        null);
+
+        assertThat(idamLogon1.getContent().size()).isEqualTo(0);
     }
 
     private void assertResults(final List<IdamLogonAudit> content, final int value) {

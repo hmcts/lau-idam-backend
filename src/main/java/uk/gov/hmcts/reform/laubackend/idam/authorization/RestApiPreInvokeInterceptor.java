@@ -12,6 +12,7 @@ import java.io.IOException;
 
 import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @Slf4j
@@ -31,7 +32,8 @@ public class RestApiPreInvokeInterceptor implements HandlerInterceptor {
         try {
             serviceAuthorizationAuthenticator.authorizeServiceToken(request);
 
-            if (request.getMethod().equalsIgnoreCase(GET.name())) {
+            if (request.getMethod().equalsIgnoreCase(GET.name())
+                    || request.getMethod().equalsIgnoreCase(DELETE.name())) {
                 authorizationAuthenticator.authorizeAuthorizationToken(request);
             }
 
