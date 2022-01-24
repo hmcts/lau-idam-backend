@@ -83,4 +83,8 @@ public class LogonLogService {
 
         return of(parseInt(pageNumber) - 1, parseInt(pageSize), Sort.by("timestamp"));
     }
+
+    public void deleteLogonLogById(final String logonId) {
+        idamLogonAuditRepository.deleteById(Long.valueOf(logonId));
+    }
 }
