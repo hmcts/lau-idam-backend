@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import uk.gov.hmcts.reform.idam.client.IdamApi;
 import uk.gov.hmcts.reform.laubackend.idam.authorization.AuthService;
 import uk.gov.hmcts.reform.laubackend.idam.authorization.AuthorisedServices;
+import uk.gov.hmcts.reform.laubackend.idam.authorization.RestApiPreInvokeDeleteInterceptor;
 import uk.gov.hmcts.reform.laubackend.idam.authorization.RestApiPreInvokeInterceptor;
 
 import java.io.OutputStream;
@@ -43,6 +44,9 @@ class SwaggerGeneratorTest {
     private RestApiPreInvokeInterceptor restApiPreInvokeInterceptor;
 
     @MockBean
+    private RestApiPreInvokeDeleteInterceptor restApiPreInvokeDeleteInterceptor;
+
+    @MockBean
     private IdamApi idamApi;
 
     @DisplayName("Generate swagger documentation")
@@ -50,10 +54,10 @@ class SwaggerGeneratorTest {
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     void generateDocs() throws Exception {
         byte[] specs = mvc.perform(get("/v2/api-docs"))
-            .andExpect(status().isOk())
-            .andReturn()
-            .getResponse()
-            .getContentAsByteArray();
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsByteArray();
 
         try (OutputStream outputStream = Files.newOutputStream(Paths.get("/tmp/lau-idam-backend.json"))) {
             outputStream.write(specs);
