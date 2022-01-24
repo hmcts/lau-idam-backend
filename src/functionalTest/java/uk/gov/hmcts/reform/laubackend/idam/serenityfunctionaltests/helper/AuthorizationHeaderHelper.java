@@ -18,6 +18,7 @@ import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.
 import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.GRANT_TYPE;
 import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.PASSWORD;
 import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.REDIRECT_URI;
+import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.S2S_NAME;
 import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.S2S_URL;
 import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.SCOPE;
 import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.TOKEN_URL;
@@ -26,7 +27,7 @@ import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.
 public class AuthorizationHeaderHelper {
 
     private static final Logger LOGGER =
-        LoggerFactory.getLogger(AuthorizationHeaderHelper.class);
+            LoggerFactory.getLogger(AuthorizationHeaderHelper.class);
 
     public String getAuthorizationToken() throws JSONException {
         Response response = RestAssured
@@ -47,11 +48,11 @@ public class AuthorizationHeaderHelper {
     }
 
 
-    public String getServiceToken(String s2sMicroServiceName) {
+    public String getServiceToken() {
 
         LOGGER.info("s2sUrl lease url: {}", S2S_URL + "/lease");
         final Map<String, Object> params = of(
-                "microservice", s2sMicroServiceName
+                "microservice", S2S_NAME
         );
 
         final Response response = RestAssured

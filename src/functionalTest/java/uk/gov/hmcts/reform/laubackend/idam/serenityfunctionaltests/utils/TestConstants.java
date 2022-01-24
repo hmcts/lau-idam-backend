@@ -7,6 +7,7 @@ public final class TestConstants {
 
     /*Logon endPoint*/
     public static final String LOGON_ENDPOINT = "audit/logon";
+    public static final String LOGON_DELETE_ENDPOINT = "/audit/logon/deleteAuditLogonRecord";
     public static final String SUCCESS = "Success";
 
     // Authorization constants

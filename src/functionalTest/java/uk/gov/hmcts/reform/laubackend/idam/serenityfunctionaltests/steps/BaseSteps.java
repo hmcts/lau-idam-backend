@@ -22,7 +22,7 @@ public class BaseSteps {
 
     private static final RequestSpecification REQSPEC;
     private static final Logger LOGGER =
-        LoggerFactory.getLogger(BaseSteps.class);
+            LoggerFactory.getLogger(BaseSteps.class);
     protected final AuthorizationHeaderHelper authorizationHeaderHelper = new AuthorizationHeaderHelper();
 
 
@@ -31,12 +31,12 @@ public class BaseSteps {
         final Integer proxyPort = proxyHost == null ? null : Integer.parseInt(System.getProperty("http.proxyPort"));
 
         final RestAssuredConfig config = RestAssuredConfig.newConfig()
-            .encoderConfig(EncoderConfig.encoderConfig().defaultContentCharset(StandardCharsets.UTF_8));
+                .encoderConfig(EncoderConfig.encoderConfig().defaultContentCharset(StandardCharsets.UTF_8));
 
         final RequestSpecBuilder specBuilder = new RequestSpecBuilder()
-            .setConfig(config)
-            .setBaseUri(EnvConfig.API_URL)
-            .setRelaxedHTTPSValidation();
+                .setConfig(config)
+                .setBaseUri(EnvConfig.API_URL)
+                .setRelaxedHTTPSValidation();
 
         LOGGER.info("Using base API URL: " + EnvConfig.API_URL);
         if (proxyHost != null) {
@@ -50,19 +50,15 @@ public class BaseSteps {
         return SerenityRest.given(REQSPEC);
     }
 
-    public RequestSpecification given() {
-        return SerenityRest.given(REQSPEC);
-    }
-
     public Response performGetOperation(String endpoint,
                                         Map<String, String> headers,
                                         Map<String, String> queryParams,
                                         String authServiceToken, String authorizationToken) {
 
         RequestSpecification requestSpecification = rest().urlEncodingEnabled(false)
-            .given().header("ServiceAuthorization", authServiceToken)
-            .header("Authorization", authorizationToken)
-            .header("Content-Type", "application/json");
+                .given().header("ServiceAuthorization", authServiceToken)
+                .header("Authorization", authorizationToken)
+                .header("Content-Type", "application/json");
 
 
         if (null != headers && !headers.isEmpty()) {
@@ -78,8 +74,8 @@ public class BaseSteps {
         }
 
         return requestSpecification.get(endpoint)
-            .then()
-            .extract().response();
+                .then()
+                .extract().response();
     }
 
     public Header createHeader(String headerKey, String headerValue) {
@@ -95,8 +91,8 @@ public class BaseSteps {
     ) throws JsonProcessingException {
 
         RequestSpecification requestSpecification = rest()
-            .given().header("ServiceAuthorization", authServiceToken)
-            .header("Content-Type", "application/json");
+                .given().header("ServiceAuthorization", authServiceToken)
+                .header("Content-Type", "application/json");
         if (null != headers && !headers.isEmpty()) {
             for (String headerKey : headers.keySet()) {
                 requestSpecification.header(createHeader(headerKey, headers.get(headerKey)));
@@ -109,7 +105,7 @@ public class BaseSteps {
         }
         String bodyJsonStr = null == body ? "" : new ObjectMapper().writeValueAsString(body);
         return requestSpecification.urlEncodingEnabled(true).body(bodyJsonStr).post(endpoint)
-            .then()
-            .extract().response();
+                .then()
+                .extract().response();
     }
 }
