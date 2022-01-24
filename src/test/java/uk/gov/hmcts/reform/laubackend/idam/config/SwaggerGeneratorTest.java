@@ -8,8 +8,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.web.servlet.MockMvc;
+import uk.gov.hmcts.reform.idam.client.IdamApi;
 import uk.gov.hmcts.reform.laubackend.idam.authorization.AuthService;
 import uk.gov.hmcts.reform.laubackend.idam.authorization.AuthorisedServices;
+import uk.gov.hmcts.reform.laubackend.idam.authorization.RestApiPreInvokeInterceptor;
 
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -26,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @SuppressWarnings({"PMD.UnusedPrivateField"})
-class SwaggerPublisherTest {
+class SwaggerGeneratorTest {
 
     @Autowired
     private MockMvc mvc;
@@ -37,18 +39,23 @@ class SwaggerPublisherTest {
     @MockBean
     private AuthorisedServices authorisedServices;
 
+    @MockBean
+    private RestApiPreInvokeInterceptor restApiPreInvokeInterceptor;
+
+    @MockBean
+    private IdamApi idamApi;
 
     @DisplayName("Generate swagger documentation")
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     void generateDocs() throws Exception {
         byte[] specs = mvc.perform(get("/v2/api-docs"))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsByteArray();
+            .andExpect(status().isOk())
+            .andReturn()
+            .getResponse()
+            .getContentAsByteArray();
 
-        try (OutputStream outputStream = Files.newOutputStream(Paths.get("/tmp/swagger-specs.json"))) {
+        try (OutputStream outputStream = Files.newOutputStream(Paths.get("/tmp/lau-idam-backend.json"))) {
             outputStream.write(specs);
         }
 
