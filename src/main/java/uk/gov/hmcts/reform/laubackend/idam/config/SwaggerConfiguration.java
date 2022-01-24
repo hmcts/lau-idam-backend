@@ -35,7 +35,7 @@ public class SwaggerConfiguration {
             "0.1",
             "",
             new Contact("", "", ""),
-            "REFORM Common Components",
+            "REFORM Common Components.",
             "",
             Collections.emptyList()
         );
