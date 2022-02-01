@@ -340,6 +340,7 @@ dependencies {
     implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
     implementation group: 'uk.gov.hmcts.reform', name: 'idam-client', version: '1.5.5'
     implementation group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.1.0', withoutSpringCloudContext
+    implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: '5.1.7'
 
     testImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
     testImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
@@ -396,7 +397,7 @@ dependencies {
     smokeTestImplementation group: 'io.rest-assured', name: 'rest-assured-common', version: versions.restAssured
     smokeTestImplementation group: 'io.rest-assured', name: 'json-path', version: versions.restAssured
     smokeTestImplementation group: 'io.rest-assured', name: 'xml-path', version: versions.restAssured
-  
+
     implementation 'junit:junit:4.13.2'
 
 //Added for FN tests
