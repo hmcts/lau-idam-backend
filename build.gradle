@@ -365,7 +365,7 @@ dependencies {
     implementation group: 'com.h2database', name: 'h2', version: '2.0.202'
 
     testImplementation 'com.github.hmcts:fortify-client:1.2.2:all'
-  
+
     integrationTestCompile group: 'org.testcontainers', name: 'testcontainers', version: versions.testcontainers
     integrationTestCompile group: 'org.testcontainers', name: 'postgresql', version: versions.testcontainers
 
@@ -466,12 +466,6 @@ task migratePostgresDatabase(type: FlywayMigrateTask) {
         url = "jdbc:postgresql://${dburl}"
     }
 }
-
-//task fortifyScan(type: JavaExec)  {
-//  main = "uk.gov.hmcts.fortifyclient.FortifyClientMainApp"
-//  classpath += sourceSets.test.runtimeClasspath
-//  jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
-//}
 
 mainClassName = 'uk.gov.hmcts.reform.laubackend.idam.Application'
 
