@@ -26,6 +26,6 @@ class RestApiPreInvokeConfigurationTest {
 
         restApiPreInvokeConfiguration.addInterceptors(interceptorRegistry);
 
-        verify(interceptorRegistry, times(1)).addInterceptor(any());
+        verify(interceptorRegistry, times(2)).addInterceptor(any());
     }
 }

@@ -29,7 +29,7 @@ spring:
     name: LAU Idam Backend
   datasource:
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
-    url: jdbc:tc:postgresql://localhost/lau-idam
+    url: jdbc:tc:postgresql:10://localhost/lau-idam
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
@@ -51,7 +51,7 @@ idam:
   s2s-auth:
     url: http://localhost:4554
     secret-cs: AAAAAAAAAAAAAAAA
-    name-cs: ccd_data,lau_idam_frontend
+    name-cs: ccd_data,lau_frontend
   api:
     url: http://localhost:4554
   client:
@@ -59,7 +59,8 @@ idam:
     secret: 12345678
     redirect_uri: http://localhost:3451/oauth2redirect
 
-authorised.services: idam-web-admin,lau_idam_frontend
+authorised.services: idam-web-admin,lau_frontend
 authorised.roles: cft-audit-investigator
+db.allow.delete.record: ${DB_ALLOW_DELETE_RECORD:true}
 
 targetInstance: ${TEST_URL:http://localhost:4550}

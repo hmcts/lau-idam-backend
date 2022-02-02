@@ -28,7 +28,7 @@ public class LogOnGetApiSteps extends BaseSteps {
 
     @Step("Given a valid service token is generated")
     public String givenAValidServiceTokenIsGenerated() {
-        return authorizationHeaderHelper.getServiceToken(TestConstants.S2S_NAME);
+        return authorizationHeaderHelper.getServiceToken();
     }
 
     @Step("And valid Authorization token is generated")

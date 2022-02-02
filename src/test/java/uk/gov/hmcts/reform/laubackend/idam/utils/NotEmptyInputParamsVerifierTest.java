@@ -29,7 +29,7 @@ class NotEmptyInputParamsVerifierTest {
         } catch (final InvalidRequestException invalidRequestException) {
             assertThat(invalidRequestException.getMessage())
                     .isEqualTo("You need to populate all required parameters - "
-                            + "userId, email, service, ipAddress and timestamp ");
+                            + "userId, email, service and timestamp ");
         }
     }
 

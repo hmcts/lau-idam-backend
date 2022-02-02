@@ -1,5 +1,3 @@
-targetInstance: ${TEST_URL:http://localhost:4550}
-
 server:
   port: 4550
 
@@ -17,7 +15,6 @@ management:
 api-error-messages:
   bad_request: Invalid Request
   created: Successfully created
-  updated: Successfully updated
   accepted: Success
   internal_error: Unknown error occurred
 api-required-header-keys:
@@ -25,7 +22,25 @@ api-required-header-keys:
 api-schema-file:
   submitanswer-schema: JsonSchema/submitAnswersSchema.json
 api-version-number: 1
-api-config-params:
-  number_of_days_limit: 90
 
-db.allow.delete.record: ${DB_ALLOW_DELETE_RECORD:true}
+#Application specific unit test properties
+
+spring:
+  application:
+    name: LAU Idam Backend
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:db;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
+    username: sa
+    password: sa
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: none
+  flyway:
+    locations: classpath:h2
+
+
+flyway:
+  noop:
+    strategy: "false"

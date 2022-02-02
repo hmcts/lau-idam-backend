@@ -30,7 +30,7 @@ public class AbstractSteps {
                 .willReturn(aResponse()
                         .withHeader(CONTENT_TYPE_HEADER, JSON_RESPONSE)
                         .withStatus(200)
-                        .withBody("lau_idam_frontend")));
+                        .withBody("lau_frontend")));
 
         wiremokInstantiator.getWireMockServer().stubFor(get(urlPathMatching("/o/userinfo"))
                 .willReturn(aResponse()

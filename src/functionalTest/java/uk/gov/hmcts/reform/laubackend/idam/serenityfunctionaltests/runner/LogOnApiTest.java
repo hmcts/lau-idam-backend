@@ -21,6 +21,8 @@ import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestCon
 import java.text.ParseException;
 import java.util.Map;
 
+import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.helper.DatabaseCleaner.deleteLogonRecord;
+
 @RunWith(SerenityRunner.class)
 public class LogOnApiTest {
 
@@ -33,7 +35,7 @@ public class LogOnApiTest {
     @Test
     @Title("Assert response code of 201 for POST Request LogonApi")
     public void assertHttpSuccessResponseCodeForPostRequestCaseViewApi()
-        throws JsonProcessingException {
+            throws JsonProcessingException, JSONException {
 
         String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated();
         LogOnRequestVO logOnRequestVO = logOnPostApiSteps.generateLogOnPostRequestBody();
@@ -44,6 +46,8 @@ public class LogOnApiTest {
             TestConstants.SUCCESS,
             "Logon POST API response code 201 assertion is not successful"
         );
+        //Delete DB record
+        deleteLogonRecord(response);
     }
 
     @Test
@@ -69,6 +73,8 @@ public class LogOnApiTest {
 
         String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated();
         final String authorizationToken = logOnGetApiSteps.validAuthorizationTokenIsGenerated();
+        LogOnRequestVO logOnRequestVO = logOnPostApiSteps.generateLogOnPostRequestBody();
+        final Response postResponse = logOnPostApiSteps.whenThePostServiceIsInvoked(authServiceToken, logOnRequestVO);
         Map<String, String> queryParamMap = logOnGetApiSteps.givenValidParamsAreSuppliedForGetLogonApi();
         Response response = logOnGetApiSteps.whenTheGetLogonServiceIsInvokedWithTheGivenParams(
             authServiceToken,
@@ -91,6 +97,8 @@ public class LogOnApiTest {
         Assert.assertEquals(successOrFailure, TestConstants.SUCCESS,
                             "The assertion for GET Logon API response code 200 is not successful"
         );
+        //Delete DB record
+        deleteLogonRecord(postResponse);
     }
 
     @SuppressWarnings({"PMD.AvoidDuplicateLiterals"})
