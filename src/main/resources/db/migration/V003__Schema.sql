@@ -1,0 +1,1 @@
+update idam_logon_audit set email_address = lower(email_address);
