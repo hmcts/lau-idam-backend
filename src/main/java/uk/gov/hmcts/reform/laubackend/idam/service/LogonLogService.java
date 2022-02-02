@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.lang.Integer.parseInt;
+import static org.apache.commons.lang3.StringUtils.lowerCase;
 import static org.springframework.data.domain.PageRequest.of;
 import static uk.gov.hmcts.reform.laubackend.idam.response.LogonLogGetResponse.logonLogResponse;
 
@@ -35,7 +36,7 @@ public class LogonLogService {
 
         final Page<IdamLogonAudit> logonLog = idamLogonAuditRepository.findIdamLogon(
                 inputParamsHolder.getUserId(),
-                inputParamsHolder.getEmailAddress(),
+                lowerCase(inputParamsHolder.getEmailAddress()),
                 timestampUtil.getTimestampValue(inputParamsHolder.getStartTime()),
                 timestampUtil.getTimestampValue(inputParamsHolder.getEndTime()),
                 getPage(inputParamsHolder.getSize(), inputParamsHolder.getPage())
@@ -64,7 +65,7 @@ public class LogonLogService {
         idamLogonAudit.setUserId(logonLog.getUserId());
         idamLogonAudit.setService(logonLog.getService());
         idamLogonAudit.setIpAddress(logonLog.getIpAddress());
-        idamLogonAudit.setEmailAddress(logonLog.getEmailAddress());
+        idamLogonAudit.setEmailAddress(lowerCase(logonLog.getEmailAddress()));
         idamLogonAudit.setTimestamp(timestampUtil.getUtcTimestampValue(logonLog.getTimestamp()));
 
         final IdamLogonAudit idamLogonAuditResponse = idamLogonAuditRepository.save(idamLogonAudit);

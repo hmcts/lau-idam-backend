@@ -16,7 +16,7 @@ public interface IdamLogonAuditRepository extends JpaRepository<IdamLogonAudit, 
 
     @Query("SELECT ila FROM idam_logon_audit ila "
         + "WHERE (:userId IS NULL OR ila.userId = :userId) "
-        + "AND (:emailAddress IS NULL OR ila.emailAddress LIKE :emailAddress) "
+        + "AND (:emailAddress IS NULL OR ila.emailAddress = :emailAddress) "
         + "AND (cast(:startTime as timestamp) IS NULL OR ila.timestamp >= :startTime) "
         + "AND (cast(:endTime as timestamp) IS NULL OR ila.timestamp <= :endTime)")
     Page<IdamLogonAudit> findIdamLogon(final @Param("userId") String userId,
