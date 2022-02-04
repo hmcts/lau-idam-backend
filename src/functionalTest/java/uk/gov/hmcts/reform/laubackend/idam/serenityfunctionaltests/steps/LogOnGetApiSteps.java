@@ -51,7 +51,7 @@ public class LogOnGetApiSteps extends BaseSteps {
         HashMap<String, String> queryParamMap = new HashMap<>();
         queryParamMap.put("userId", "3734555");
         queryParamMap.put("emailAddress", "firstname.lastname@company.com");
-        queryParamMap.put("service", "IDAM-WEB-ADMIN");
+        queryParamMap.put("service", "idam-web-admin");
         queryParamMap.put("ipAddress", "192.158.1.38");
         queryParamMap.put("startTimestamp", "2021-08-21T22:19:05");
         queryParamMap.put("endTimestamp", "2021-08-23T22:20:06");
