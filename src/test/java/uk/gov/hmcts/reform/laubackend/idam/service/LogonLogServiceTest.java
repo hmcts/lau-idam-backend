@@ -62,14 +62,14 @@ class LogonLogServiceTest {
 
         when(idamLogonAuditRepository
                 .findIdamLogon("1", "2", null, null,
-                        PageRequest.of(0, parseInt("10000"), Sort.by("timestamp"))))
+                        PageRequest.of(0, parseInt("10000"), Sort.by("log_timestamp"))))
                 .thenReturn(pageResults);
 
         final LogonLogGetResponse logonLog = logonLogService.getLogonLog(inputParamsHolder);
 
         verify(idamLogonAuditRepository, times(1))
                 .findIdamLogon("1", "2", null, null,
-                        PageRequest.of(0, parseInt("10000"), Sort.by("timestamp")));
+                        PageRequest.of(0, parseInt("10000"), Sort.by("log_timestamp")));
 
         assertThat(logonLog.getLogonLog().size()).isEqualTo(1);
         assertThat(logonLog.getLogonLog().get(0).getUserId()).isEqualTo("1");
