@@ -89,5 +89,4 @@ flyway:
   noop:
     strategy: "false"
 
-default.page.size: "100000"
-
+default.page.size: ${LAU_PAGE_SIZE_DEFAULT:100000}
