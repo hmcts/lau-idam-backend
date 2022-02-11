@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.laubackend.idam.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -31,6 +32,9 @@ public class LogonLogService {
 
     @Autowired
     private TimestampUtil timestampUtil;
+
+    @Value("${default.page.size}")
+    private String defaultPageSize;
 
     public LogonLogGetResponse getLogonLog(final LogonInputParamsHolder inputParamsHolder) {
 
@@ -79,10 +83,10 @@ public class LogonLogService {
     }
 
     private Pageable getPage(final String size, final String page) {
-        final String pageSize = Optional.ofNullable(size).orElse("10000");
+        final String pageSize = Optional.ofNullable(size).orElse(defaultPageSize);
         final String pageNumber = Optional.ofNullable(page).orElse("1");
 
-        return of(parseInt(pageNumber) - 1, parseInt(pageSize), Sort.by("timestamp"));
+        return of(parseInt(pageNumber) - 1, parseInt(pageSize), Sort.by("log_timestamp"));
     }
 
     public void deleteLogonLogById(final String logonId) {

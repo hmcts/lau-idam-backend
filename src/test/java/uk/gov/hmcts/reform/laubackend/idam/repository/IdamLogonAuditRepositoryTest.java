@@ -84,7 +84,7 @@ class IdamLogonAuditRepositoryTest {
                 null,
                 null,
                 null,
-                PageRequest.of(1, 10, Sort.by("timestamp"))
+                PageRequest.of(1, 10, Sort.by("log_timestamp"))
         );
         assertThat(idamLogon.getTotalElements()).isEqualTo(20);
         assertThat(idamLogon.getContent().size()).isEqualTo(10);
