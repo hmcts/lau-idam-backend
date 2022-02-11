@@ -47,7 +47,7 @@ class IdamLogonAuditRepositoryTest {
     @Test
     void shouldSearchByEmail() {
         final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository
-                .findIdamLogon(null, "1", null, null, null);
+                .findIdamLogonH2(null, "1", null, null, null);
 
         assertThat(idamLogon.getContent().size()).isEqualTo(1);
         assertResults(idamLogon.getContent(), 1);
@@ -56,7 +56,7 @@ class IdamLogonAuditRepositoryTest {
     @Test
     void shouldSearchUserId() {
         final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository
-                .findIdamLogon("1",
+                .findIdamLogonH2("1",
                         null,
                         null,
                         null,
@@ -69,7 +69,7 @@ class IdamLogonAuditRepositoryTest {
     @Test
     void shouldGetAllRecords() {
         final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository
-                .findIdamLogon(null,
+                .findIdamLogonH2(null,
                         null,
                         null,
                         null,
@@ -80,7 +80,7 @@ class IdamLogonAuditRepositoryTest {
 
     @Test
     void shouldFindPageableResults() {
-        final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository.findIdamLogon(null,
+        final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository.findIdamLogonH2(null,
                 null,
                 null,
                 null,
@@ -99,7 +99,7 @@ class IdamLogonAuditRepositoryTest {
                         valueOf(now())
                 ));
         final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository
-                .findIdamLogon("77777",
+                .findIdamLogonH2("77777",
                         null,
                         null,
                         null,
@@ -111,7 +111,7 @@ class IdamLogonAuditRepositoryTest {
         idamLogonAuditRepository.deleteById(idamLogon.getContent().get(0).getId());
 
         final Page<IdamLogonAudit> idamLogon1 = idamLogonAuditRepository
-                .findIdamLogon("77777",
+                .findIdamLogonH2("77777",
                         null,
                         null,
                         null,

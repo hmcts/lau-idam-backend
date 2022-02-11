@@ -46,6 +46,7 @@ flyway:
 security:
   db:
     backend-encryption-key: ${LAU_IDAM_ENCRYPTION_KEY:ThisIsATestKeyForEncryption}
+    encryption-enabled: ${LAU_IDAM_ENCRYPTION_ENABLED:Yes}
 
 idam:
   s2s-auth:

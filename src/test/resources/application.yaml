@@ -40,6 +40,9 @@ spring:
   flyway:
     locations: classpath:h2
 
+security:
+  db:
+    backend-encryption-key: ThisIsATestKeyForEncryption
 
 flyway:
   noop:

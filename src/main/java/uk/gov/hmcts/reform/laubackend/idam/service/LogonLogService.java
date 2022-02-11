@@ -36,6 +36,9 @@ public class LogonLogService {
     @Value("${default.page.size}")
     private String defaultPageSize;
 
+    @Value("${security.db.backend-encryption-key}")
+    private String securityDbBackendEncryptionKey;
+
     public LogonLogGetResponse getLogonLog(final LogonInputParamsHolder inputParamsHolder) {
 
         final Page<IdamLogonAudit> logonLog = idamLogonAuditRepository.findIdamLogon(
@@ -43,6 +46,7 @@ public class LogonLogService {
                 lowerCase(inputParamsHolder.getEmailAddress()),
                 timestampUtil.getTimestampValue(inputParamsHolder.getStartTime()),
                 timestampUtil.getTimestampValue(inputParamsHolder.getEndTime()),
+                securityDbBackendEncryptionKey,
                 getPage(inputParamsHolder.getSize(), inputParamsHolder.getPage())
         );
 

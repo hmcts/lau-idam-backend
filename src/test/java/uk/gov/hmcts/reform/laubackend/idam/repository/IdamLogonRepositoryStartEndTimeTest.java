@@ -43,7 +43,7 @@ class IdamLogonRepositoryStartEndTimeTest {
 
     @Test
     void shouldFindIdamLogonStartTime() {
-        final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository.findIdamLogon(
+        final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository.findIdamLogonH2(
                 null,
                 null,
                 valueOf(now().plusDays(10)),
@@ -56,7 +56,7 @@ class IdamLogonRepositoryStartEndTimeTest {
 
     @Test
     void shouldFindIdamLogonByEndTime() {
-        final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository.findIdamLogon(
+        final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository.findIdamLogonH2(
                 "1",
                 null,
                 null,
@@ -69,7 +69,7 @@ class IdamLogonRepositoryStartEndTimeTest {
 
     @Test
     void shouldNotFindIdamLogonStartTime() {
-        final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository.findIdamLogon(
+        final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository.findIdamLogonH2(
                 null,
                 null,
                 valueOf(now().plusDays(20)),
@@ -81,7 +81,7 @@ class IdamLogonRepositoryStartEndTimeTest {
 
     @Test
     void shouldNotFindIdamLogonEndTime() {
-        final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository.findIdamLogon(
+        final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository.findIdamLogonH2(
                 null,
                 null,
                 null,
@@ -93,7 +93,7 @@ class IdamLogonRepositoryStartEndTimeTest {
 
     @Test
     void shouldNotFindIdamLogonByStartTimeEndTime() {
-        final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository.findIdamLogon(
+        final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository.findIdamLogonH2(
                 null,
                 null,
                 valueOf(now().minusDays(1)),
