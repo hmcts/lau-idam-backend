@@ -43,4 +43,28 @@ public interface IdamLogonAuditRepository extends JpaRepository<IdamLogonAudit, 
                                        final @Param("encryptionKey") String encryptionKey,
                                        final Pageable pageable);
 
+    @Query(value = "SELECT ila.id, ila.user_id, ila.service, ila.log_timestamp, ila.email_address, ip_address "
+        + "FROM idam_logon_audit ila "
+        + "WHERE (cast(:userId as text) IS NULL OR ila.user_id=cast(:userId as text)) "
+        + "AND (cast(:emailAddress as text) IS NULL OR ila.email_address=cast(:emailAddress as text)) "
+        + "AND (cast(cast(:startTime as varchar) as timestamp) IS NULL "
+        +   "OR ila.log_timestamp >= cast(cast(:startTime as varchar) as timestamp)) "
+        + "AND (cast(cast(:endTime as varchar) as timestamp) IS NULL "
+        +   "OR ila.log_timestamp <= cast(cast(:endTime as varchar) as timestamp))",
+        countQuery = "SELECT count(*) FROM ( "
+            + "SELECT 1 FROM idam_logon_audit ila "
+            + "WHERE (cast(:userId as text) IS NULL OR ila.user_id=cast(:userId as text)) "
+            + "AND (cast(:emailAddress as text) IS NULL OR ila.email_address=cast(:emailAddress as text)) "
+            + "AND (cast(cast(:startTime as varchar) as timestamp) IS NULL "
+            +   "OR ila.log_timestamp >= cast(cast(:startTime as varchar) as timestamp)) "
+            + "AND (cast(cast(:endTime as varchar) as timestamp) IS NULL "
+            +   "OR ila.log_timestamp <= cast(cast(:endTime as varchar) as timestamp)) "
+            + "limit 100000) ila",
+        nativeQuery = true)
+    Page<IdamLogonAudit> findIdamLogonH2(final @Param("userId") String userId,
+                                       final @Param("emailAddress") String emailAddress,
+                                       final @Param("startTime") Timestamp startTime,
+                                       final @Param("endTime") Timestamp endTime,
+                                       final Pageable pageable);
+
 }
