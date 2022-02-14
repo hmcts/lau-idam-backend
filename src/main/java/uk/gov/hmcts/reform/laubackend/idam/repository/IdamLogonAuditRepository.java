@@ -10,7 +10,7 @@ import uk.gov.hmcts.reform.laubackend.idam.domain.IdamLogonAudit;
 
 import java.sql.Timestamp;
 
-@SuppressWarnings({"PMD.UseObjectForClearerAPI"})
+@SuppressWarnings({"PMD.UseObjectForClearerAPI","PMD.AvoidDuplicateLiterals"})
 @Repository
 public interface IdamLogonAuditRepository extends JpaRepository<IdamLogonAudit, Long> {
 
@@ -66,4 +66,5 @@ public interface IdamLogonAuditRepository extends JpaRepository<IdamLogonAudit, 
                                        final @Param("startTime") Timestamp startTime,
                                        final @Param("endTime") Timestamp endTime,
                                        final Pageable pageable);
+
 }

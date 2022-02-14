@@ -1,0 +1,19 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Application DEV" type="Application" factoryName="Application">
+    <envs>
+      <env name="LAU_IDAM_DB_PASSWORD" value="laupass" />
+      <env name="LAU_IDAM_DB_PORT" value="5054" />
+    </envs>
+    <option name="MAIN_CLASS_NAME" value="uk.gov.hmcts.reform.laubackend.idam.Application" />
+    <module name="lau-idam-backend.main" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="uk.gov.hmcts.reform.laubackend.idam.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
