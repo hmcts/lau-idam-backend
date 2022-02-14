@@ -66,5 +66,4 @@ public interface IdamLogonAuditRepository extends JpaRepository<IdamLogonAudit, 
                                        final @Param("startTime") Timestamp startTime,
                                        final @Param("endTime") Timestamp endTime,
                                        final Pageable pageable);
-
 }

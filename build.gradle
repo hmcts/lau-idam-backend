@@ -362,7 +362,7 @@ dependencies {
     testCompile group: 'org.testcontainers', name: 'testcontainers', version: versions.testcontainers
     testCompile group: 'org.testcontainers', name: 'postgresql', version: versions.testcontainers
 
-    implementation group: 'com.h2database', name: 'h2', version: '2.0.202'
+    implementation group: 'com.h2database', name: 'h2', version: '2.1.210'
 
     testCompile 'com.github.hmcts:fortify-client:1.2.0:all'
 
@@ -396,7 +396,7 @@ dependencies {
     smokeTestImplementation group: 'io.rest-assured', name: 'rest-assured-common', version: versions.restAssured
     smokeTestImplementation group: 'io.rest-assured', name: 'json-path', version: versions.restAssured
     smokeTestImplementation group: 'io.rest-assured', name: 'xml-path', version: versions.restAssured
-  
+
     implementation 'junit:junit:4.13.2'
 
 //Added for FN tests

@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.laubackend.idam.service;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.laubackend.idam.domain.IdamLogonAudit;
 import uk.gov.hmcts.reform.laubackend.idam.dto.LogonInputParamsHolder;
 import uk.gov.hmcts.reform.laubackend.idam.dto.LogonLog;
+import uk.gov.hmcts.reform.laubackend.idam.repository.IdamLogonAuditInsertRepository;
 import uk.gov.hmcts.reform.laubackend.idam.repository.IdamLogonAuditRepository;
 import uk.gov.hmcts.reform.laubackend.idam.response.LogonLogGetResponse;
 import uk.gov.hmcts.reform.laubackend.idam.response.LogonLogPostResponse;
@@ -31,6 +33,9 @@ public class LogonLogService {
     private IdamLogonAuditRepository idamLogonAuditRepository;
 
     @Autowired
+    private IdamLogonAuditInsertRepository idamLogonAuditInsertRepository;
+
+    @Autowired
     private TimestampUtil timestampUtil;
 
     @Value("${default.page.size}")
@@ -38,6 +43,9 @@ public class LogonLogService {
 
     @Value("${security.db.backend-encryption-key}")
     private String securityDbBackendEncryptionKey;
+
+    @Value("${security.db.encryption-enabled}")
+    private Boolean encryptionEnabled;
 
     public LogonLogGetResponse getLogonLog(final LogonInputParamsHolder inputParamsHolder) {
 
@@ -70,15 +78,21 @@ public class LogonLogService {
     public LogonLogPostResponse saveLogonLog(final LogonLog logonLog) {
 
         final IdamLogonAudit idamLogonAudit = new IdamLogonAudit();
+        final IdamLogonAudit idamLogonAuditResponse;
         idamLogonAudit.setUserId(logonLog.getUserId());
         idamLogonAudit.setService(logonLog.getService());
         idamLogonAudit.setIpAddress(logonLog.getIpAddress());
         idamLogonAudit.setEmailAddress(lowerCase(logonLog.getEmailAddress()));
         idamLogonAudit.setTimestamp(timestampUtil.getUtcTimestampValue(logonLog.getTimestamp()));
 
-        final IdamLogonAudit idamLogonAuditResponse = idamLogonAuditRepository.save(idamLogonAudit);
-        final String timestamp = timestampUtil.timestampConvertor(idamLogonAudit.getTimestamp());
+        if (BooleanUtils.isTrue(encryptionEnabled)) {
+            idamLogonAuditResponse = idamLogonAuditInsertRepository
+                .saveIdamLogonAuditWithEncryption(idamLogonAudit, securityDbBackendEncryptionKey);
+        } else {
+            idamLogonAuditResponse = idamLogonAuditRepository.save(idamLogonAudit);
+        }
 
+        final String timestamp = timestampUtil.timestampConvertor(idamLogonAudit.getTimestamp());
         return new LogonLogPostResponse(new LogonLogResponse().toDto(idamLogonAuditResponse, timestamp));
     }
 
