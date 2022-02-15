@@ -36,7 +36,7 @@ public interface IdamLogonAuditRepository extends JpaRepository<IdamLogonAudit, 
                     + "OR ila.log_timestamp >= cast(cast(:startTime as varchar) as timestamp)) "
                     + "AND (cast(cast(:endTime as varchar) as timestamp) IS NULL "
                     + "OR ila.log_timestamp <= cast(cast(:endTime as varchar) as timestamp)) "
-                    + "limit 100000) ila",
+                    + "limit 10000) ila",
             nativeQuery = true)
     Page<IdamLogonAudit> findIdamLogon(final @Param("userId") String userId,
                                        final @Param("emailAddress") String emailAddress,
@@ -61,7 +61,7 @@ public interface IdamLogonAuditRepository extends JpaRepository<IdamLogonAudit, 
                     + "OR ila.log_timestamp >= cast(cast(:startTime as varchar) as timestamp)) "
                     + "AND (cast(cast(:endTime as varchar) as timestamp) IS NULL "
                     + "OR ila.log_timestamp <= cast(cast(:endTime as varchar) as timestamp)) "
-                    + "limit 100000) ila",
+                    + "limit 10000) ila",
             nativeQuery = true)
     Page<IdamLogonAudit> findIdamLogonH2(final @Param("userId") String userId,
                                          final @Param("emailAddress") String emailAddress,

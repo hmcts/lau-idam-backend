@@ -67,4 +67,4 @@ db.allow.delete.record: ${DB_ALLOW_DELETE_RECORD:true}
 
 targetInstance: ${TEST_URL:http://localhost:4550}
 
-default.page.size: ${LAU_PAGE_SIZE_DEFAULT:100000}
+default.page.size: ${LAU_PAGE_SIZE_DEFAULT:10000}
