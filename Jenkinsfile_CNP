@@ -46,7 +46,7 @@ withPipeline(type, product, component) {
     }
 
     loadVaultSecrets(secrets)
-    enableDbMigration('lau')
+    //enableDbMigration('lau')
     enableSlackNotifications('#lau-builds')
     enableAksStagingDeployment()
     disableLegacyDeployment()
