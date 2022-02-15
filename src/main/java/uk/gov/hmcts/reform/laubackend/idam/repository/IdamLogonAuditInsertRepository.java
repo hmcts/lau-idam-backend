@@ -15,23 +15,26 @@ public class IdamLogonAuditInsertRepository {
     private EntityManager entityManager;
 
     private final String insertLogonAuditQueryWithEncryption =
-        "INSERT INTO public.idam_logon_audit (user_id, service, log_timestamp, ip_address, email_address) "
-            + "VALUES (:userId, :service, :logTimestamp, "
-            + "encode(pgp_sym_encrypt(:ipAddress, :encryptionKey), 'base64'), "
-            + "encode(pgp_sym_encrypt(:emailAddress, :encryptionKey), 'base64')) RETURNING id";
+            "INSERT INTO public.idam_logon_audit "
+                    + "(user_id, service, log_timestamp, ip_address, email_address, email_address_mac) "
+                    + "VALUES (:userId, :service, :logTimestamp, "
+                    + "encode(pgp_sym_encrypt(:ipAddress, :encryptionKey), 'base64'), "
+                    + "encode(pgp_sym_encrypt(:emailAddress, :encryptionKey), 'base64'), "
+                    + "encode(hmac(:emailAddress, :encryptionKey, 'sha256'), 'hex')) "
+                    + "RETURNING id";
 
     @Transactional
     public IdamLogonAudit saveIdamLogonAuditWithEncryption(
-        IdamLogonAudit idamLogonAudit,
-        String securityDbBackendEncryptionKey) {
+            IdamLogonAudit idamLogonAudit,
+            String securityDbBackendEncryptionKey) {
         Query insertQuery = entityManager.createNativeQuery(insertLogonAuditQueryWithEncryption);
 
         insertQuery.setParameter("userId", idamLogonAudit.getUserId())
-            .setParameter("service", idamLogonAudit.getService())
-            .setParameter("logTimestamp", idamLogonAudit.getTimestamp())
-            .setParameter("ipAddress", idamLogonAudit.getIpAddress())
-            .setParameter("emailAddress", idamLogonAudit.getEmailAddress())
-            .setParameter("encryptionKey", securityDbBackendEncryptionKey);
+                .setParameter("service", idamLogonAudit.getService())
+                .setParameter("logTimestamp", idamLogonAudit.getTimestamp())
+                .setParameter("ipAddress", idamLogonAudit.getIpAddress())
+                .setParameter("emailAddress", idamLogonAudit.getEmailAddress())
+                .setParameter("encryptionKey", securityDbBackendEncryptionKey);
 
         Integer generatedId = (Integer) insertQuery.getSingleResult();
         idamLogonAudit.setId(generatedId.longValue());

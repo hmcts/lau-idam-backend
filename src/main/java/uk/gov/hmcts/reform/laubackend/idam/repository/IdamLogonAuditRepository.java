@@ -10,7 +10,7 @@ import uk.gov.hmcts.reform.laubackend.idam.domain.IdamLogonAudit;
 
 import java.sql.Timestamp;
 
-@SuppressWarnings({"PMD.UseObjectForClearerAPI","PMD.AvoidDuplicateLiterals"})
+@SuppressWarnings({"PMD.UseObjectForClearerAPI", "PMD.AvoidDuplicateLiterals"})
 @Repository
 public interface IdamLogonAuditRepository extends JpaRepository<IdamLogonAudit, Long> {
 
@@ -19,22 +19,24 @@ public interface IdamLogonAuditRepository extends JpaRepository<IdamLogonAudit, 
             + "pgp_sym_decrypt(decode(ila.ip_address, 'base64'), cast(:encryptionKey as text)) as ip_address "
             + "FROM idam_logon_audit ila "
             + "WHERE (cast(:userId as text) IS NULL OR ila.user_id=cast(:userId as text)) "
-            + "AND (cast(:emailAddress as text) IS NULL OR pgp_sym_decrypt(decode(ila.email_address, 'base64'), "
-            +   "cast(:encryptionKey as text)) = cast(:emailAddress as text)) "
+            + "AND (cast(:emailAddress as text) IS NULL "
+            + "OR encode(hmac(cast(:emailAddress as text), "
+            + "cast(:encryptionKey as text), 'sha256'),'hex')=ila.email_address_mac) "
             + "AND (cast(cast(:startTime as varchar) as timestamp) IS NULL "
-            +   "OR ila.log_timestamp >= cast(cast(:startTime as varchar) as timestamp)) "
+            + "OR ila.log_timestamp >= cast(cast(:startTime as varchar) as timestamp)) "
             + "AND (cast(cast(:endTime as varchar) as timestamp) IS NULL "
-            +   "OR ila.log_timestamp <= cast(cast(:endTime as varchar) as timestamp))",
+            + "OR ila.log_timestamp <= cast(cast(:endTime as varchar) as timestamp))",
             countQuery = "SELECT count(*) FROM ( "
-            + "SELECT 1 FROM idam_logon_audit ila "
-            + "WHERE (cast(:userId as text) IS NULL OR ila.user_id=cast(:userId as text)) "
-                + "AND (cast(:emailAddress as text) IS NULL OR pgp_sym_decrypt(decode(ila.email_address, 'base64'), "
-                +    "cast(:encryptionKey as text)) = cast(:emailAddress as text)) "
-                + "AND (cast(cast(:startTime as varchar) as timestamp) IS NULL "
-                +   "OR ila.log_timestamp >= cast(cast(:startTime as varchar) as timestamp)) "
-                + "AND (cast(cast(:endTime as varchar) as timestamp) IS NULL "
-                +   "OR ila.log_timestamp <= cast(cast(:endTime as varchar) as timestamp)) "
-                + "limit 100000) ila",
+                    + "SELECT 1 FROM idam_logon_audit ila "
+                    + "WHERE (cast(:userId as text) IS NULL OR ila.user_id=cast(:userId as text)) "
+                    + "AND (cast(:emailAddress as text) IS NULL "
+                    + "OR encode(hmac(cast(:emailAddress as text), "
+                    + "cast(:encryptionKey as text), 'sha256'),'hex')=ila.email_address_mac) "
+                    + "AND (cast(cast(:startTime as varchar) as timestamp) IS NULL "
+                    + "OR ila.log_timestamp >= cast(cast(:startTime as varchar) as timestamp)) "
+                    + "AND (cast(cast(:endTime as varchar) as timestamp) IS NULL "
+                    + "OR ila.log_timestamp <= cast(cast(:endTime as varchar) as timestamp)) "
+                    + "limit 10000) ila",
             nativeQuery = true)
     Page<IdamLogonAudit> findIdamLogon(final @Param("userId") String userId,
                                        final @Param("emailAddress") String emailAddress,
@@ -44,27 +46,27 @@ public interface IdamLogonAuditRepository extends JpaRepository<IdamLogonAudit, 
                                        final Pageable pageable);
 
     @Query(value = "SELECT ila.id, ila.user_id, ila.service, ila.log_timestamp, ila.email_address, ip_address "
-        + "FROM idam_logon_audit ila "
-        + "WHERE (cast(:userId as text) IS NULL OR ila.user_id=cast(:userId as text)) "
-        + "AND (cast(:emailAddress as text) IS NULL OR ila.email_address=cast(:emailAddress as text)) "
-        + "AND (cast(cast(:startTime as varchar) as timestamp) IS NULL "
-        +   "OR ila.log_timestamp >= cast(cast(:startTime as varchar) as timestamp)) "
-        + "AND (cast(cast(:endTime as varchar) as timestamp) IS NULL "
-        +   "OR ila.log_timestamp <= cast(cast(:endTime as varchar) as timestamp))",
-        countQuery = "SELECT count(*) FROM ( "
-            + "SELECT 1 FROM idam_logon_audit ila "
+            + "FROM idam_logon_audit ila "
             + "WHERE (cast(:userId as text) IS NULL OR ila.user_id=cast(:userId as text)) "
             + "AND (cast(:emailAddress as text) IS NULL OR ila.email_address=cast(:emailAddress as text)) "
             + "AND (cast(cast(:startTime as varchar) as timestamp) IS NULL "
-            +   "OR ila.log_timestamp >= cast(cast(:startTime as varchar) as timestamp)) "
+            + "OR ila.log_timestamp >= cast(cast(:startTime as varchar) as timestamp)) "
             + "AND (cast(cast(:endTime as varchar) as timestamp) IS NULL "
-            +   "OR ila.log_timestamp <= cast(cast(:endTime as varchar) as timestamp)) "
-            + "limit 100000) ila",
-        nativeQuery = true)
+            + "OR ila.log_timestamp <= cast(cast(:endTime as varchar) as timestamp))",
+            countQuery = "SELECT count(*) FROM ( "
+                    + "SELECT 1 FROM idam_logon_audit ila "
+                    + "WHERE (cast(:userId as text) IS NULL OR ila.user_id=cast(:userId as text)) "
+                    + "AND (cast(:emailAddress as text) IS NULL OR ila.email_address=cast(:emailAddress as text)) "
+                    + "AND (cast(cast(:startTime as varchar) as timestamp) IS NULL "
+                    + "OR ila.log_timestamp >= cast(cast(:startTime as varchar) as timestamp)) "
+                    + "AND (cast(cast(:endTime as varchar) as timestamp) IS NULL "
+                    + "OR ila.log_timestamp <= cast(cast(:endTime as varchar) as timestamp)) "
+                    + "limit 10000) ila",
+            nativeQuery = true)
     Page<IdamLogonAudit> findIdamLogonH2(final @Param("userId") String userId,
-                                       final @Param("emailAddress") String emailAddress,
-                                       final @Param("startTime") Timestamp startTime,
-                                       final @Param("endTime") Timestamp endTime,
-                                       final Pageable pageable);
+                                         final @Param("emailAddress") String emailAddress,
+                                         final @Param("startTime") Timestamp startTime,
+                                         final @Param("endTime") Timestamp endTime,
+                                         final Pageable pageable);
 
 }

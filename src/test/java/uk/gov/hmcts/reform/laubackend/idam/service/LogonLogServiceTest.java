@@ -53,7 +53,7 @@ class LogonLogServiceTest {
         final List<IdamLogonAudit> idamLogonAudits = Arrays.asList(getIdamLogonAuditEntity(timestamp));
         final Page<IdamLogonAudit> pageResults = new PageImpl<>(idamLogonAudits);
 
-        setField(logonLogService, "defaultPageSize", "100000");
+        setField(logonLogService, "defaultPageSize", "10000");
 
         final LogonInputParamsHolder inputParamsHolder = new LogonInputParamsHolder(
                 "1",
@@ -65,14 +65,14 @@ class LogonLogServiceTest {
 
         when(idamLogonAuditRepository
                 .findIdamLogon("1", "2", null, null, null,
-                        PageRequest.of(0, parseInt("100000"), Sort.by("log_timestamp"))))
+                        PageRequest.of(0, parseInt("10000"), Sort.by("log_timestamp"))))
                 .thenReturn(pageResults);
 
         final LogonLogGetResponse logonLog = logonLogService.getLogonLog(inputParamsHolder);
 
         verify(idamLogonAuditRepository, times(1))
                 .findIdamLogon("1", "2", null, null, null,
-                        PageRequest.of(0, parseInt("100000"), Sort.by("log_timestamp")));
+                        PageRequest.of(0, parseInt("10000"), Sort.by("log_timestamp")));
 
         assertThat(logonLog.getLogonLog().size()).isEqualTo(1);
         assertThat(logonLog.getLogonLog().get(0).getUserId()).isEqualTo("1");
