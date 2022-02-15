@@ -36,7 +36,7 @@ public class IdamLogonAudit implements Serializable {
     @Column(name = "service", nullable = false)
     private String service;
 
-    @Column(name = "ip_address", nullable = true)
+    @Column(name = "ip_address")
     private String ipAddress;
 
     @Column(name = "log_timestamp", nullable = false)

@@ -29,7 +29,7 @@ spring:
     name: LAU Idam Backend
   datasource:
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
-    url: jdbc:tc:postgresql:10://localhost/lau-idam
+    url: jdbc:tc:postgresql:11://localhost/lau-idam
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
@@ -38,6 +38,7 @@ spring:
     locations: classpath:db/migration
     placeholders:
       LAU_IDAM_DB_PASSWORD: laupass
+      LAU_IDAM_ENCRYPTION_KEY: ThisIsATestKeyForEncryption
 
 flyway:
   noop:
