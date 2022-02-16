@@ -454,7 +454,9 @@ flyway {
 
     if (project.hasProperty("flyway.password")) {
         placeholders = [
-                'LAU_IDAM_DB_PASSWORD': project.getProperty("flyway.password")
+                'LAU_IDAM_DB_PASSWORD': project.getProperty("flyway.password"),
+                'LAU_IDAM_ENCRYPTION_KEY': project.getProperty("encryption.key")
+
         ]
     }
 
