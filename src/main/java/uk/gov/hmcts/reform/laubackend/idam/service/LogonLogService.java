@@ -19,9 +19,9 @@ import uk.gov.hmcts.reform.laubackend.idam.utils.TimestampUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static java.lang.Integer.parseInt;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.lowerCase;
 import static org.springframework.data.domain.PageRequest.of;
 import static uk.gov.hmcts.reform.laubackend.idam.response.LogonLogGetResponse.logonLogResponse;
@@ -87,7 +87,7 @@ public class LogonLogService {
 
         if (BooleanUtils.isTrue(encryptionEnabled)) {
             idamLogonAuditResponse = idamLogonAuditInsertRepository
-                .saveIdamLogonAuditWithEncryption(idamLogonAudit, securityDbBackendEncryptionKey);
+                    .saveIdamLogonAuditWithEncryption(idamLogonAudit, securityDbBackendEncryptionKey);
         } else {
             idamLogonAuditResponse = idamLogonAuditRepository.save(idamLogonAudit);
         }
@@ -101,8 +101,8 @@ public class LogonLogService {
     }
 
     private Pageable getPage(final String size, final String page) {
-        final String pageSize = Optional.ofNullable(size).orElse(defaultPageSize);
-        final String pageNumber = Optional.ofNullable(page).orElse("1");
+        final String pageSize = isEmpty(size) ? defaultPageSize : size.trim();
+        final String pageNumber = isEmpty(page) ? "1" : page.trim();
 
         return of(parseInt(pageNumber) - 1, parseInt(pageSize), Sort.by("log_timestamp"));
     }
