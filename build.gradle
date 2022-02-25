@@ -456,9 +456,9 @@ flyway {
     user = System.getenv('FLYWAY_USER')
     password = System.getenv('FLYWAY_PASSWORD')
 
-    if (project.hasProperty("LAU_IDAM_DB_PASSWORD")) {
+    if (project.getenv("LAU_IDAM_DB_PASSWORD")) {
         placeholders = [
-                'LAU_IDAM_DB_PASSWORD': project.getProperty("LAU_IDAM_DB_PASSWORD")
+                'LAU_IDAM_DB_PASSWORD': project.getenv("LAU_IDAM_DB_PASSWORD")
         ]
     }
 
