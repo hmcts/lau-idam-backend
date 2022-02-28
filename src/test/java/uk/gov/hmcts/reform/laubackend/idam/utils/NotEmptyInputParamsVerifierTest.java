@@ -6,7 +6,7 @@ import uk.gov.hmcts.reform.laubackend.idam.dto.LogonInputParamsHolder;
 import uk.gov.hmcts.reform.laubackend.idam.dto.LogonLog;
 import uk.gov.hmcts.reform.laubackend.idam.exceptions.InvalidRequestException;
 
-import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
+import static org.apache.commons.lang3.RandomStringUtils.random;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -46,56 +46,55 @@ class NotEmptyInputParamsVerifierTest {
     void shouldThrowExceptionWhenGetRequestParamsAreEmptyForLogonLog() {
         try {
             verifyRequestLogonParamsAreNotEmpty(new LogonInputParamsHolder(null,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               null));
+                    null,
+                    null,
+                    null,
+                    null,
+                    null));
             fail("The method should have thrown InvalidRequestException when all required params are not populated");
         } catch (final InvalidRequestException invalidRequestException) {
             assertThat(invalidRequestException.getMessage())
-                .isEqualTo("At least one path parameter must be present");
+                    .isEqualTo("At least one path parameter must be present");
         }
     }
 
     @Test
     void shouldVerifyRequestParamsAreNotEmptyForUserIdLogonLog() {
-        assertDoesNotThrow(() -> verifyRequestLogonParamsAreNotEmpty(new LogonInputParamsHolder(randomNumeric(71),
-                                                                                                  null,
-                                                                                                  null,
-                                                                                                  null,
-                                                                                                  null,
-                                                                                                  null)));
+        assertDoesNotThrow(() -> verifyRequestLogonParamsAreNotEmpty(new LogonInputParamsHolder(random(71, "123456"),
+                null,
+                null,
+                null,
+                null,
+                null)));
     }
 
     @Test
     void shouldVerifyRequestParamsAreNotEmptyForEmailAddressLogonLog() {
         assertDoesNotThrow(() -> verifyRequestLogonParamsAreNotEmpty(new LogonInputParamsHolder(null,
-                                                                                                "test@test.com",
-                                                                                                null,
-                                                                                                null,
-                                                                                                null,
-                                                                                                null)));
+                "test@test.com",
+                null,
+                null,
+                null,
+                null)));
     }
 
     @Test
     void shouldVerifyRequestParamsAreNotEmptyForStartTimeLogonLog() {
         assertDoesNotThrow(() -> verifyRequestLogonParamsAreNotEmpty(new LogonInputParamsHolder(null,
-                                                                                                null,
-                                                                                                "345",
-                                                                                                null,
-                                                                                                null,
-                                                                                                null)));
+                null,
+                "345",
+                null,
+                null,
+                null)));
     }
 
     @Test
     void shouldVerifyRequestParamsAreNotEmptyForEndTimeLogonLog() {
         assertDoesNotThrow(() -> verifyRequestLogonParamsAreNotEmpty(new LogonInputParamsHolder(null,
-                                                                                                null,
-                                                                                                null,
-                                                                                                "735",
-                                                                                                null,
-                                                                                                null)));
+                null,
+                null,
+                "735",
+                null,
+                null)));
     }
-
 }
