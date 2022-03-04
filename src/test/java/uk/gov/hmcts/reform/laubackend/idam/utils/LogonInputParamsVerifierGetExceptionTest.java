@@ -12,6 +12,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.EMAIL_ADDRESS_GET_EXCEPTION_MESSAGE;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.TIMESTAMP_GET_EXCEPTION_MESSAGE;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.USERID_GET_EXCEPTION_MESSAGE;
+import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.appendExceptionParameter;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifier.verifyRequestLogonParamsConditions;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -19,20 +20,21 @@ class LogonInputParamsVerifierGetExceptionTest {
 
     @Test
     void shouldNotVerifyUserId() {
+        final String userId = randomAlphanumeric(65);
         try {
-            final LogonInputParamsHolder inputParamsHolder = new LogonInputParamsHolder(randomAlphanumeric(65),
-                                                                                         null,
-                                                                                         null,
-                                                                                         null,
-                                                                                         null,
-                                                                                         null);
+            final LogonInputParamsHolder inputParamsHolder = new LogonInputParamsHolder(userId,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null);
             verifyRequestLogonParamsConditions(inputParamsHolder);
             fail("The method should have thrown InvalidRequestException due to invalid userId");
         } catch (final InvalidRequestException invalidRequestException) {
             assertThat(invalidRequestException.getMessage())
-                    .isEqualTo(USERID_GET_EXCEPTION_MESSAGE);
+                    .isEqualTo(appendExceptionParameter(USERID_GET_EXCEPTION_MESSAGE, userId));
             assertThat(invalidRequestException.getErrorCode())
-                .isEqualTo(BAD_REQUEST);
+                    .isEqualTo(BAD_REQUEST);
         }
     }
 
@@ -40,7 +42,7 @@ class LogonInputParamsVerifierGetExceptionTest {
     void shouldNotVerifyEmailAddress() {
         try {
             final LogonInputParamsHolder inputParamsHolder = new LogonInputParamsHolder(null,
-                     randomAlphanumeric(71),
+                    randomAlphanumeric(71),
                     null,
                     null,
                     null,
@@ -51,16 +53,17 @@ class LogonInputParamsVerifierGetExceptionTest {
             assertThat(invalidRequestException.getMessage())
                     .isEqualTo(EMAIL_ADDRESS_GET_EXCEPTION_MESSAGE);
             assertThat(invalidRequestException.getErrorCode())
-                .isEqualTo(BAD_REQUEST);
+                    .isEqualTo(BAD_REQUEST);
         }
     }
 
     @Test
     void shouldNotVerifyTimestamp() {
+        final String timestamp = "2021-106-23T22:20:05";
         try {
             final LogonInputParamsHolder inputParamsHolder = new LogonInputParamsHolder(null,
                     null,
-                    "2021-106-23T22:20:05",
+                    timestamp,
                     null,
                     null,
                     null);
@@ -68,9 +71,9 @@ class LogonInputParamsVerifierGetExceptionTest {
             fail("The method should have thrown InvalidRequestException due to invalid timestamp");
         } catch (final InvalidRequestException invalidRequestException) {
             assertThat(invalidRequestException.getMessage())
-                    .isEqualTo(TIMESTAMP_GET_EXCEPTION_MESSAGE);
+                    .isEqualTo(appendExceptionParameter(TIMESTAMP_GET_EXCEPTION_MESSAGE, timestamp));
             assertThat(invalidRequestException.getErrorCode())
-                .isEqualTo(BAD_REQUEST);
+                    .isEqualTo(BAD_REQUEST);
         }
     }
 }
