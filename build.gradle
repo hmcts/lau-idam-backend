@@ -345,6 +345,9 @@ dependencies {
     implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
     implementation("org.springframework.boot:spring-boot-devtools")
 
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.2'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.13.2'
+
     implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
     implementation group: 'uk.gov.hmcts.reform', name: 'idam-client', version: '1.5.5'
     implementation group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.1.0', withoutSpringCloudContext
@@ -423,7 +426,6 @@ dependencies {
 
     cucumberRuntime 'io.cucumber:cucumber-java:6.9.1'
     cucumberRuntime 'org.springframework:spring-web'
-    cucumberRuntime group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.13.2'
     cucumberRuntime group: 'org.springframework.security', name: 'spring-security-test'
     cucumberRuntime group: 'io.rest-assured', name: 'rest-assured', version: '4.2.1'
     cucumberRuntime group: 'io.rest-assured', name: 'json-path', version: '4.2.1'
