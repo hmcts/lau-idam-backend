@@ -1,6 +1,8 @@
 package uk.gov.hmcts.reform.laubackend.idam.service;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.laubackend.idam.domain.IdamLogonAudit;
 import uk.gov.hmcts.reform.laubackend.idam.dto.LogonInputParamsHolder;
 import uk.gov.hmcts.reform.laubackend.idam.dto.LogonLog;
+import uk.gov.hmcts.reform.laubackend.idam.repository.IdamLogonAuditInsertRepository;
 import uk.gov.hmcts.reform.laubackend.idam.repository.IdamLogonAuditRepository;
 import uk.gov.hmcts.reform.laubackend.idam.response.LogonLogGetResponse;
 import uk.gov.hmcts.reform.laubackend.idam.response.LogonLogPostResponse;
@@ -16,9 +19,9 @@ import uk.gov.hmcts.reform.laubackend.idam.utils.TimestampUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static java.lang.Integer.parseInt;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.lowerCase;
 import static org.springframework.data.domain.PageRequest.of;
 import static uk.gov.hmcts.reform.laubackend.idam.response.LogonLogGetResponse.logonLogResponse;
@@ -30,7 +33,19 @@ public class LogonLogService {
     private IdamLogonAuditRepository idamLogonAuditRepository;
 
     @Autowired
+    private IdamLogonAuditInsertRepository idamLogonAuditInsertRepository;
+
+    @Autowired
     private TimestampUtil timestampUtil;
+
+    @Value("${default.page.size}")
+    private String defaultPageSize;
+
+    @Value("${security.db.backend-encryption-key}")
+    private String securityDbBackendEncryptionKey;
+
+    @Value("${security.db.encryption-enabled}")
+    private Boolean encryptionEnabled;
 
     public LogonLogGetResponse getLogonLog(final LogonInputParamsHolder inputParamsHolder) {
 
@@ -39,6 +54,7 @@ public class LogonLogService {
                 lowerCase(inputParamsHolder.getEmailAddress()),
                 timestampUtil.getTimestampValue(inputParamsHolder.getStartTime()),
                 timestampUtil.getTimestampValue(inputParamsHolder.getEndTime()),
+                securityDbBackendEncryptionKey,
                 getPage(inputParamsHolder.getSize(), inputParamsHolder.getPage())
         );
 
@@ -62,15 +78,21 @@ public class LogonLogService {
     public LogonLogPostResponse saveLogonLog(final LogonLog logonLog) {
 
         final IdamLogonAudit idamLogonAudit = new IdamLogonAudit();
+        final IdamLogonAudit idamLogonAuditResponse;
         idamLogonAudit.setUserId(logonLog.getUserId());
         idamLogonAudit.setService(logonLog.getService());
         idamLogonAudit.setIpAddress(logonLog.getIpAddress());
         idamLogonAudit.setEmailAddress(lowerCase(logonLog.getEmailAddress()));
         idamLogonAudit.setTimestamp(timestampUtil.getUtcTimestampValue(logonLog.getTimestamp()));
 
-        final IdamLogonAudit idamLogonAuditResponse = idamLogonAuditRepository.save(idamLogonAudit);
-        final String timestamp = timestampUtil.timestampConvertor(idamLogonAudit.getTimestamp());
+        if (BooleanUtils.isTrue(encryptionEnabled)) {
+            idamLogonAuditResponse = idamLogonAuditInsertRepository
+                    .saveIdamLogonAuditWithEncryption(idamLogonAudit, securityDbBackendEncryptionKey);
+        } else {
+            idamLogonAuditResponse = idamLogonAuditRepository.save(idamLogonAudit);
+        }
 
+        final String timestamp = timestampUtil.timestampConvertor(idamLogonAudit.getTimestamp());
         return new LogonLogPostResponse(new LogonLogResponse().toDto(idamLogonAuditResponse, timestamp));
     }
 
@@ -79,10 +101,10 @@ public class LogonLogService {
     }
 
     private Pageable getPage(final String size, final String page) {
-        final String pageSize = Optional.ofNullable(size).orElse("10000");
-        final String pageNumber = Optional.ofNullable(page).orElse("1");
+        final String pageSize = isEmpty(size) ? defaultPageSize : size.trim();
+        final String pageNumber = isEmpty(page) ? "1" : page.trim();
 
-        return of(parseInt(pageNumber) - 1, parseInt(pageSize), Sort.by("timestamp"));
+        return of(parseInt(pageNumber) - 1, parseInt(pageSize), Sort.by("log_timestamp"));
     }
 
     public void deleteLogonLogById(final String logonId) {
