@@ -423,7 +423,7 @@ dependencies {
 
     cucumberRuntime 'io.cucumber:cucumber-java:6.9.1'
     cucumberRuntime 'org.springframework:spring-web'
-    cucumberRuntime 'com.fasterxml.jackson.core:jackson-core'
+    cucumberRuntime group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.13.2'
     cucumberRuntime group: 'org.springframework.security', name: 'spring-security-test'
     cucumberRuntime group: 'io.rest-assured', name: 'rest-assured', version: '4.2.1'
     cucumberRuntime group: 'io.rest-assured', name: 'json-path', version: '4.2.1'
