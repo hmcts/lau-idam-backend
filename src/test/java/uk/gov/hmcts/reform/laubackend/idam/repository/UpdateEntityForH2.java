@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.laubackend.idam.repository;
 
 import lombok.SneakyThrows;
-import org.hibernate.annotations.ColumnTransformer;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.laubackend.idam.domain.IdamLogonAudit;
@@ -17,30 +16,17 @@ import static java.lang.reflect.Proxy.getInvocationHandler;
 
 @Component
 @SuppressWarnings({"all"})
-public class RemoveColumnTransformers implements HibernatePropertiesCustomizer {
+public class UpdateEntityForH2 implements HibernatePropertiesCustomizer {
 
     @SneakyThrows
     @Override
     public void customize(Map<String, Object> hibernateProperties) {
-        final Field emailAddressField = IdamLogonAudit.class.getDeclaredField("emailAddress");
-        final Field ipAddressField = IdamLogonAudit.class.getDeclaredField("ipAddress");
         final Field idField = IdamLogonAudit.class.getDeclaredField("id");
 
-
-        final ColumnTransformer emailAddressColumnTransformer = emailAddressField
-                .getDeclaredAnnotation(ColumnTransformer.class);
-        final ColumnTransformer ipAddressColumnTransformer = ipAddressField
-                .getDeclaredAnnotation(ColumnTransformer.class);
-
         final GeneratedValue idGeneratedValue = idField
-                .getDeclaredAnnotation(GeneratedValue.class);
+            .getDeclaredAnnotation(GeneratedValue.class);
 
         updateAnnotationValue(idGeneratedValue, "strategy", GenerationType.AUTO);
-
-        updateAnnotationValue(emailAddressColumnTransformer, "read", "");
-        updateAnnotationValue(emailAddressColumnTransformer, "write", "");
-        updateAnnotationValue(ipAddressColumnTransformer, "read", "");
-        updateAnnotationValue(ipAddressColumnTransformer, "write", "");
     }
 
     @SuppressWarnings({"unchecked"})

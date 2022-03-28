@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.laubackend.idam.dto.LogonLog;
+import uk.gov.hmcts.reform.laubackend.idam.insights.AppInsights;
 import uk.gov.hmcts.reform.laubackend.idam.request.LogonLogPostRequest;
 import uk.gov.hmcts.reform.laubackend.idam.response.LogonLogGetResponse;
 import uk.gov.hmcts.reform.laubackend.idam.response.LogonLogPostResponse;
@@ -15,10 +16,12 @@ import uk.gov.hmcts.reform.laubackend.idam.service.LogonLogService;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CREATED;
@@ -31,6 +34,9 @@ class IdamLogonAuditControllerTest {
 
     @Mock
     private LogonLogService logonLogService;
+
+    @Mock
+    private AppInsights appInsights;
 
     @InjectMocks
     private IdamLogonAuditController idamLogonAuditController;
@@ -56,6 +62,7 @@ class IdamLogonAuditControllerTest {
         );
 
         verify(logonLogService, times(1)).getLogonLog(any());
+        verify(appInsights, times(1)).trackEvent(any(),anyMap());
         assertThat(responseEntity.getStatusCode()).isEqualTo(OK);
     }
 
@@ -72,6 +79,7 @@ class IdamLogonAuditControllerTest {
             null
         );
 
+        verify(appInsights, times(1)).trackEvent(any(),anyMap());
         assertThat(responseEntity.getStatusCode()).isEqualTo(BAD_REQUEST);
     }
 
@@ -98,6 +106,7 @@ class IdamLogonAuditControllerTest {
         );
 
         verify(logonLogService, times(1)).saveLogonLog(logonLog);
+        verifyNoInteractions(appInsights); // no telementry for successful posts.
         assertThat(responseEntity.getStatusCode()).isEqualTo(CREATED);
     }
 
@@ -116,6 +125,8 @@ class IdamLogonAuditControllerTest {
                 null,
                 logonLogPostRequest
         );
+
+        verify(appInsights, times(1)).trackEvent(any(),anyMap());
         assertThat(responseEntity.getStatusCode()).isEqualTo(BAD_REQUEST);
     }
 
@@ -139,6 +150,7 @@ class IdamLogonAuditControllerTest {
                 logonLogPostRequest
         );
 
+        verify(appInsights, times(1)).trackEvent(any(),anyMap());
         assertThat(responseEntity.getStatusCode()).isEqualTo(INTERNAL_SERVER_ERROR);
     }
 }

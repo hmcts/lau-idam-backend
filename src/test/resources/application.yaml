@@ -44,6 +44,13 @@ azure:
   application-insights:
     instrumentation-key: ${APPINSIGHTS_INSTRUMENTATIONKEY:00000000-0000-0000-0000-000000000000}
 
+security:
+  db:
+    backend-encryption-key: ThisIsATestKeyForEncryption
+    encryption-enabled: ${LAU_IDAM_ENCRYPTION_ENABLED:No}
+
 flyway:
   noop:
     strategy: "false"
+
+default.page.size: ${LAU_PAGE_SIZE_DEFAULT:10000}

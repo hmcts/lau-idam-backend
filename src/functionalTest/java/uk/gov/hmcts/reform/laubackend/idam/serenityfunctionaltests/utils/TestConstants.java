@@ -6,7 +6,7 @@ public final class TestConstants {
     public static final String S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal/testing-support";
 
     /*Logon endPoint*/
-    public static final String LOGON_ENDPOINT = "audit/logon";
+    public static final String LOGON_ENDPOINT = "/audit/logon";
     public static final String LOGON_DELETE_ENDPOINT = "/audit/logon/deleteAuditLogonRecord";
     public static final String SUCCESS = "Success";
 

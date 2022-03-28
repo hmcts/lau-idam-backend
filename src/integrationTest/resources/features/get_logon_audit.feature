@@ -28,7 +28,7 @@ Feature: The application's GET audit logon endpoint
     Given LAU IdAm backend application is healthy
     When I POST multiple records to "/audit/logon" endpoint using "CASE_INSENSITIVE1@email.com,CASE_INSENSITIVE2@email.com,CASE_INSENSITIVE3@email.com" emailAddresses
     And And I GET "/audit/logon" using emailAddress "case_insensitive1@email.com" query param
-    Then a single logon response body is returned for emailAddress "CASE_INSENSITIVE1@email.com"
+    Then a single logon response body is returned for emailAddress "case_insensitive1@email.com"
 
   Scenario: The backend is unable to process logon GET requests due to missing s2s
     Given LAU IdAm backend application is healthy

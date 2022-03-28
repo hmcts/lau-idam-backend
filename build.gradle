@@ -13,8 +13,8 @@ plugins {
     id 'pmd'
     id 'jacoco'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id 'org.springframework.boot' version '2.5.6'
-    id 'org.owasp.dependencycheck' version '6.5.0.1'
+    id 'org.springframework.boot' version '2.5.9'
+    id 'org.owasp.dependencycheck' version '6.5.3'
     id 'com.github.ben-manes.versions' version '0.39.0'
     id 'org.sonarqube' version '3.3'
     id "info.solidsoft.pitest" version '1.7.0'
@@ -244,6 +244,14 @@ dependencyManagement {
             entry 'spring-cloud-starter-openfeign'
             entry 'spring-cloud-openfeign-core'
         }
+        dependencySet(group: 'org.apache.tomcat.embed', version: '9.0.58') {
+          entry 'tomcat-embed-core'
+          entry 'tomcat-embed-websocket'
+        }
+        dependencySet(group: 'org.springframework.security', version: '5.6.1') {
+            entry 'spring-security-core'
+            entry 'spring-security-test'
+        }
     }
     imports {
         mavenBom 'org.springframework.cloud:spring-cloud-dependencies:2020.0.4'
@@ -276,7 +284,8 @@ def versions = [
         serviceAuthVersion: '4.0.2',
         commonsIo         : '2.11.0',
         cucumber          : '6.8.0',
-        wiremock          : '2.21.0'
+        wiremock          : '2.21.0',
+        fasterXmlJackson  : '2.13.2'
 ]
 
 ext.libraries = [
@@ -293,7 +302,7 @@ configurations.all {
     resolutionStrategy {
         eachDependency { DependencyResolveDetails details ->
             if (details.requested.group in ['org.apache.logging.log4j']) {
-                details.useVersion '2.15.0'
+                details.useVersion '2.17.1'
             }
         }
     }
@@ -329,13 +338,17 @@ dependencies {
     implementation group: 'org.flywaydb', name: 'flyway-core', version: '8.2.2'
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.18'
 
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.15.0'
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: '2.15.0'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.17.1'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: '2.17.1'
 
     implementation group: "com.networknt", name: "json-schema-validator", version: "1.0.64"
     implementation group: "com.gilecode.yagson", name: "j9-reflection-utils", version: "1.0"
     implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
     implementation("org.springframework.boot:spring-boot-devtools")
+
+    implementation group: 'com.fasterxml.jackson', name: 'jackson-bom', version: versions.fasterXmlJackson, ext: 'pom'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.fasterXmlJackson
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.2.1'
 
     implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
     implementation group: 'uk.gov.hmcts.reform', name: 'idam-client', version: '1.5.5'
@@ -363,9 +376,9 @@ dependencies {
     testCompile group: 'org.testcontainers', name: 'testcontainers', version: versions.testcontainers
     testCompile group: 'org.testcontainers', name: 'postgresql', version: versions.testcontainers
 
-    implementation group: 'com.h2database', name: 'h2', version: '2.0.202'
+    implementation group: 'com.h2database', name: 'h2', version: '2.1.210'
 
-    testCompile 'com.github.hmcts:fortify-client:1.2.0:all'
+    testImplementation 'com.github.hmcts:fortify-client:1.2.2:all'
 
     integrationTestCompile group: 'org.testcontainers', name: 'testcontainers', version: versions.testcontainers
     integrationTestCompile group: 'org.testcontainers', name: 'postgresql', version: versions.testcontainers
@@ -416,7 +429,6 @@ dependencies {
 
     cucumberRuntime 'io.cucumber:cucumber-java:6.9.1'
     cucumberRuntime 'org.springframework:spring-web'
-    cucumberRuntime 'com.fasterxml.jackson.core:jackson-core'
     cucumberRuntime group: 'org.springframework.security', name: 'spring-security-test'
     cucumberRuntime group: 'io.rest-assured', name: 'rest-assured', version: '4.2.1'
     cucumberRuntime group: 'io.rest-assured', name: 'json-path', version: '4.2.1'
@@ -449,9 +461,9 @@ flyway {
     user = System.getenv('FLYWAY_USER')
     password = System.getenv('FLYWAY_PASSWORD')
 
-    if (project.hasProperty("flyway.password")) {
+    if (System.getenv("LAU_IDAM_DB_PASSWORD")) {
         placeholders = [
-                'LAU_IDAM_DB_PASSWORD': project.getProperty("flyway.password")
+                'LAU_IDAM_DB_PASSWORD': System.getenv("LAU_IDAM_DB_PASSWORD")
         ]
     }
 
@@ -467,12 +479,6 @@ task migratePostgresDatabase(type: FlywayMigrateTask) {
         url = "jdbc:postgresql://${dburl}"
     }
 }
-
-//task fortifyScan(type: JavaExec)  {
-//  main = "uk.gov.hmcts.fortifyclient.FortifyClientMainApp"
-//  classpath += sourceSets.test.runtimeClasspath
-//  jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
-//}
 
 mainClassName = 'uk.gov.hmcts.reform.laubackend.idam.Application'
 

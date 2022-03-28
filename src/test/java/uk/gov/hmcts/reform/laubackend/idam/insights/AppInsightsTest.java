@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.REQUEST_SENT;
+import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.GET_LOGON_REQUEST_INVALID_REQUEST_EXCEPTION;
 
 class AppInsightsTest {
     private AppInsights classUnderTest;
@@ -33,7 +33,8 @@ class AppInsightsTest {
     @Test
     void trackRequest() {
         try {
-            classUnderTest.trackEvent(REQUEST_SENT.toString(), classUnderTest.trackingMap("uri", "http://testurl.com"));
+            classUnderTest.trackEvent(GET_LOGON_REQUEST_INVALID_REQUEST_EXCEPTION.toString(),
+                                      classUnderTest.trackingMap("excepion", "Error"));
         } catch (Exception exp) {
             fail("classUnderTest.trackEvent() failed.");
         }

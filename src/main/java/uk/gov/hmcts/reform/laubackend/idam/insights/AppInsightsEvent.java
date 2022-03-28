@@ -1,9 +1,10 @@
 package uk.gov.hmcts.reform.laubackend.idam.insights;
 
 public enum AppInsightsEvent {
-    REQUEST_SENT("Request made to: "),
-    REST_CLIENT_EXCEPTION("RestClientException: "),
-    ILLEGAL_ARGUMENT_EXCEPTION("IllegalArgumentException: ");
+    GET_LOGON_REQUEST_INFO("Audit GET IdAM Logon Request Info: "),
+    GET_LOGON_REQUEST_INVALID_REQUEST_EXCEPTION("Audit GET IdAM Logon Requst InvalidRequestException: "),
+    POST_LOGON_REQUEST_EXCEPTION("Audit POST IdAM Logon Request Exception: "),
+    POST_LOGON_REQUEST_INVALID_REQUEST_EXCEPTION("Audit POST IdAM Logon Requst InvalidRequestException: ");
 
     private String displayName;
 

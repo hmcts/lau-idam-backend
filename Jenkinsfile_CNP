@@ -9,12 +9,16 @@ def product = "lau"
 def component = "idam-backend"
 def branchesToSync = ['demo','perftest','ithc']
 
+
+def flywaySecrets = [
+        secret('idam-backend-app-db-password', 'FLYWAY_PLACEHOLDERS_LAU_IDAM_DB_PASSWORD')
+]
+
 def secrets = [
         'lau-${env}': [
                 secret('idam-backend-POSTGRES-USER', 'FLYWAY_USER'),
                 secret('idam-backend-POSTGRES-PASS', 'LAU_IDAM_DB_ADMIN_PASSWORD'),
                 secret('idam-backend-POSTGRES-PASS', 'FLYWAY_PASSWORD'),
-                secret('idam-backend-app-db-password', 'FLYWAY_PLACEHOLDERS_LAU_IDAM_DB_PASSWORD'),
                 secret('idam-backend-app-db-password', 'LAU_IDAM_DB_PASSWORD'),
                 secret('backend-encryption-key', 'LAU_IDAM_ENCRYPTION_KEY'),
                 secret( 'idam-client-secret', 'IDAM_CLIENT_SECRET')
@@ -39,13 +43,43 @@ withPipeline(type, product, component) {
     env.TEST_IDAM_CLIENT_REDIRECT_URI = 'https://lau-idam-backend-aat.service.core-compute-aat.internal/oauth2/callback'
     env.TEST_IDAM_CLIENT_NAME = 'lau'
 
-
     after('test') {
         // Run integration tests
         builder.gradle('integration')
     }
 
     loadVaultSecrets(secrets)
+
+    before('buildinfra:aat') {
+        withAzureKeyvault( azureKeyVaultSecrets: flywaySecrets, keyVaultURLOverride: 'https://lau-aat.vault.azure.net') {
+            env.FLYWAY_PLACEHOLDERS_LAU_IDAM_DB_PASSWORD = env.FLYWAY_PLACEHOLDERS_LAU_IDAM_DB_PASSWORD
+        }
+    }
+
+    before('buildinfra:demo') {
+        withAzureKeyvault( azureKeyVaultSecrets: flywaySecrets, keyVaultURLOverride: 'https://lau-demo.vault.azure.net') {
+            env.FLYWAY_PLACEHOLDERS_LAU_IDAM_DB_PASSWORD = env.FLYWAY_PLACEHOLDERS_LAU_IDAM_DB_PASSWORD
+        }
+    }
+
+    before('buildinfra:perftest') {
+        withAzureKeyvault( azureKeyVaultSecrets: flywaySecrets, keyVaultURLOverride: 'https://lau-perftest.vault.azure.net') {
+            env.FLYWAY_PLACEHOLDERS_LAU_IDAM_DB_PASSWORD = env.FLYWAY_PLACEHOLDERS_LAU_IDAM_DB_PASSWORD
+        }
+    }
+
+    before('buildinfra:ithc') {
+        withAzureKeyvault( azureKeyVaultSecrets: flywaySecrets, keyVaultURLOverride: 'https://lau-ithc.vault.azure.net') {
+            env.FLYWAY_PLACEHOLDERS_LAU_IDAM_DB_PASSWORD = env.FLYWAY_PLACEHOLDERS_LAU_IDAM_DB_PASSWORD
+        }
+    }
+
+    before('buildinfra:prod') {
+        withAzureKeyvault( azureKeyVaultSecrets: flywaySecrets, keyVaultURLOverride: 'https://lau-prod.vault.azure.net') {
+            env.FLYWAY_PLACEHOLDERS_LAU_IDAM_DB_PASSWORD = env.FLYWAY_PLACEHOLDERS_LAU_IDAM_DB_PASSWORD
+        }
+    }
+
     enableDbMigration('lau')
     enableSlackNotifications('#lau-builds')
     enableAksStagingDeployment()
