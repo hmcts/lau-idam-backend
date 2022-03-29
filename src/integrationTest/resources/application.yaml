@@ -61,6 +61,10 @@ idam:
     secret: 12345678
     redirect_uri: http://localhost:3451/oauth2redirect
 
+azure:
+  application-insights:
+    instrumentation-key: ${lau.AppInsightsInstrumentationKey:00000000-0000-0000-0000-000000000000}
+
 authorised.services: idam-web-admin,lau_frontend
 authorised.roles: cft-audit-investigator
 db.allow.delete.record: ${DB_ALLOW_DELETE_RECORD:true}

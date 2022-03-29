@@ -284,7 +284,8 @@ def versions = [
         serviceAuthVersion: '4.0.2',
         commonsIo         : '2.11.0',
         cucumber          : '6.8.0',
-        wiremock          : '2.21.0'
+        wiremock          : '2.21.0',
+        fasterXmlJackson  : '2.13.2'
 ]
 
 ext.libraries = [
@@ -345,12 +346,14 @@ dependencies {
     implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
     implementation("org.springframework.boot:spring-boot-devtools")
 
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.2'
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.13.2'
+    implementation group: 'com.fasterxml.jackson', name: 'jackson-bom', version: versions.fasterXmlJackson, ext: 'pom'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.fasterXmlJackson
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.2.1'
 
     implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
     implementation group: 'uk.gov.hmcts.reform', name: 'idam-client', version: '1.5.5'
     implementation group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.1.0', withoutSpringCloudContext
+    implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: '5.1.7'
 
     testImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
     testImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity

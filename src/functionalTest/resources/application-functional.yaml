@@ -29,3 +29,7 @@ api-config-params:
   number_of_days_limit: 90
 
 db.allow.delete.record: ${DB_ALLOW_DELETE_RECORD:true}
+
+azure:
+  application-insights:
+    instrumentation-key: ${lau.AppInsightsInstrumentationKey:00000000-0000-0000-0000-000000000000}
