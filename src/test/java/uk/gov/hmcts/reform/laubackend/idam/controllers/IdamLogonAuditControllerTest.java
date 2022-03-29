@@ -17,6 +17,7 @@ import uk.gov.hmcts.reform.laubackend.idam.service.LogonLogService;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -27,9 +28,14 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.OK;
+import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.GET_LOGON_REQUEST_INFO;
+import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.GET_LOGON_REQUEST_INVALID_REQUEST_EXCEPTION;
+import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.POST_LOGON_REQUEST_EXCEPTION;
+import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.POST_LOGON_REQUEST_INVALID_REQUEST_EXCEPTION;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@SuppressWarnings("PMD.LawOfDemeter")
 class IdamLogonAuditControllerTest {
 
     @Mock
@@ -62,7 +68,8 @@ class IdamLogonAuditControllerTest {
         );
 
         verify(logonLogService, times(1)).getLogonLog(any());
-        verify(appInsights, times(1)).trackEvent(any(),anyMap());
+        verify(appInsights, times(1))
+            .trackEvent(eq(GET_LOGON_REQUEST_INFO.toString()),anyMap());
         assertThat(responseEntity.getStatusCode()).isEqualTo(OK);
     }
 
@@ -79,7 +86,8 @@ class IdamLogonAuditControllerTest {
             null
         );
 
-        verify(appInsights, times(1)).trackEvent(any(),anyMap());
+        verify(appInsights, times(1))
+            .trackEvent(eq(GET_LOGON_REQUEST_INVALID_REQUEST_EXCEPTION.toString()),anyMap());
         assertThat(responseEntity.getStatusCode()).isEqualTo(BAD_REQUEST);
     }
 
@@ -126,7 +134,8 @@ class IdamLogonAuditControllerTest {
                 logonLogPostRequest
         );
 
-        verify(appInsights, times(1)).trackEvent(any(),anyMap());
+        verify(appInsights, times(1))
+            .trackEvent(eq(POST_LOGON_REQUEST_INVALID_REQUEST_EXCEPTION.toString()),anyMap());
         assertThat(responseEntity.getStatusCode()).isEqualTo(BAD_REQUEST);
     }
 
@@ -150,7 +159,8 @@ class IdamLogonAuditControllerTest {
                 logonLogPostRequest
         );
 
-        verify(appInsights, times(1)).trackEvent(any(),anyMap());
+        verify(appInsights, times(1))
+            .trackEvent(eq(POST_LOGON_REQUEST_EXCEPTION.toString()),anyMap());
         assertThat(responseEntity.getStatusCode()).isEqualTo(INTERNAL_SERVER_ERROR);
     }
 }

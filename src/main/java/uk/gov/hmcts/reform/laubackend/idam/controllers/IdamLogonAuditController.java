@@ -159,10 +159,10 @@ public class IdamLogonAuditController {
                                                                                          endTime,
                                                                                          size,
                                                                                          page);
+            final long timeStart = System.currentTimeMillis();
             verifyRequestLogonParamsAreNotEmpty(inputParamsHolder);
             verifyRequestLogonParamsConditions(inputParamsHolder);
 
-            final long timeStart = System.currentTimeMillis();
             final LogonLogGetResponse logonLog = logonLogService.getLogonLog(inputParamsHolder);
             final long timeEnd = System.currentTimeMillis();
             final String report = (timeEnd - timeStart) > PERF_TOLERANCE_THRESHOLD_MS
