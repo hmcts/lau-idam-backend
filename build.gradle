@@ -285,7 +285,8 @@ def versions = [
         commonsIo         : '2.11.0',
         cucumber          : '6.8.0',
         wiremock          : '2.21.0',
-        fasterXmlJackson  : '2.13.2'
+        fasterXmlJackson  : '2.13.2',
+        springFramework   : '5.3.18'
 ]
 
 ext.libraries = [
@@ -344,7 +345,7 @@ dependencies {
     implementation group: "com.networknt", name: "json-schema-validator", version: "1.0.64"
     implementation group: "com.gilecode.yagson", name: "j9-reflection-utils", version: "1.0"
     implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
-    implementation("org.springframework.boot:spring-boot-devtools")
+    implementation group: 'org.springframework.boot', name: 'spring-boot-devtools'
 
     implementation group: 'com.fasterxml.jackson', name: 'jackson-bom', version: versions.fasterXmlJackson, ext: 'pom'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.fasterXmlJackson
@@ -424,11 +425,11 @@ dependencies {
     testImplementation group: 'au.com.dius.pact.provider', name: 'junit', version: '4.1.7'
     testImplementation group: 'au.com.dius.pact.provider', name: 'junit5spring', version: '4.1.7'
 
-    testImplementation 'io.cucumber:cucumber-java:6.9.1'
-    testImplementation 'io.cucumber:cucumber-junit:6.9.1'
+    testImplementation group: 'io.cucumber', name: 'cucumber-java', version: '6.9.1'
+    testImplementation group: 'io.cucumber', name: 'cucumber-junit', version: '6.9.1'
 
-    cucumberRuntime 'io.cucumber:cucumber-java:6.9.1'
-    cucumberRuntime 'org.springframework:spring-web'
+    cucumberRuntime group: 'io.cucumber', name: 'cucumber-java', version: '6.9.1'
+    cucumberRuntime group: 'org.springframework', name: 'spring-web', version: versions.springFramework
     cucumberRuntime group: 'org.springframework.security', name: 'spring-security-test'
     cucumberRuntime group: 'io.rest-assured', name: 'rest-assured', version: '4.2.1'
     cucumberRuntime group: 'io.rest-assured', name: 'json-path', version: '4.2.1'
