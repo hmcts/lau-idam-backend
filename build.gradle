@@ -13,7 +13,7 @@ plugins {
     id 'pmd'
     id 'jacoco'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id 'org.springframework.boot' version '2.5.12'
+    id 'org.springframework.boot' version '2.5.13'
     id 'org.owasp.dependencycheck' version '6.5.3'
     id 'com.github.ben-manes.versions' version '0.39.0'
     id 'org.sonarqube' version '3.3'
@@ -248,7 +248,7 @@ dependencyManagement {
           entry 'tomcat-embed-core'
           entry 'tomcat-embed-websocket'
         }
-        dependencySet(group: 'org.springframework.security', version: '5.6.2') {
+        dependencySet(group: 'org.springframework.security', version: '5.6.3') {
             entry 'spring-security-core'
             entry 'spring-security-test'
         }
@@ -286,7 +286,7 @@ def versions = [
         cucumber          : '6.8.0',
         wiremock          : '2.21.0',
         fasterXmlJackson  : '2.13.2',
-        springFramework   : '5.3.18'
+        springFramework   : '5.3.19'
 ]
 
 ext.libraries = [
