@@ -286,7 +286,8 @@ def versions = [
         cucumber          : '6.8.0',
         wiremock          : '2.21.0',
         fasterXmlJackson  : '2.13.2',
-        springFramework   : '5.3.19'
+        springFramework   : '5.3.19',
+        log4j             : '2.17.2'
 ]
 
 ext.libraries = [
@@ -303,7 +304,7 @@ configurations.all {
     resolutionStrategy {
         eachDependency { DependencyResolveDetails details ->
             if (details.requested.group in ['org.apache.logging.log4j']) {
-                details.useVersion '2.17.1'
+                details.useVersion versions.log4j
             }
         }
     }
@@ -339,8 +340,8 @@ dependencies {
     implementation group: 'org.flywaydb', name: 'flyway-core', version: '8.5.10'
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.3.3'
 
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.17.1'
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: '2.17.1'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version:versions.log4j
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version:versions.log4j
 
     implementation group: "com.networknt", name: "json-schema-validator", version: "1.0.64"
     implementation group: "com.gilecode.yagson", name: "j9-reflection-utils", version: "1.0"
