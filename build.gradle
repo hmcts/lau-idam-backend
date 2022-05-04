@@ -240,7 +240,7 @@ dependencyManagement {
         dependencySet(group: 'com.google.guava', version: '31.0.1-jre') {
             entry 'guava'
         }
-        dependencySet(group: 'org.springframework.cloud', version: '3.0.5') {
+        dependencySet(group: 'org.springframework.cloud', version: '3.1.2') {
             entry 'spring-cloud-starter-openfeign'
             entry 'spring-cloud-openfeign-core'
         }
@@ -335,7 +335,7 @@ dependencies {
 
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.10.RELEASE'
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap'
-    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '3.0.5'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '3.1.2'
 
     implementation group: 'org.flywaydb', name: 'flyway-core', version: '8.5.10'
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.3.3'
