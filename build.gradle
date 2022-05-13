@@ -268,7 +268,7 @@ repositories {
 }
 
 def versions = [
-        junit             : '5.8.2',
+        junit             : '5.7.2',
         junitPlatform     : '1.8.2',
         reformLogging     : '5.1.7',
         springBoot        : springBoot.class.package.implementationVersion,
