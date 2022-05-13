@@ -177,6 +177,7 @@ pitest {
     timestampedReports = false
     mutationThreshold = 50
     timeoutConstInMillis = 30000
+    verbose = true
     mutators.set([
             'CONDITIONALS_BOUNDARY',
             'INCREMENTS',
