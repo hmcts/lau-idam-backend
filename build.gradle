@@ -166,7 +166,7 @@ jacocoTestReport {
 
 pitest {
     pitestVersion.set('1.7.4')
-    junit5PluginVersion.set('0.12')
+    junit5PluginVersion.set('0.15')
     targetClasses = ['uk.gov.hmcts.reform.laubackend.*']
     excludedClasses = [
             'uk.gov.hmcts.reform.laubackend.idam.madeup.*'
@@ -177,7 +177,6 @@ pitest {
     timestampedReports = false
     mutationThreshold = 50
     timeoutConstInMillis = 30000
-    verbose = true
     mutators.set([
             'CONDITIONALS_BOUNDARY',
             'INCREMENTS',
