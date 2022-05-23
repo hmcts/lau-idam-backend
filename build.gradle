@@ -417,7 +417,7 @@ dependencies {
 //Added for FN tests
     testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '4.2.1'
     testImplementation group: 'io.rest-assured', name: 'json-path', version: '4.2.1'
-    testImplementation group: 'io.rest-assured', name: 'xml-path', version: '4.2.1'
+    testImplementation group: 'io.rest-assured', name: 'xml-path', version: '5.0.1'
     testImplementation group: 'com.google.code.gson', name: 'gson', version: '2.9.0'
     testImplementation group: 'com.googlecode.junit-toolbox', name: 'junit-toolbox', version: '2.4'
     testImplementation group: 'org.testng', name: 'testng', version: '7.5'
