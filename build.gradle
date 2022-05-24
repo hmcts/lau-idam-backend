@@ -327,6 +327,20 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security'
 
+    implementation group: 'org.springframework', name:'spring-aop', version: versions.springFramework
+    implementation group: 'org.springframework', name:'spring-aspects', version: versions.springFramework
+    implementation group: 'org.springframework', name:'spring-beans', version: versions.springFramework
+    implementation group: 'org.springframework', name:'spring-context', version: versions.springFramework
+    implementation group: 'org.springframework', name:'spring-core', version: versions.springFramework
+    implementation group: 'org.springframework', name:'spring-expression', version: versions.springFramework
+    implementation group: 'org.springframework', name:'spring-jcl', version: versions.springFramework
+    implementation group: 'org.springframework', name:'spring-jdbc', version: versions.springFramework
+    implementation group: 'org.springframework', name:'spring-orm', version: versions.springFramework
+    implementation group: 'org.springframework', name:'spring-oxm', version: versions.springFramework
+    implementation group: 'org.springframework', name:'spring-tx', version: versions.springFramework
+    implementation group: 'org.springframework', name:'spring-web', version: versions.springFramework
+    implementation group: 'org.springframework', name:'spring-webmvc', version: versions.springFramework
+
     implementation group: 'io.springfox', name: 'springfox-swagger2', version: versions.springfoxSwagger
     implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: versions.springfoxSwaggerui
 
