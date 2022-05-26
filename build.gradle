@@ -364,7 +364,7 @@ dependencies {
 
     implementation group: 'com.fasterxml.jackson', name: 'jackson-bom', version: versions.fasterXmlJackson, ext: 'pom'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.fasterXmlJackson
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.2.1'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.3'
 
     implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
     implementation group: 'uk.gov.hmcts.reform', name: 'idam-client', version: '1.5.5'
@@ -437,7 +437,7 @@ dependencies {
     testImplementation group: 'org.testng', name: 'testng', version: '7.5'
     testImplementation group: 'au.com.dius.pact.provider', name: 'junit5', version: '4.1.7'
     testImplementation group: 'au.com.dius.pact.provider', name: 'junit', version: '4.1.7'
-    testImplementation group: 'au.com.dius.pact.provider', name: 'junit5spring', version: '4.1.7'
+    testImplementation group: 'au.com.dius.pact.provider', name: 'junit5spring', version: '4.3.8'
 
     testImplementation group: 'io.cucumber', name: 'cucumber-java', version: '6.9.1'
     testImplementation group: 'io.cucumber', name: 'cucumber-junit', version: '6.9.1'
