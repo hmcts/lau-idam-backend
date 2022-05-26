@@ -440,7 +440,7 @@ dependencies {
     testImplementation group: 'au.com.dius.pact.provider', name: 'junit5spring', version: '4.1.7'
 
     testImplementation group: 'io.cucumber', name: 'cucumber-java', version: '6.9.1'
-    testImplementation group: 'io.cucumber', name: 'cucumber-junit', version: '6.9.1'
+    testImplementation group: 'io.cucumber', name: 'cucumber-junit', version: '7.3.4'
 
     cucumberRuntime group: 'io.cucumber', name: 'cucumber-java', version: '6.9.1'
     cucumberRuntime group: 'org.springframework', name: 'spring-web', version: versions.springFramework
