@@ -236,7 +236,6 @@ dependencyCheck {
 dependencyManagement {
     dependencies {
         dependency group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.70'
-        dependency group: 'com.vladsch.flexmark', name: 'flexmark-all', version: '0.64.0'
         // CVE-2018-10237 - Unbounded memory allocation
         dependencySet(group: 'com.google.guava', version: '31.0.1-jre') {
             entry 'guava'
@@ -269,7 +268,7 @@ repositories {
 }
 
 def versions = [
-        junit             : '5.8.2',
+        junit             : '5.7.2',
         junitPlatform     : '1.8.2',
         reformLogging     : '5.1.7',
         springBoot        : springBoot.class.package.implementationVersion,
