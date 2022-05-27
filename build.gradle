@@ -236,6 +236,7 @@ dependencyCheck {
 dependencyManagement {
     dependencies {
         dependency group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.70'
+        dependency group: 'com.vladsch.flexmark', name: 'flexmark-all', version: '0.64.0'
         // CVE-2018-10237 - Unbounded memory allocation
         dependencySet(group: 'com.google.guava', version: '31.0.1-jre') {
             entry 'guava'
@@ -383,12 +384,7 @@ dependencies {
     testImplementation group: 'io.cucumber', name: 'cucumber-spring', version: versions.cucumber
     testImplementation group: 'com.github.tomakehurst', name: 'wiremock-jre8-standalone', version: versions.wiremock
 
-    // https://mvnrepository.com/artifact/com.vladsch.flexmark/flexmark-all
-    testImplementation group: 'com.vladsch.flexmark', name: 'flexmark-all', version: '0.64.0'
-
-
-
-  annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
     testCompile group: 'info.solidsoft.gradle.pitest', name: 'gradle-pitest-plugin', version: versions.gradlePitest
     testCompile 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
