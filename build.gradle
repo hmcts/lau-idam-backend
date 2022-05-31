@@ -268,7 +268,7 @@ repositories {
 }
 
 def versions = [
-        junit             : '5.7.2',
+        junit             : '5.8.2',
         junitPlatform     : '1.8.2',
         reformLogging     : '5.1.7',
         springBoot        : springBoot.class.package.implementationVersion,
@@ -282,7 +282,7 @@ def versions = [
         restAssured       : '4.4.0',
         serviceAuthVersion: '4.0.2',
         commonsIo         : '2.11.0',
-        cucumber          : '6.9.1',
+        cucumber          : '6.11.0',
         wiremock          : '2.21.0',
         fasterXmlJackson  : '2.13.2',
         springFramework   : '5.3.20',
