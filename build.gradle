@@ -248,7 +248,7 @@ dependencyManagement {
           entry 'tomcat-embed-core'
           entry 'tomcat-embed-websocket'
         }
-        dependencySet(group: 'org.springframework.security', version: '5.6.3') {
+        dependencySet(group: 'org.springframework.security', version: '5.7.1') {
             entry 'spring-security-core'
             entry 'spring-security-test'
         }
@@ -287,7 +287,8 @@ def versions = [
         fasterXmlJackson  : '2.13.2',
         springFramework   : '5.3.20',
         log4j             : '2.17.2',
-        springCloud       : '3.1.2'
+        springCloud       : '3.1.2',
+        springSecurity    : '5.7.1'
 ]
 
 ext.libraries = [
@@ -350,6 +351,10 @@ dependencies {
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.10.RELEASE'
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: versions.springCloud
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloud
+
+    implementation group: 'org.springframework.security', name: 'spring-security-web', version: versions.springSecurity
+    implementation group: 'org.springframework.security', name: 'spring-security-crypto', version: versions.springSecurity
+    implementation group: 'org.springframework.security', name: 'spring-security-config', version: versions.springSecurity
 
     implementation group: 'org.flywaydb', name: 'flyway-core', version: '8.5.10'
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.3.3'
