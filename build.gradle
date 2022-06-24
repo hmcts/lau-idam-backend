@@ -3,7 +3,7 @@ buildscript {
     mavenCentral()
   }
   dependencies {
-    classpath("net.serenity-bdd:serenity-gradle-plugin:2.4.24")
+    classpath("net.serenity-bdd:serenity-gradle-plugin:2.6.0")
   }
 }
 
@@ -274,7 +274,7 @@ def versions = [
         springBoot        : springBoot.class.package.implementationVersion,
         springfoxSwagger  : '3.0.0',
         springfoxSwaggerui: '2.9.2',
-        serenity          : '2.5.10',
+        serenity          : '2.6.0',
         gradlePitest      : '1.7.4',
         sonarPitest       : '0.5',
         lombok            : '1.18.12',
@@ -332,7 +332,7 @@ dependencies {
     implementation group: 'org.springframework', name:'spring-aspects', version: versions.springFramework
     implementation group: 'org.springframework', name:'spring-beans', version: versions.springFramework
     implementation group: 'org.springframework', name:'spring-context', version: versions.springFramework
-    implementation group: 'org.springframework', name:'spring-test', version: versions.springFramework
+    implementation group: 'org.springframework', name:'spring-context', version: versions.springFramework
     implementation group: 'org.springframework', name:'spring-core', version: versions.springFramework
     implementation group: 'org.springframework', name:'spring-expression', version: versions.springFramework
     implementation group: 'org.springframework', name:'spring-jcl', version: versions.springFramework
