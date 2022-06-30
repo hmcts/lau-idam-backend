@@ -3,7 +3,7 @@ buildscript {
     mavenCentral()
   }
   dependencies {
-    classpath("net.serenity-bdd:serenity-gradle-plugin:2.4.24")
+    classpath("net.serenity-bdd:serenity-gradle-plugin:2.6.0")
   }
 }
 
@@ -274,7 +274,7 @@ def versions = [
         springBoot        : springBoot.class.package.implementationVersion,
         springfoxSwagger  : '3.0.0',
         springfoxSwaggerui: '2.9.2',
-        serenity          : '2.5.10',
+        serenity          : '2.6.0',
         gradlePitest      : '1.7.4',
         sonarPitest       : '0.5',
         lombok            : '1.18.12',
@@ -285,7 +285,7 @@ def versions = [
         cucumber          : '6.11.0',
         wiremock          : '2.21.0',
         fasterXmlJackson  : '2.13.2',
-        springFramework   : '5.3.20',
+        springFramework   : '5.3.21',
         log4j             : '2.17.2',
         springCloud       : '3.1.2',
         springSecurity    : '5.7.1'
@@ -442,7 +442,7 @@ dependencies {
     testImplementation group: 'org.testng', name: 'testng', version: '7.5'
     testImplementation group: 'au.com.dius.pact.provider', name: 'junit5', version: '4.1.7'
     testImplementation group: 'au.com.dius.pact.provider', name: 'junit', version: '4.1.7'
-    testImplementation group: 'au.com.dius.pact.provider', name: 'junit5spring', version: '4.1.7'
+    testImplementation group: 'au.com.dius.pact.provider', name: 'junit5spring', version: '4.3.10'
 
     testImplementation group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber
     testImplementation group: 'io.cucumber', name: 'cucumber-junit', version: versions.cucumber
@@ -468,7 +468,7 @@ dependencies {
         exclude(module: 'htmlunit')
     }
     testImplementation group: 'net.serenity-bdd', name: 'serenity-junit'
-
+  
 }
 
 test {
