@@ -26,9 +26,9 @@ java:
   postgresql:
     enabled: true
     initdbUser: postgres
-      initdbScripts:
-        init.sql: |-
-          CREATE ROLE lauuser WITH LOGIN PASSWORD 'laupass';
-          CREATE EXTENSION IF NOT EXISTS pgcrypto;
-          CREATE EXTENSION IF NOT EXISTS citext;
+    initdbScripts:
+      init.sql: |-
+        CREATE ROLE lauuser WITH LOGIN PASSWORD 'laupass';
+        CREATE EXTENSION IF NOT EXISTS pgcrypto;
+        CREATE EXTENSION IF NOT EXISTS citext;
 
