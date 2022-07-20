@@ -31,4 +31,3 @@ java:
         CREATE ROLE lauuser WITH LOGIN PASSWORD 'laupass';
         CREATE EXTENSION IF NOT EXISTS pgcrypto;
         CREATE EXTENSION IF NOT EXISTS citext;
-
