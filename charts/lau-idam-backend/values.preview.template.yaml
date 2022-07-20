@@ -25,12 +25,3 @@ java:
 
   postgresql:
     enabled: true
-    postgresqlUsername: lauadmin
-    postgresqlPassword: laupass
-    postgresqlDatabase: lau_idam
-    initdbUser: postgres
-    initdbScripts:
-      init.sql: |-
-        CREATE ROLE lauuser WITH LOGIN PASSWORD 'laupass';
-        CREATE EXTENSION IF NOT EXISTS pgcrypto;
-        CREATE EXTENSION IF NOT EXISTS citext;
