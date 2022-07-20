@@ -1,7 +1,7 @@
 java:
   environment:
     LAU_IDAM_DB_NAME: "{{ .Values.postgresql.auth.database }}"
-    LAU_IDAM_DB_USERNAME: "{{ .Values.postgresql.auth.username }}"
+    LAU_IDAM_DB_USERNAME: "lauuser"
     LAU_IDAM_DB_PASSWORD: "{{ .Values.postgresql.auth.password }}"
     LAU_IDAM_DB_ADMIN_USERNAME: "{{ .Values.postgresql.auth.username }}"
     LAU_IDAM_DB_ADMIN_PASSWORD: "{{ .Values.postgresql.auth.password }}"
@@ -28,7 +28,7 @@ java:
     initdbUser: postgres
     initdbScripts:
       init.sql: |-
-        CREATE ROLE lauuser WITH LOGIN PASSWORD 'laupass';
+        CREATE ROLE lauuser WITH LOGIN PASSWORD 'javapassword';
         CREATE EXTENSION IF NOT EXISTS pgcrypto;
         CREATE EXTENSION IF NOT EXISTS citext;
 
