@@ -467,7 +467,7 @@ dependencies {
     testImplementation(group: 'net.serenity-bdd', name: 'serenity-core') {
         exclude(module: 'htmlunit')
     }
-  testImplementation group: 'net.serenity-bdd', name: 'serenity-junit'
+    testImplementation group: 'net.serenity-bdd', name: 'serenity-junit'
 
 }
 
