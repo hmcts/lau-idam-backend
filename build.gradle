@@ -373,6 +373,7 @@ dependencies {
 
     implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
     implementation group: 'uk.gov.hmcts.reform', name: 'idam-client', version: '2.0.0'
+    implementation group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.1.0', withoutSpringCloudContext
     implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: '5.1.7'
 
     testImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
