@@ -440,6 +440,9 @@ dependencies {
     testImplementation group: 'com.google.code.gson', name: 'gson', version: '2.9.0'
     testImplementation group: 'com.googlecode.junit-toolbox', name: 'junit-toolbox', version: '2.4'
     testImplementation group: 'org.testng', name: 'testng', version: '7.6.1'
+    testImplementation group: 'au.com.dius.pact.provider', name: 'junit5', version: '4.1.7'
+    testImplementation group: 'au.com.dius.pact.provider', name: 'junit', version: '4.1.7'
+    testImplementation group: 'au.com.dius.pact.provider', name: 'junit5spring', version: '4.1.7'
 
     testImplementation group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber
     testImplementation group: 'io.cucumber', name: 'cucumber-junit', version: versions.cucumber
