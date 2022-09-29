@@ -55,7 +55,7 @@ zap-cli --zap-url http://$ZAP_HOST -p $ZAP_PORT report -o zap-report.html -f htm
 echo 'Changing owner from $(id -u):$(id -g) to $(id -u):$(id -u)'
 chown -R $(id -u):$(id -u) zap-report.html
 mkdir -p functional-output && chmod a+wx functional-output
-cp *.html functional-output/
+cp zap-report.html functional-output/zap-report.html
 zap-cli -p $ZAP_PORT alerts -l Informational
 zap-cli --zap-url http://$ZAP_HOST -p $ZAP_PORT alerts -l High --exit-code False
 curl --fail http://${ZAP_HOST}:${ZAP_PORT}/OTHER/core/other/jsonreport/?formMethod=GET --output report.json
