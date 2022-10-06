@@ -369,7 +369,7 @@ dependencies {
 
     implementation group: 'com.fasterxml.jackson', name: 'jackson-bom', version: versions.fasterXmlJackson, ext: 'pom'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.fasterXmlJackson
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: 'versions.fasterXmlJackson
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.fasterXmlJackson
 
     implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
     implementation group: 'uk.gov.hmcts.reform', name: 'idam-client', version: '2.0.0'
