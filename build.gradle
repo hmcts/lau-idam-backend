@@ -284,7 +284,7 @@ def versions = [
         commonsIo         : '2.11.0',
         cucumber          : '6.11.0',
         wiremock          : '2.21.0',
-        fasterXmlJackson  : '2.13.2',
+        fasterXmlJackson  : '2.14.0-rc1',
         springFramework   : '5.3.21',
         log4j             : '2.17.2',
         springCloud       : '3.1.2',
@@ -369,7 +369,7 @@ dependencies {
 
     implementation group: 'com.fasterxml.jackson', name: 'jackson-bom', version: versions.fasterXmlJackson, ext: 'pom'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.fasterXmlJackson
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.3'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.0-rc1'
 
     implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
     implementation group: 'uk.gov.hmcts.reform', name: 'idam-client', version: '2.0.0'
