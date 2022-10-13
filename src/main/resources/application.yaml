@@ -31,6 +31,8 @@ spring:
       poolName: LAUIdamHikariCP
       maxLifetime: 7200000
       connectionTimeout: 60000
+      data-source-properties:
+        socketTimeout: 60
   #    tomcat:
   #      max-active: 10
   #      max-idle: 10
