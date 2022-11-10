@@ -1,10 +1,22 @@
 # LAU Idam Backend Application
 
-[![Build Status](https://travis-ci.org/hmcts/lau-idam-backend.svg?branch=master)](https://travis-ci.org/hmcts/lau-idam-backend)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=uk.gov.hmcts.reform%3Alau-idam-backend&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=uk.gov.hmcts.reform%3Alau-idam-backend) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=uk.gov.hmcts.reform%3Alau-idam-backend&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=uk.gov.hmcts.reform%3Alau-idam-backend) [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=uk.gov.hmcts.reform%3Alau-idam-backend&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=uk.gov.hmcts.reform%3Alau-idam-backend) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=uk.gov.hmcts.reform%3Alau-idam-backend&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=uk.gov.hmcts.reform%3Alau-idam-backend) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=uk.gov.hmcts.reform%3Alau-idam-backend&metric=coverage)](https://sonarcloud.io/summary/new_code?id=uk.gov.hmcts.reform%3Alau-idam-backend)
 
 ## Purpose
 
 This is the Log and Audit Idam Back-End application that will provide an endpoint to capture idam log actions to the database.
+
+## Overview
+
+<p align="center">
+<a href="https://github.com/hmcts/lau-frontend">lau-frontend</a> • <a href="https://github.com/hmcts/lau-case-backend">lau-case-backend</a> • <b><a href="https://github.com/hmcts/lau-idam-backend">lau-idam-backend</a></b> • <a href="https://github.com/hmcts/lau-shared-infrastructure">lau-shared-infrastructure</a>
+</p>
+
+<br>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/hmcts/reform-api-docs/master/docs/c4/lau/images/structurizr-lau-overview.png" width="500"/>
+</p>
 
 ## What's inside
 
