@@ -165,7 +165,6 @@ jacocoTestReport {
 }
 
 pitest {
-    pitestVersion.set('1.7.4')
     junit5PluginVersion.set('0.15')
     targetClasses = ['uk.gov.hmcts.reform.laubackend.*']
     excludedClasses = [
@@ -356,7 +355,7 @@ dependencies {
     implementation group: 'org.springframework.security', name: 'spring-security-crypto', version: versions.springSecurity
     implementation group: 'org.springframework.security', name: 'spring-security-config', version: versions.springSecurity
 
-    implementation group: 'org.flywaydb', name: 'flyway-core', version: '8.5.10'
+    implementation group: 'org.flywaydb', name: 'flyway-core', version: '8.5.13'
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.4.1'
 
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version:versions.log4j
@@ -460,7 +459,7 @@ dependencies {
     testAnnotationProcessor group: 'org.projectlombok', name: 'lombok'
 
     testImplementation group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
-    testImplementation group: 'net.sourceforge.htmlunit', name: 'htmlunit', version: '2.61.0'
+    testImplementation group: 'net.sourceforge.htmlunit', name: 'htmlunit', version: '2.67.0'
     testImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured'
     testImplementation(group: 'net.serenity-bdd', name: 'serenity-core') {
         exclude(module: 'htmlunit')
