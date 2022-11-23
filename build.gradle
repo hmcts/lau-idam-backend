@@ -17,7 +17,7 @@ plugins {
     id 'org.owasp.dependencycheck' version '7.1.1'
     id 'com.github.ben-manes.versions' version '0.42.0'
     id 'org.sonarqube' version '3.3'
-    id "info.solidsoft.pitest" version '1.7.4'
+    id "info.solidsoft.pitest" version '1.9.0'
     id 'com.gorylenko.gradle-git-properties' version '2.4.1'
     id 'org.flywaydb.flyway' version '8.5.13'
 }
@@ -165,8 +165,7 @@ jacocoTestReport {
 }
 
 pitest {
-    pitestVersion.set('1.7.4')
-    junit5PluginVersion.set('0.15')
+    junit5PluginVersion.set('1.0.0')
     targetClasses = ['uk.gov.hmcts.reform.laubackend.*']
     excludedClasses = [
             'uk.gov.hmcts.reform.laubackend.idam.madeup.*'
@@ -275,7 +274,7 @@ def versions = [
         springfoxSwagger  : '3.0.0',
         springfoxSwaggerui: '2.9.2',
         serenity          : '2.6.0',
-        gradlePitest      : '1.7.4',
+        gradlePitest      : '1.9.0',
         sonarPitest       : '0.5',
         lombok            : '1.18.12',
         testcontainers    : '1.16.2',
@@ -356,7 +355,7 @@ dependencies {
     implementation group: 'org.springframework.security', name: 'spring-security-crypto', version: versions.springSecurity
     implementation group: 'org.springframework.security', name: 'spring-security-config', version: versions.springSecurity
 
-    implementation group: 'org.flywaydb', name: 'flyway-core', version: '8.5.10'
+    implementation group: 'org.flywaydb', name: 'flyway-core', version: '8.5.13'
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.4.1'
 
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version:versions.log4j
@@ -460,7 +459,7 @@ dependencies {
     testAnnotationProcessor group: 'org.projectlombok', name: 'lombok'
 
     testImplementation group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
-    testImplementation group: 'net.sourceforge.htmlunit', name: 'htmlunit', version: '2.61.0'
+    testImplementation group: 'net.sourceforge.htmlunit', name: 'htmlunit', version: '2.67.0'
     testImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured'
     testImplementation(group: 'net.serenity-bdd', name: 'serenity-core') {
         exclude(module: 'htmlunit')
