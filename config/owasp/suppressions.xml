@@ -38,4 +38,8 @@
   <suppress until="2023-01-07">
     <cve>CVE-2022-31569</cve>
   </suppress>
+  <suppress>
+    <packageUrl regex="true">^pkg:maven/com.h2database/h2@.*$</packageUrl>
+    <cve>CVE-2022-45868</cve>
+  </suppress>
 </suppressions>
