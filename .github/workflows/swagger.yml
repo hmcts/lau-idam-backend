@@ -1,4 +1,4 @@
-name: Publish Swagger Spec
+name: Publish Swagger Specs
 
 on:
   push:
