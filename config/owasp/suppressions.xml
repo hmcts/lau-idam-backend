@@ -43,4 +43,12 @@
     <packageUrl regex="true">^pkg:maven/com.h2database/h2@.*$</packageUrl>
     <cve>CVE-2022-45868</cve>
   </suppress>
+  <suppress>
+    <packageUrl regex="true">^pkg:maven/org.latencyutils/LatencyUtils@.*$</packageUrl>
+    <cve>CVE-2021-4277</cve>
+  </suppress>
+  <suppress>
+    <packageUrl regex="true">^pkg:maven/com.gilecode.yagson/j9-reflection-utils@.*$</packageUrl>
+    <cve>CVE-2021-4277</cve>
+  </suppress>
 </suppressions>

@@ -51,7 +51,7 @@ withPipeline(type, product, component) {
     env.TEST_IDAM_CLIENT_REDIRECT_URI = 'https://lau-idam-backend-aat.service.core-compute-aat.internal/oauth2/callback'
     env.TEST_IDAM_CLIENT_NAME = 'lau'
 
-    after('test') {
+    afterAlways('test') {
         // Run integration tests
         builder.gradle('integration')
     }
