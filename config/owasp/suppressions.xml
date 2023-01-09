@@ -51,4 +51,8 @@
     <packageUrl regex="true">^pkg:maven/com.gilecode.yagson/j9-reflection-utils@.*$</packageUrl>
     <cve>CVE-2021-4277</cve>
   </suppress>
+  <suppress>
+    <packageUrl regex="true">^pkg:maven/org.yaml/snakeyaml@.*$</packageUrl>
+    <cpe>cpe:/a:yaml_project:yaml</cpe>
+  </suppress>
 </suppressions>
