@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 
-@SuppressWarnings("PMD.TooManyMethods")
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.CyclomaticComplexity"})
 public class LogOnGetApiSteps extends BaseSteps {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LogOnGetApiSteps.class);
@@ -110,7 +110,12 @@ public class LogOnGetApiSteps extends BaseSteps {
                     "ipAddress is missing in the response",
                     inputQueryParamMap.get(queryParam), ipAddress
                 );
-
+            } else if ("loginState".equals(queryParam)) {
+                String loginState = logonLogObj.getLoginState();
+                Assert.assertEquals(
+                        "loginState is missing in the response",
+                        inputQueryParamMap.get(queryParam), loginState
+                );
             } else if ("timestamp".equals(queryParam)) {
                 String timestamp = logonLogObj.getTimestamp();
                 Assert.assertEquals(

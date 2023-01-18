@@ -19,6 +19,7 @@ public class LogOnPostApiSteps extends BaseSteps {
         logonLog.setEmailAddress("firstname.lastname@company.com");
         logonLog.setService("idam-web-admin");
         logonLog.setIpAddress("192.158.1.38");
+        logonLog.setLoginState("AUTHORIZE");
         logonLog.setTimestamp("2021-08-23T22:20:05.023Z");
         LogOnRequestVO logOnRequestVO = new LogOnRequestVO();
         logOnRequestVO.setLogonLog(logonLog);

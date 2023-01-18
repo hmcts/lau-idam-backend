@@ -82,6 +82,7 @@ public class LogonLogService {
         idamLogonAudit.setUserId(logonLog.getUserId());
         idamLogonAudit.setService(logonLog.getService());
         idamLogonAudit.setIpAddress(logonLog.getIpAddress());
+        idamLogonAudit.setLoginState(logonLog.getLoginState());
         idamLogonAudit.setEmailAddress(lowerCase(logonLog.getEmailAddress()));
         idamLogonAudit.setTimestamp(timestampUtil.getUtcTimestampValue(logonLog.getTimestamp()));
 

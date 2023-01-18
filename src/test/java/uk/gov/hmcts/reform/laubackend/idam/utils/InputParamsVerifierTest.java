@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.EMAIL_ADDRESS_POST_EXCEPTION_MESSAGE;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.IPADDRESS_POST_EXCEPTION_MESSAGE;
+import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.LOGIN_STATE_EXCEPTION_MESSAGE;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.SERVICE_POST_EXCEPTION_MESSAGE;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.TIMESTAMP_POST_EXCEPTION_MESSAGE;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.USERID_POST_EXCEPTION_MESSAGE;
@@ -48,6 +49,22 @@ class InputParamsVerifierTest {
         } catch (final InvalidRequestException invalidRequestException) {
             assertThat(invalidRequestException.getMessage())
                     .isEqualTo(EMAIL_ADDRESS_POST_EXCEPTION_MESSAGE);
+        }
+    }
+
+
+    @Test
+    void shouldNotVerifyLoginStateForLogonLog() {
+        try {
+            final LogonLog logonLog = new LogonLog();
+            logonLog.setLoginState("some random stuff");
+
+            verifyRequestLogonLogParamsConditions(logonLog);
+
+            fail("The method should have thrown InvalidRequestException due to invalid login state");
+        } catch (final InvalidRequestException invalidRequestException) {
+            assertThat(invalidRequestException.getMessage())
+                    .isEqualTo(LOGIN_STATE_EXCEPTION_MESSAGE);
         }
     }
 

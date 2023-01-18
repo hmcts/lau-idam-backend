@@ -16,6 +16,7 @@ public final class LogonAuditPostHelper {
                 "frank.lampard@chelsea.com",
                 "my-service",
                 "3.3.4.65.7",
+                "AUTHENTICATE",
                 "2021-08-23T22:20:05.023Z");
 
         return new LogonLogPostRequest(logonLog);
@@ -26,6 +27,7 @@ public final class LogonAuditPostHelper {
                 "frank.lampard@chelsea.com",
                 "my-service",
                 "3.3.4.65.7",
+                "AUTHENTICATE",
                 "2021-08-23T22:20:05.023Z");
 
         return new LogonLogPostRequest(logonLog);
@@ -33,9 +35,10 @@ public final class LogonAuditPostHelper {
 
     public static LogonLogPostRequest getLogonAuditWithMissingMandatoryBodyParameter() {
         final LogonLog logonLog = new LogonLog("1",
-                "frank.lampard@chelsea.com",
                 null,
+                "my-service",
                 "3.3.4.65.7",
+                "AUTHENTICATE",
                 "2021-08-23T22:20:05.023Z");
 
         return new LogonLogPostRequest(logonLog);
@@ -46,6 +49,7 @@ public final class LogonAuditPostHelper {
                 "frank.lampard@chelsea.com",
                 "my-service",
                 "3.3.4.65.7",
+                "AUTHENTICATE",
                 "2021-08-23T22:20:05.023Z");
 
         return new LogonLogPostRequest(logonLog);

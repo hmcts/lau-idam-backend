@@ -128,6 +128,7 @@ class IdamLogonAuditRepositoryTest {
         assertThat(content.get(0).getEmailAddress()).isEqualTo(stringValue);
         assertThat(content.get(0).getIpAddress()).isEqualTo("a.b.c.d");
         assertThat(content.get(0).getService()).isEqualTo("service");
+        assertThat(content.get(0).getLoginState()).isEqualTo("AUTHENTICATE");
     }
 
     private IdamLogonAudit getIdamLogonAudit(final String emailAddress,
@@ -139,6 +140,7 @@ class IdamLogonAuditRepositoryTest {
         idamLogonAudit.setUserId(userId);
         idamLogonAudit.setTimestamp(timestamp);
         idamLogonAudit.setIpAddress("a.b.c.d");
+        idamLogonAudit.setLoginState("AUTHENTICATE");
         return idamLogonAudit;
     }
 }

@@ -14,6 +14,7 @@ public final class ExceptionMessageConstants {
     public static final String SERVICE_POST_EXCEPTION_MESSAGE = "Unable to verify service pattern: ";
     public static final String IPADDRESS_POST_EXCEPTION_MESSAGE = "Unable to verify ipAddress pattern";
     public static final String TIMESTAMP_POST_EXCEPTION_MESSAGE = "Unable to verify timestamp pattern: ";
+    public static final String LOGIN_STATE_EXCEPTION_MESSAGE = "Unable to verify loginState pattern";
 
     public static String appendExceptionParameter(final String exceptionMessage,
                                                   final String exceptionParameter) {
