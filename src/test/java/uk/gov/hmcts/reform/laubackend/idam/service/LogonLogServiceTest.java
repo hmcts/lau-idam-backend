@@ -79,6 +79,7 @@ class LogonLogServiceTest {
         assertThat(logonLog.getLogonLog().get(0).getEmailAddress()).isEqualTo("2");
         assertThat(logonLog.getLogonLog().get(0).getService()).isEqualTo("3");
         assertThat(logonLog.getLogonLog().get(0).getIpAddress()).isEqualTo("4");
+        assertThat(logonLog.getLogonLog().get(0).getLoginState()).isEqualTo("5");
     }
 
     @Test
@@ -91,13 +92,15 @@ class LogonLogServiceTest {
         idamLogonAudit.setIpAddress("random.ip.address");
         idamLogonAudit.setUserId("123");
         idamLogonAudit.setService("service");
+        idamLogonAudit.setLoginState("AUTHENTICATE");
         idamLogonAudit.setTimestamp(timestamp);
 
         final LogonLog logonLog = new LogonLog("1",
                 "2",
                 "service",
                 "4",
-                "5");
+                "5",
+                "6");
 
         when(idamLogonAuditRepository.save(any())).thenReturn(idamLogonAudit);
 
@@ -109,6 +112,7 @@ class LogonLogServiceTest {
         assertThat(logonLogPostResponse.getLogonLog().getEmailAddress())
                 .isEqualTo("some.random.mail@supercoolmail.com");
         assertThat(logonLogPostResponse.getLogonLog().getIpAddress()).isEqualTo("random.ip.address");
+        assertThat(logonLogPostResponse.getLogonLog().getLoginState()).isEqualTo("AUTHENTICATE");
     }
 
     @Test
@@ -123,6 +127,7 @@ class LogonLogServiceTest {
         idamLogonAudit.setEmailAddress("2");
         idamLogonAudit.setService("3");
         idamLogonAudit.setIpAddress("4");
+        idamLogonAudit.setLoginState("5");
         idamLogonAudit.setTimestamp(timestamp);
         return idamLogonAudit;
     }

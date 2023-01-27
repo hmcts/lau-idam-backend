@@ -20,16 +20,17 @@ class NotEmptyInputParamsVerifierTest {
     void shouldThrowExceptionWhenPostRequestParamsAreEmptyForLogonLog() {
         try {
             verifyLogonLogRequestAreNotEmpty(new LogonLog("1",
-                    "2",
                     null,
+                    "3",
                     "4",
-                    "5"));
+                    "5",
+                    "6"));
 
             fail("The method should have thrown InvalidRequestException when all required params are not populated");
         } catch (final InvalidRequestException invalidRequestException) {
             assertThat(invalidRequestException.getMessage())
                     .isEqualTo("You need to populate all required parameters - "
-                            + "userId, email, service and timestamp ");
+                            + "userId, email and timestamp ");
         }
     }
 
@@ -39,7 +40,8 @@ class NotEmptyInputParamsVerifierTest {
                 "2",
                 "service",
                 "4",
-                "5")));
+                "5",
+                "6")));
     }
 
     @Test

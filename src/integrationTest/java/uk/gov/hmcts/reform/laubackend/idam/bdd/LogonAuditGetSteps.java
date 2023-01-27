@@ -35,6 +35,7 @@ public class LogonAuditGetSteps extends AbstractSteps {
                             null,
                             null,
                             null,
+                                    null,
                             null),
                     baseUrl() + path);
 
@@ -50,6 +51,7 @@ public class LogonAuditGetSteps extends AbstractSteps {
                             emailAddress,
                             null,
                             null,
+                            null,
                             null),
                     baseUrl() + path);
 
@@ -62,6 +64,7 @@ public class LogonAuditGetSteps extends AbstractSteps {
         final List<String> pathParams = asList(timestamp.split(","));
         pathParams.forEach(timestampParam -> {
             final Response response = restHelper.postObject(getLogonLogPostRequest(null,
+                            null,
                             null,
                             null,
                             null,
@@ -100,7 +103,7 @@ public class LogonAuditGetSteps extends AbstractSteps {
     public void assertResponse(final String userId) {
         final LogonLogGetResponse logonLogGetResponse = jsonReader
                 .fromJson(logonLogPostResponseBody, LogonLogGetResponse.class);
-        final LogonLogPostRequest logonLogPostRequest = getLogonLogPostRequest(userId, null, null, null, null);
+        final LogonLogPostRequest logonLogPostRequest = getLogonLogPostRequest(userId, null, null, null, null,null);
 
         assertObject(logonLogGetResponse, logonLogPostRequest);
     }
@@ -109,7 +112,8 @@ public class LogonAuditGetSteps extends AbstractSteps {
     public void assertEmailAddressResponse(final String emailAddress) {
         final LogonLogGetResponse logonLogGetResponse = jsonReader
                 .fromJson(logonLogPostResponseBody, LogonLogGetResponse.class);
-        final LogonLogPostRequest logonLogPostRequest = getLogonLogPostRequest(null, emailAddress, null, null, null);
+        final LogonLogPostRequest logonLogPostRequest = getLogonLogPostRequest(null, emailAddress, null, null, null,
+                null);
 
         assertObject(logonLogGetResponse, logonLogPostRequest);
     }
@@ -118,7 +122,8 @@ public class LogonAuditGetSteps extends AbstractSteps {
     public void assertStartTimeResponse(final String startTimestamp) {
         final LogonLogGetResponse logonLogGetResponse = jsonReader
                 .fromJson(logonLogPostResponseBody, LogonLogGetResponse.class);
-        final LogonLogPostRequest logonLogPostRequest = getLogonLogPostRequest(null, null, null, null, startTimestamp);
+        final LogonLogPostRequest logonLogPostRequest = getLogonLogPostRequest(null, null, null, null,
+                null, startTimestamp);
 
         assertObject(logonLogGetResponse, logonLogPostRequest);
     }
@@ -127,7 +132,8 @@ public class LogonAuditGetSteps extends AbstractSteps {
     public void assertWithEndTimestamp(final String endTimestamp) {
         final LogonLogGetResponse logonLogGetResponse = jsonReader
                 .fromJson(logonLogPostResponseBody, LogonLogGetResponse.class);
-        final LogonLogPostRequest logonLogPostRequest = getLogonLogPostRequest(null, null, null, null, endTimestamp);
+        final LogonLogPostRequest logonLogPostRequest = getLogonLogPostRequest(null, null, null, null, null,
+                endTimestamp);
 
         assertObject(logonLogGetResponse, logonLogPostRequest);
     }
@@ -143,5 +149,7 @@ public class LogonAuditGetSteps extends AbstractSteps {
                 .isEqualTo(logonLogPostRequest.getLogonLog().getEmailAddress());
         assertThat(logonLogGetResponse.getLogonLog().get(0).getIpAddress())
                 .isEqualTo(logonLogPostRequest.getLogonLog().getIpAddress());
+        assertThat(logonLogGetResponse.getLogonLog().get(0).getLoginState())
+                .isEqualTo(logonLogPostRequest.getLogonLog().getLoginState());
     }
 }

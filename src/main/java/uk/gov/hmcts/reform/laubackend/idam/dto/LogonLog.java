@@ -31,6 +31,9 @@ public class LogonLog implements Serializable {
     @ApiModelProperty(notes = "The client ip address of the logon user")
     private String ipAddress;
 
+    @ApiModelProperty(notes = "Idam login state")
+    private String loginState;
+
     @ApiModelProperty(notes = "When the operation took place with microseconds in iso-8601-date-and-time-format")
     private String timestamp;
 
@@ -39,6 +42,7 @@ public class LogonLog implements Serializable {
         this.emailAddress = idamLogonAudit.getEmailAddress();
         this.service = idamLogonAudit.getService();
         this.ipAddress = idamLogonAudit.getIpAddress();
+        this.loginState = idamLogonAudit.getLoginState();
         this.timestamp = timestamp;
 
         return this;

@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 @Repository
 public interface IdamLogonAuditRepository extends JpaRepository<IdamLogonAudit, Long> {
 
-    @Query(value = "SELECT ila.id, ila.user_id, ila.service, ila.log_timestamp, "
+    @Query(value = "SELECT ila.id, ila.user_id, ila.service, ila.login_state, ila.log_timestamp, "
             + "pgp_sym_decrypt(decode(ila.email_address, 'base64'), cast(:encryptionKey as text)) as email_address, "
             + "pgp_sym_decrypt(decode(ila.ip_address, 'base64'), cast(:encryptionKey as text)) as ip_address "
             + "FROM idam_logon_audit ila "
@@ -45,7 +45,8 @@ public interface IdamLogonAuditRepository extends JpaRepository<IdamLogonAudit, 
                                        final @Param("encryptionKey") String encryptionKey,
                                        final Pageable pageable);
 
-    @Query(value = "SELECT ila.id, ila.user_id, ila.service, ila.log_timestamp, ila.email_address, ip_address "
+    @Query(value = "SELECT ila.id, ila.user_id, ila.service,ila.login_state, ila.log_timestamp, "
+            + "ila.email_address, ip_address "
             + "FROM idam_logon_audit ila "
             + "WHERE (cast(:userId as text) IS NULL OR ila.user_id=cast(:userId as text)) "
             + "AND (cast(:emailAddress as text) IS NULL OR ila.email_address=cast(:emailAddress as text)) "

@@ -17,6 +17,7 @@ public class LogonLogResponse {
     private String emailAddress;
     private String service;
     private String ipAddress;
+    private String loginState;
     private String timestamp;
 
     public LogonLogResponse toDto(final IdamLogonAudit idamLogonAudit, final String timestamp) {
@@ -25,6 +26,7 @@ public class LogonLogResponse {
         this.emailAddress = idamLogonAudit.getEmailAddress();
         this.service = idamLogonAudit.getService();
         this.ipAddress = idamLogonAudit.getIpAddress();
+        this.loginState = idamLogonAudit.getLoginState();
         this.timestamp = timestamp;
 
         return this;
