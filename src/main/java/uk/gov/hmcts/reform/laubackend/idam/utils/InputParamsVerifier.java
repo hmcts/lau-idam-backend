@@ -7,6 +7,7 @@ import uk.gov.hmcts.reform.laubackend.idam.exceptions.InvalidRequestException;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.EMAIL_ADDRESS_GET_EXCEPTION_MESSAGE;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.EMAIL_ADDRESS_POST_EXCEPTION_MESSAGE;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.IPADDRESS_POST_EXCEPTION_MESSAGE;
+import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.LOGIN_STATE_EXCEPTION_MESSAGE;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.SERVICE_POST_EXCEPTION_MESSAGE;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.TIMESTAMP_GET_EXCEPTION_MESSAGE;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.TIMESTAMP_POST_EXCEPTION_MESSAGE;
@@ -16,6 +17,7 @@ import static uk.gov.hmcts.reform.laubackend.idam.constants.RegexConstants.TIMES
 import static uk.gov.hmcts.reform.laubackend.idam.constants.RegexConstants.TIMESTAMP_POST_REGEX;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifierHelper.verifyEmailAddress;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifierHelper.verifyIpAddress;
+import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifierHelper.verifyLoginState;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifierHelper.verifyService;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifierHelper.verifyTimestamp;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifierHelper.verifyUserId;
@@ -31,6 +33,7 @@ public final class InputParamsVerifier {
         verifyEmailAddress(logonLog.getEmailAddress(), EMAIL_ADDRESS_POST_EXCEPTION_MESSAGE);
         verifyIpAddress(logonLog.getIpAddress(), IPADDRESS_POST_EXCEPTION_MESSAGE);
         verifyTimestamp(logonLog.getTimestamp(), TIMESTAMP_POST_EXCEPTION_MESSAGE, TIMESTAMP_POST_REGEX);
+        verifyLoginState(logonLog.getLoginState(), LOGIN_STATE_EXCEPTION_MESSAGE);
     }
 
     public static void verifyRequestLogonParamsConditions(final LogonInputParamsHolder inputParamsHolder)

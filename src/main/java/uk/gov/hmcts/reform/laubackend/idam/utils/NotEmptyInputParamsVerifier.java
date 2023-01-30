@@ -17,10 +17,9 @@ public final class NotEmptyInputParamsVerifier {
             throws InvalidRequestException {
         if (isEmpty(logonLog.getUserId())
                 || isEmpty(logonLog.getEmailAddress())
-                || isEmpty(logonLog.getService())
                 || isEmpty(logonLog.getTimestamp())) {
             throw new InvalidRequestException("You need to populate all required parameters - "
-                    + "userId, email, service and timestamp ",
+                    + "userId, email and timestamp ",
                     BAD_REQUEST);
         }
     }

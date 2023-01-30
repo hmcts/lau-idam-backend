@@ -62,6 +62,9 @@ public class LogonAuditPostSteps extends AbstractSteps {
         assertThat(logonAudit.getLogonLog().getIpAddress())
                 .isEqualTo(logonLogPostResponse.getLogonLog().getIpAddress());
 
+        assertThat(logonAudit.getLogonLog().getLoginState())
+                .isEqualTo(logonLogPostResponse.getLogonLog().getLoginState());
+
         assertThat(logonAudit.getLogonLog().getService())
                 .isEqualTo(logonLogPostResponse.getLogonLog().getService());
 

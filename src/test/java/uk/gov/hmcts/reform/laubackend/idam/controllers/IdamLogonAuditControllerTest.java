@@ -102,6 +102,7 @@ class IdamLogonAuditControllerTest {
                 "frank.lampard@chelsea.com",
                 "holla-service",
                 "3.3.4.65.7",
+                "AUTHENTICATE",
                 "2021-08-23T22:20:05.023Z");
 
 
@@ -121,9 +122,10 @@ class IdamLogonAuditControllerTest {
     @Test
     void shouldReturnBadRequestResponseEntityForPostRequest() {
         final LogonLog logonLog = new LogonLog("1",
-                "john.terry@chelsea.com",
                 null,
+                "my_service",
                 "3.3.4.65.7",
+                "AUTHENTICATE",
                 "2021-08-23T22:20:05.023Z");
 
 
@@ -145,6 +147,7 @@ class IdamLogonAuditControllerTest {
                 "frank.lampard@chelsea.com",
                 "holla-service",
                 "3.3.4.65.7",
+                "AUTHENTICATE",
                 "2021-08-23T22:20:05.023Z");
 
 

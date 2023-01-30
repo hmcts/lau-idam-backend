@@ -18,6 +18,8 @@ public class LogonLog {
     private String emailAddress;
     @JsonProperty("service")
     private String service;
+    @JsonProperty("loginState")
+    private String loginState;
     @JsonProperty("ipAddress")
     private String ipAddress;
     @JsonProperty("timestamp")
@@ -80,5 +82,13 @@ public class LogonLog {
 
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getLoginState() {
+        return loginState;
+    }
+
+    public void setLoginState(String loginState) {
+        this.loginState = loginState;
     }
 }

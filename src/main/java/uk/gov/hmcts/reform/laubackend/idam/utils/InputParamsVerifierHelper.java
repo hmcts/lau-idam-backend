@@ -1,8 +1,10 @@
 package uk.gov.hmcts.reform.laubackend.idam.utils;
 
+import uk.gov.hmcts.reform.laubackend.idam.constants.LoginState;
 import uk.gov.hmcts.reform.laubackend.idam.exceptions.InvalidRequestException;
 
 import static java.util.regex.Pattern.compile;
+import static org.apache.commons.lang3.EnumUtils.isValidEnum;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.appendExceptionParameter;
@@ -53,6 +55,13 @@ public final class InputParamsVerifierHelper {
             throws InvalidRequestException {
         if (isEmpty(id)) {
             throw new InvalidRequestException("Id must be present", BAD_REQUEST);
+        }
+    }
+
+    public static void verifyLoginState(final String loginState,
+                                    final String exceptionMessage) throws InvalidRequestException {
+        if (!isEmpty(loginState) && !isValidEnum(LoginState.class, loginState)) {
+            throw new InvalidRequestException(exceptionMessage, BAD_REQUEST);
         }
     }
 }
