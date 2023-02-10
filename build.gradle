@@ -29,9 +29,14 @@ apply plugin: "info.solidsoft.pitest"
 group = 'uk.gov.hmcts.reform'
 version = '0.0.1'
 
-allprojects {
-    sourceCompatibility = '11'
-    targetCompatibility = '11'
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(17)
+  }
+}
+
+tasks.withType(JavaExec).configureEach {
+  javaLauncher.set(javaToolchains.launcherFor(java.toolchain))
 }
 
 gitProperties {
@@ -145,7 +150,6 @@ checkstyle {
 }
 
 pmd {
-    toolVersion = "6.39.0"
     sourceSets = [sourceSets.main, sourceSets.test, sourceSets.functionalTest, sourceSets.integrationTest, sourceSets.smokeTest]
     reportsDir = file("$project.buildDir/reports/pmd")
     // https://github.com/pmd/pmd/issues/876
@@ -276,14 +280,14 @@ def versions = [
         serenity          : '2.6.0',
         gradlePitest      : '1.9.0',
         sonarPitest       : '0.5',
-        lombok            : '1.18.12',
+        lombok            : '1.18.22',
         testcontainers    : '1.16.2',
         restAssured       : '4.4.0',
         serviceAuthVersion: '4.0.2',
         commonsIo         : '2.11.0',
         cucumber          : '6.11.0',
         wiremock          : '2.21.0',
-        fasterXmlJackson  : '2.14.0-rc1',
+        fasterXmlJackson  : '2.14.1',
         springFramework   : '5.3.21',
         log4j             : '2.17.2',
         springCloud       : '3.1.2',
@@ -362,7 +366,6 @@ dependencies {
     implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version:versions.log4j
 
     implementation group: "com.networknt", name: "json-schema-validator", version: "1.0.72"
-    implementation group: "com.gilecode.yagson", name: "j9-reflection-utils", version: "1.0"
     implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
     implementation group: 'org.springframework.boot', name: 'spring-boot-devtools'
 
@@ -381,11 +384,12 @@ dependencies {
     testImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
     testImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
 
-    testImplementation group: 'io.cucumber', name: 'cucumber-java8', version: versions.cucumber
+    //testImplementation group: 'io.cucumber', name: 'cucumber-java8', version: versions.cucumber
     testImplementation group: 'io.cucumber', name: 'cucumber-spring', version: versions.cucumber
     testImplementation group: 'io.cucumber', name: 'cucumber-junit', version: versions.cucumber
     testImplementation group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber
     testImplementation group: 'io.cucumber', name: 'cucumber-spring', version: versions.cucumber
+    testImplementation group: 'io.cucumber', name: 'cucumber-core', version: versions.cucumber
     testImplementation group: 'com.github.tomakehurst', name: 'wiremock-jre8-standalone', version: versions.wiremock
 
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
@@ -441,10 +445,14 @@ dependencies {
     testImplementation group: 'com.googlecode.junit-toolbox', name: 'junit-toolbox', version: '2.4'
     testImplementation group: 'org.testng', name: 'testng', version: '7.7.1'
 
-    testImplementation group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber
-    testImplementation group: 'io.cucumber', name: 'cucumber-junit', version: versions.cucumber
+    //testImplementation group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber
+    //testImplementation group: 'io.cucumber', name: 'cucumber-junit', version: versions.cucumber
 
-    cucumberRuntime group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber
+    //cucumberRuntime group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber
+    testImplementation 'io.cucumber:cucumber-java:7.10.0'
+    testImplementation 'io.cucumber:cucumber-junit:7.10.0'
+
+    cucumberRuntime 'io.cucumber:cucumber-java:7.10.0'
     cucumberRuntime group: 'org.springframework', name: 'spring-web', version: versions.springFramework
     cucumberRuntime group: 'org.springframework.security', name: 'spring-security-test'
     cucumberRuntime group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
