@@ -282,11 +282,11 @@ def versions = [
         sonarPitest       : '0.5',
         lombok            : '1.18.22',
         testcontainers    : '1.16.2',
-        restAssured       : '4.4.0',
+        restAssured       : '4.5.1',
         serviceAuthVersion: '4.0.2',
         commonsIo         : '2.11.0',
         cucumber          : '6.11.0',
-        wiremock          : '2.21.0',
+        wiremock          : '2.35.0',
         fasterXmlJackson  : '2.14.1',
         springFramework   : '5.3.21',
         log4j             : '2.17.2',
@@ -384,12 +384,11 @@ dependencies {
     testImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
     testImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
 
-    //testImplementation group: 'io.cucumber', name: 'cucumber-java8', version: versions.cucumber
+    testImplementation group: 'io.cucumber', name: 'cucumber-java8', version: versions.cucumber
     testImplementation group: 'io.cucumber', name: 'cucumber-spring', version: versions.cucumber
     testImplementation group: 'io.cucumber', name: 'cucumber-junit', version: versions.cucumber
     testImplementation group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber
     testImplementation group: 'io.cucumber', name: 'cucumber-spring', version: versions.cucumber
-    testImplementation group: 'io.cucumber', name: 'cucumber-core', version: versions.cucumber
     testImplementation group: 'com.github.tomakehurst', name: 'wiremock-jre8-standalone', version: versions.wiremock
 
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
@@ -445,10 +444,7 @@ dependencies {
     testImplementation group: 'com.googlecode.junit-toolbox', name: 'junit-toolbox', version: '2.4'
     testImplementation group: 'org.testng', name: 'testng', version: '7.7.1'
 
-    //testImplementation group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber
-    //testImplementation group: 'io.cucumber', name: 'cucumber-junit', version: versions.cucumber
 
-    //cucumberRuntime group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber
     testImplementation 'io.cucumber:cucumber-java:7.10.0'
     testImplementation 'io.cucumber:cucumber-junit:7.10.0'
 
