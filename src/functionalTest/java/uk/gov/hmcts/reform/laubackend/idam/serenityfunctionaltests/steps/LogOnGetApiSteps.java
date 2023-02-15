@@ -78,7 +78,7 @@ public class LogOnGetApiSteps extends BaseSteps {
     public String thenTheGetLogonResponseParamsMatchesTheInput(Map<String, String> inputQueryParamMap,
                                                                     LogOnGetResponseVO logOnGetResponseVO) {
         int startRecordNumber = logOnGetResponseVO.getStartRecordNumber();
-        Assert.assertTrue(startRecordNumber > 0);
+        Assert.assertTrue("Check if the the record number is greater than )",startRecordNumber > 0);
         List<LogonLog> logonLogList = logOnGetResponseVO.getLogonLog();
         LogonLog logonLogObj = logonLogList == null || logonLogList.get(0) == null
             ? new LogonLog() : logonLogList.get(0);
@@ -147,7 +147,8 @@ public class LogOnGetApiSteps extends BaseSteps {
         LOGGER.info("Input end date : " + inputEndTimestamp.getTime());
         LOGGER.info("Output date : " + responseTimestamp.getTime());
 
-        Assert.assertTrue(responseTimestamp.after(inputStartTimestamp) && responseTimestamp.before(
+        Assert.assertTrue("Verify record response timestamp",
+                responseTimestamp.after(inputStartTimestamp) && responseTimestamp.before(
             inputEndTimestamp) || responseTimestamp.getTime() == inputStartTimestamp.getTime()
                               || responseTimestamp.getTime() == inputEndTimestamp.getTime()
         );
