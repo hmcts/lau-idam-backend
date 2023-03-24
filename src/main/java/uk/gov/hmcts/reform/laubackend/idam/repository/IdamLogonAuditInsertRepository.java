@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.laubackend.idam.repository;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import uk.gov.hmcts.reform.laubackend.idam.domain.IdamLogonAudit;
 
@@ -11,9 +12,6 @@ import javax.transaction.Transactional;
 @Repository
 public class IdamLogonAuditInsertRepository {
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
     private final String insertLogonAuditQueryWithEncryption =
             "INSERT INTO public.idam_logon_audit "
                     + "(user_id, service, log_timestamp, login_state, ip_address ,email_address, email_address_mac) "
@@ -22,6 +20,15 @@ public class IdamLogonAuditInsertRepository {
                     + "encode(pgp_sym_encrypt(cast(:emailAddress as text), cast(:encryptionKey as text)), 'base64'), "
                     + "encode(hmac(cast(:emailAddress as text), cast(:encryptionKey as text), 'sha256'), 'hex')) "
                     + "RETURNING id";
+
+    @PersistenceContext
+    private final EntityManager entityManager;
+
+    @Autowired
+    public IdamLogonAuditInsertRepository(final EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
 
     @Transactional
     public IdamLogonAudit saveIdamLogonAuditWithEncryption(
