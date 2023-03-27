@@ -15,27 +15,23 @@ import java.sql.Timestamp;
 public interface IdamLogonAuditRepository extends JpaRepository<IdamLogonAudit, Long> {
 
     @Query(value = "SELECT ila.id, ila.user_id, ila.service, ila.login_state, ila.log_timestamp, "
-            + "pgp_sym_decrypt(decode(ila.email_address, 'base64'), cast(:encryptionKey as text)) as email_address, "
-            + "pgp_sym_decrypt(decode(ila.ip_address, 'base64'), cast(:encryptionKey as text)) as ip_address "
+            + "decrypt_value(ila.email_address, :encryptionKey) as email_address, "
+            + "decrypt_value(ila.ip_address, :encryptionKey) as ip_address "
             + "FROM idam_logon_audit ila "
-            + "WHERE (cast(:userId as text) IS NULL OR ila.user_id=cast(:userId as text)) "
+            + "WHERE ila.user_id = COALESCE(cast(:userId as text), ila.user_id) "
             + "AND (cast(:emailAddress as text) IS NULL "
             + "OR encode(hmac(cast(:emailAddress as text), "
             + "cast(:encryptionKey as text), 'sha256'),'hex')=ila.email_address_mac) "
-            + "AND (cast(cast(:startTime as varchar) as timestamp) IS NULL "
-            + "OR ila.log_timestamp >= cast(cast(:startTime as varchar) as timestamp)) "
-            + "AND (cast(cast(:endTime as varchar) as timestamp) IS NULL "
-            + "OR ila.log_timestamp <= cast(cast(:endTime as varchar) as timestamp))",
+            + "AND ila.log_timestamp >= COALESCE(cast(:startTime as timestamp), ila.log_timestamp) "
+            + "AND ila.log_timestamp <= COALESCE(cast(:endTime as timestamp), ila.log_timestamp)",
             countQuery = "SELECT count(*) FROM ( "
                     + "SELECT 1 FROM idam_logon_audit ila "
-                    + "WHERE (cast(:userId as text) IS NULL OR ila.user_id=cast(:userId as text)) "
+                    + "WHERE ila.user_id = COALESCE(cast(:userId as text), ila.user_id) "
                     + "AND (cast(:emailAddress as text) IS NULL "
                     + "OR encode(hmac(cast(:emailAddress as text), "
                     + "cast(:encryptionKey as text), 'sha256'),'hex')=ila.email_address_mac) "
-                    + "AND (cast(cast(:startTime as varchar) as timestamp) IS NULL "
-                    + "OR ila.log_timestamp >= cast(cast(:startTime as varchar) as timestamp)) "
-                    + "AND (cast(cast(:endTime as varchar) as timestamp) IS NULL "
-                    + "OR ila.log_timestamp <= cast(cast(:endTime as varchar) as timestamp)) "
+                    + "AND ila.log_timestamp >= COALESCE(cast(:startTime as timestamp), ila.log_timestamp) "
+                    + "AND ila.log_timestamp <= COALESCE(cast(:endTime as timestamp), ila.log_timestamp)"
                     + "limit 10000) ila",
             nativeQuery = true)
     Page<IdamLogonAudit> findIdamLogon(final @Param("userId") String userId,
@@ -44,30 +40,5 @@ public interface IdamLogonAuditRepository extends JpaRepository<IdamLogonAudit, 
                                        final @Param("endTime") Timestamp endTime,
                                        final @Param("encryptionKey") String encryptionKey,
                                        final Pageable pageable);
-
-    @Query(value = "SELECT ila.id, ila.user_id, ila.service,ila.login_state, ila.log_timestamp, "
-            + "ila.email_address, ip_address "
-            + "FROM idam_logon_audit ila "
-            + "WHERE (cast(:userId as text) IS NULL OR ila.user_id=cast(:userId as text)) "
-            + "AND (cast(:emailAddress as text) IS NULL OR ila.email_address=cast(:emailAddress as text)) "
-            + "AND (cast(cast(:startTime as varchar) as timestamp) IS NULL "
-            + "OR ila.log_timestamp >= cast(cast(:startTime as varchar) as timestamp)) "
-            + "AND (cast(cast(:endTime as varchar) as timestamp) IS NULL "
-            + "OR ila.log_timestamp <= cast(cast(:endTime as varchar) as timestamp))",
-            countQuery = "SELECT count(*) FROM ( "
-                    + "SELECT 1 FROM idam_logon_audit ila "
-                    + "WHERE (cast(:userId as text) IS NULL OR ila.user_id=cast(:userId as text)) "
-                    + "AND (cast(:emailAddress as text) IS NULL OR ila.email_address=cast(:emailAddress as text)) "
-                    + "AND (cast(cast(:startTime as varchar) as timestamp) IS NULL "
-                    + "OR ila.log_timestamp >= cast(cast(:startTime as varchar) as timestamp)) "
-                    + "AND (cast(cast(:endTime as varchar) as timestamp) IS NULL "
-                    + "OR ila.log_timestamp <= cast(cast(:endTime as varchar) as timestamp)) "
-                    + "limit 10000) ila",
-            nativeQuery = true)
-    Page<IdamLogonAudit> findIdamLogonH2(final @Param("userId") String userId,
-                                         final @Param("emailAddress") String emailAddress,
-                                         final @Param("startTime") Timestamp startTime,
-                                         final @Param("endTime") Timestamp endTime,
-                                         final Pageable pageable);
 
 }

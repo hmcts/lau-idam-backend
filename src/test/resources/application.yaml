@@ -29,16 +29,17 @@ spring:
   application:
     name: LAU Idam Backend
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:db;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
-    username: sa
-    password: sa
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    url: jdbc:tc:postgresql:11://localhost/lau-idam
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: none
   flyway:
-    locations: classpath:h2
+    locations: classpath:db/migration
+    placeholders:
+      LAU_IDAM_DB_PASSWORD: laupass
+      LAU_IDAM_ENCRYPTION_KEY: ThisIsATestKeyForEncryption
 
 azure:
   application-insights:
