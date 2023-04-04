@@ -8,6 +8,8 @@ import io.restassured.response.Response;
 import org.springframework.boot.web.server.LocalServerPort;
 import uk.gov.hmcts.reform.laubackend.idam.helper.RestHelper;
 
+import java.util.Map;
+
 import static java.lang.Integer.parseInt;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
@@ -49,7 +51,7 @@ public class CommonSteps {
 
     @When("I request GET {string} endpoint without mandatory params")
     public void requestWithoutMandatoryParams(final String path) {
-        final Response response = restHelper.getResponse(getUrl(path), "nonExistingParam", "nonExistingValue");
+        final Response response = restHelper.getResponse(getUrl(path), Map.of("nonExistingParam", "nonExistingValue"));
         httpStatusResponseCode = response.getStatusCode();
     }
 

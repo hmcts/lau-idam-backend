@@ -63,7 +63,8 @@ class IdamLogonAuditRepositoryTest {
     @Test
     void shouldSearchByEmail() {
         final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository
-                .findIdamLogon(null, "1", null, null, ENCRYPTION_KEY, getPage());
+                .findIdamLogon(null, "1", valueOf(now()),
+                               valueOf(now().plusDays(20)), ENCRYPTION_KEY, getPage());
 
         assertThat(idamLogon.getContent().size()).isEqualTo(1);
         assertResults(idamLogon.getContent(), 1);
@@ -74,8 +75,8 @@ class IdamLogonAuditRepositoryTest {
         final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository
                 .findIdamLogon("1",
                         null,
-                        null,
-                        null,
+                               valueOf(now()),
+                               valueOf(now().plusDays(20)),
                         ENCRYPTION_KEY,
                         getPage());
 
@@ -88,8 +89,8 @@ class IdamLogonAuditRepositoryTest {
         final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository
                 .findIdamLogon(null,
                         null,
-                        null,
-                        null,
+                         valueOf(now()),
+                         valueOf(now().plusDays(20)),
                         ENCRYPTION_KEY,
                         getPage());
 
@@ -100,11 +101,12 @@ class IdamLogonAuditRepositoryTest {
     void shouldFindPageableResults() {
         final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository.findIdamLogon(null,
                 null,
-                null,
-                null,
+                 valueOf(now()),
+                 valueOf(now().plusDays(20)),
                 ENCRYPTION_KEY,
                 of(1, 10, Sort.by("log_timestamp"))
         );
+
         assertThat(idamLogon.getTotalElements()).isEqualTo(20);
         assertThat(idamLogon.getContent().size()).isEqualTo(10);
     }
@@ -122,8 +124,8 @@ class IdamLogonAuditRepositoryTest {
         final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository
                 .findIdamLogon("77777",
                         null,
-                        null,
-                        null,
+                               valueOf(now().minusDays(1)),
+                               valueOf(now().plusDays(1)),
                         ENCRYPTION_KEY,
                         getPage());
 

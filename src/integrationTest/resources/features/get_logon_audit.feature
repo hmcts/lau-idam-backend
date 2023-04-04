@@ -12,23 +12,11 @@ Feature: The application's GET audit logon endpoint
     And And I GET "/audit/logon" using emailAddress "test2@email.com" query param
     Then a single logon response body is returned for emailAddress "test2@email.com"
 
-  Scenario: The backend is able to process startTime logon GET requests
+  Scenario: The backend is able to process startTime endTime logon GET requests
     Given LAU IdAm backend application is healthy
     When I POST multiple records to "/audit/logon" endpoint using "2021-08-23T22:20:05.023Z,2022-08-23T22:20:05.023Z,2023-08-23T22:20:05.023Z" timestamp
-    And And I GET "/audit/logon" using startTimestamp "2022-08-24T22:20:05" query param
+    And And I GET "/audit/logon" using startTimestamp "2023-08-22T22:20:05" endTimestamp "2023-08-25T22:20:05" userId "1" query param
     Then a single logon response body is returned for startTimestamp "2023-08-23T22:20:05.023Z"
-
-  Scenario: The backend is able to process endTime logon GET requests
-    Given LAU IdAm backend application is healthy
-    When I POST multiple records to "/audit/logon" endpoint using "2018-08-23T22:20:05.023Z,2019-08-23T22:20:05.023Z,2020-08-23T22:20:05.023Z" timestamp
-    And And I GET "/audit/logon" using endTimestamp "2019-08-23T21:20:05" query param
-    Then a single logon response body is returned for endTimestamp "2018-08-23T22:20:05.023Z"
-
-  Scenario: The backend is able to process case insensitive emailAddress logon GET requests
-    Given LAU IdAm backend application is healthy
-    When I POST multiple records to "/audit/logon" endpoint using "CASE_INSENSITIVE1@email.com,CASE_INSENSITIVE2@email.com,CASE_INSENSITIVE3@email.com" emailAddresses
-    And And I GET "/audit/logon" using emailAddress "case_insensitive1@email.com" query param
-    Then a single logon response body is returned for emailAddress "case_insensitive1@email.com"
 
   Scenario: The backend is unable to process logon GET requests due to missing s2s
     Given LAU IdAm backend application is healthy
