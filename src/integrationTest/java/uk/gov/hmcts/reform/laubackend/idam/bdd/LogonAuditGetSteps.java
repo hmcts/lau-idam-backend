@@ -38,12 +38,12 @@ public class LogonAuditGetSteps extends AbstractSteps {
         final List<String> pathParams = asList(pathParam.split(","));
         pathParams.forEach(userId -> {
             final Response response = restHelper.postObject(getLogonLogPostRequest(userId,
-                null,
-                null,
-                null,
-                null,
-                null),
-                baseUrl() + path);
+                            null,
+                            null,
+                            null,
+                                    null,
+                            null),
+                    baseUrl() + path);
 
             assertThat(response.getStatusCode()).isEqualTo(CREATED.value());
         });
