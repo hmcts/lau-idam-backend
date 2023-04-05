@@ -61,8 +61,8 @@ class IdamLogonAuditControllerTest {
             null,
             userId,
             emailAddress,
-            null,
-            null,
+            "2021-06-23T22:20:05",
+            "2021-08-23T22:20:05",
             null,
             null
         );

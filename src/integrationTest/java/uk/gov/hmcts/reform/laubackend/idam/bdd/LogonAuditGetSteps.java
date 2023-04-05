@@ -10,13 +10,19 @@ import uk.gov.hmcts.reform.laubackend.idam.request.LogonLogPostRequest;
 import uk.gov.hmcts.reform.laubackend.idam.response.LogonLogGetResponse;
 
 import java.util.List;
+import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpStatus.CREATED;
 import static uk.gov.hmcts.reform.laubackend.idam.helper.LogonAuditGetHelper.getLogonLogPostRequest;
+import static uk.gov.hmcts.reform.laubackend.idam.helper.RestConstants.END_TIME;
+import static uk.gov.hmcts.reform.laubackend.idam.helper.RestConstants.END_TIME_PARAMETER;
+import static uk.gov.hmcts.reform.laubackend.idam.helper.RestConstants.START_TIME;
+import static uk.gov.hmcts.reform.laubackend.idam.helper.RestConstants.START_TIME_PARAMETER;
 
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.JUnit4TestShouldUseBeforeAnnotation"})
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.JUnit4TestShouldUseBeforeAnnotation",
+    "PMD.UseObjectForClearerAPI"})
 public class LogonAuditGetSteps extends AbstractSteps {
 
     private String logonLogPostResponseBody;
@@ -77,25 +83,29 @@ public class LogonAuditGetSteps extends AbstractSteps {
 
     @And("And I GET {string} using userId {string} query param")
     public void searchUsingUserId(final String path, String userId) {
-        final Response response = restHelper.getResponse(baseUrl() + path, "userId", userId);
+        final Response response = restHelper.getResponse(baseUrl() + path,
+                                    Map.of("userId", userId,
+                                    START_TIME_PARAMETER, START_TIME,
+                                    END_TIME_PARAMETER, END_TIME));
         logonLogPostResponseBody = response.getBody().asString();
     }
 
     @And("And I GET {string} using emailAddress {string} query param")
     public void searchUsingEmailAddress(final String path, String emailAddress) {
-        final Response response = restHelper.getResponse(baseUrl() + path, "emailAddress", emailAddress);
+        final Response response = restHelper.getResponse(baseUrl() + path,
+                                    Map.of("emailAddress", emailAddress,
+                                    START_TIME_PARAMETER, START_TIME,
+                                    END_TIME_PARAMETER, END_TIME));
         logonLogPostResponseBody = response.getBody().asString();
     }
 
-    @And("And I GET {string} using endTimestamp {string} query param")
-    public void retrieveWithEndTimestamp(final String path, final String endTimestamp) {
-        final Response response = restHelper.getResponse(baseUrl() + path, "endTimestamp", endTimestamp);
-        logonLogPostResponseBody = response.getBody().asString();
-    }
-
-    @And("And I GET {string} using startTimestamp {string} query param")
-    public void retrieveWithStartTime(final String path, final String startTimestamp) {
-        final Response response = restHelper.getResponse(baseUrl() + path, "startTimestamp", startTimestamp);
+    @And("And I GET {string} using startTimestamp {string} endTimestamp {string} userId {string} query param")
+    public void retrieveWithStartTimeAndEndTime(final String path, final String startTimestamp,
+                                                final String endTimeStamp, final String userId) {
+        final Response response = restHelper.getResponse(baseUrl() + path,
+                                    Map.of("userId", userId,
+                                    START_TIME_PARAMETER, startTimestamp,
+                                    END_TIME_PARAMETER, endTimeStamp));
         logonLogPostResponseBody = response.getBody().asString();
     }
 

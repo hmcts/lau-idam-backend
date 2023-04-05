@@ -18,6 +18,7 @@ spring:
   application:
     name: Idam Log and Audit
   datasource:
+    type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://${LAU_IDAM_DB_HOST:localhost}:${LAU_IDAM_DB_PORT:5432}/${LAU_IDAM_DB_NAME:lau_idam}${LAU_IDAM_DB_CONN_OPTIONS:}
     username: ${LAU_IDAM_DB_USERNAME:lauuser}
@@ -25,9 +26,7 @@ spring:
     properties:
       charSet: UTF-8
     hikari:
-      minimumIdle: 2
       maximumPoolSize: 20
-      idleTimeout: 10000
       poolName: LAUIdamHikariCP
       maxLifetime: 7200000
       connectionTimeout: 60000
