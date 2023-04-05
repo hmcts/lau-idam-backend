@@ -125,6 +125,19 @@ class IdamLogonRepositoryStartEndTimeTest {
         assertThat(idamLogon.getContent().size()).isEqualTo(0);
     }
 
+    @Test
+    void shouldNotFindIdamLogonWithioutStartTimeAndEndTime() {
+        final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository.findIdamLogon(
+            null,
+            null,
+            null,
+            null,
+            ENCRYPTION_KEY,
+            getPage()
+        );
+        assertThat(idamLogon.getContent().size()).isEqualTo(0);
+    }
+
 
     private void assertResults(final List<IdamLogonAudit> content, final int value) {
         final String stringValue = String.valueOf(value);
