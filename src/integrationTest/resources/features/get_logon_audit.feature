@@ -6,11 +6,11 @@ Feature: The application's GET audit logon endpoint
     And And I GET "/audit/logon" using userId "1" query param
     Then a single logon response body is returned for userId "1"
 
-  Scenario: The backend is able to process emailAddress logon GET requests
-    Given LAU IdAm backend application is healthy
-    When I POST multiple records to "/audit/logon" endpoint using "test1@email.com,test2@email.com,test3@email.com" emailAddresses
-    And And I GET "/audit/logon" using emailAddress "test2@email.com" query param
-    Then a single logon response body is returned for emailAddress "test2@email.com"
+   Scenario: The backend is able to process emailAddress logon GET requests
+     Given LAU IdAm backend application is healthy
+     When I POST multiple records to "/audit/logon" endpoint using "test1@email.com,test2@email.com,test3@email.com" emailAddresses
+     And And I GET "/audit/logon" using emailAddress "test2@email.com" query param
+     Then a single logon response body is returned for emailAddress "test2@email.com"
 
   Scenario: The backend is able to process startTime endTime logon GET requests
     Given LAU IdAm backend application is healthy
