@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.laubackend.idam.domain.IdamLogonAudit;
 import uk.gov.hmcts.reform.laubackend.idam.dto.LogonInputParamsHolder;
 import uk.gov.hmcts.reform.laubackend.idam.dto.LogonLog;
+import uk.gov.hmcts.reform.laubackend.idam.repository.IdamLogonAuditFindLogonRepository;
 import uk.gov.hmcts.reform.laubackend.idam.repository.IdamLogonAuditInsertRepository;
 import uk.gov.hmcts.reform.laubackend.idam.repository.IdamLogonAuditRepository;
 import uk.gov.hmcts.reform.laubackend.idam.response.LogonLogGetResponse;
@@ -32,6 +33,8 @@ public class LogonLogService {
 
     @Autowired
     private IdamLogonAuditRepository idamLogonAuditRepository;
+    @Autowired
+    private IdamLogonAuditFindLogonRepository idamLogonAuditFindLogonRepository;
 
     @Autowired
     private IdamLogonAuditInsertRepository idamLogonAuditInsertRepository;
@@ -50,7 +53,7 @@ public class LogonLogService {
 
     public LogonLogGetResponse getLogonLog(final LogonInputParamsHolder inputParamsHolder) {
 
-        final Page<IdamLogonAudit> logonLog = idamLogonAuditRepository.findIdamLogon(
+        final Page<IdamLogonAudit> logonLog = idamLogonAuditFindLogonRepository.findIdamLogon(
                 inputParamsHolder.getUserId(),
                 lowerCase(inputParamsHolder.getEmailAddress()),
                 timestampUtil.getTimestampValue(inputParamsHolder.getStartTime()),

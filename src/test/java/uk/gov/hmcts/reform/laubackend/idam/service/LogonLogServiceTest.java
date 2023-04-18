@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import uk.gov.hmcts.reform.laubackend.idam.domain.IdamLogonAudit;
 import uk.gov.hmcts.reform.laubackend.idam.dto.LogonInputParamsHolder;
 import uk.gov.hmcts.reform.laubackend.idam.dto.LogonLog;
+import uk.gov.hmcts.reform.laubackend.idam.repository.IdamLogonAuditFindLogonRepository;
 import uk.gov.hmcts.reform.laubackend.idam.repository.IdamLogonAuditRepository;
 import uk.gov.hmcts.reform.laubackend.idam.response.LogonLogGetResponse;
 import uk.gov.hmcts.reform.laubackend.idam.response.LogonLogPostResponse;
@@ -40,6 +41,7 @@ class LogonLogServiceTest {
 
     @Mock
     private IdamLogonAuditRepository idamLogonAuditRepository;
+    @Mock IdamLogonAuditFindLogonRepository idamLogonAuditFindLogonRepository;
 
     @Mock
     private TimestampUtil timestampUtil;
@@ -63,14 +65,14 @@ class LogonLogServiceTest {
                 null,
                 null);
 
-        when(idamLogonAuditRepository
+        when(idamLogonAuditFindLogonRepository
                 .findIdamLogon("1", "2", null, null, null,
                         PageRequest.of(0, parseInt("10000"), Sort.by("log_timestamp"))))
                 .thenReturn(pageResults);
 
         final LogonLogGetResponse logonLog = logonLogService.getLogonLog(inputParamsHolder);
 
-        verify(idamLogonAuditRepository, times(1))
+        verify(idamLogonAuditFindLogonRepository, times(1))
                 .findIdamLogon("1", "2", null, null, null,
                         PageRequest.of(0, parseInt("10000"), Sort.by("log_timestamp")));
 
