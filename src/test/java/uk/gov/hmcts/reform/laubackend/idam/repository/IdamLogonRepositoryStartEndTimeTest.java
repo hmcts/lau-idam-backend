@@ -5,7 +5,6 @@ import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
@@ -36,19 +35,19 @@ import static org.springframework.data.domain.PageRequest.of;
 class IdamLogonRepositoryStartEndTimeTest {
 
     private static final String ENCRYPTION_KEY = "ThisIsATestKeyForEncryption";
+    private static final int NUMBER_OF_ENTRIES = 20;
 
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Autowired
-    private IdamLogonAuditRepository idamLogonAuditRepository;
+    private IdamLogonAuditFindLogonRepository idamLogonAuditFindLogonRepository;
 
     @BeforeEach
     public void setUp() {
         final IdamLogonAuditInsertRepository idamLogonAuditInsertRepository =
                 new IdamLogonAuditInsertRepository(entityManager);
-        //Insert 20 records
-        for (int i = 1; i < 21; i++) {
+        //Insert ${NUMBER_OF_ENTRIES} records
+        for (int i = 1; i < NUMBER_OF_ENTRIES + 1; i++) {
             idamLogonAuditInsertRepository
                     .saveIdamLogonAuditWithEncryption(getIdamLogonAudit(
                             String.valueOf(i),
@@ -56,11 +55,13 @@ class IdamLogonRepositoryStartEndTimeTest {
                             valueOf(now().plusDays(i))
                     ), ENCRYPTION_KEY);
         }
+
+        idamLogonAuditFindLogonRepository = new IdamLogonAuditFindLogonRepository(entityManager);
     }
 
     @Test
     void shouldFindIdamLogonStartTimeAndEndTime1() {
-        final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository.findIdamLogon(
+        final Page<IdamLogonAudit> idamLogon = idamLogonAuditFindLogonRepository.findIdamLogon(
                 null,
                 null,
                 valueOf(now().plusDays(10)),
@@ -69,12 +70,12 @@ class IdamLogonRepositoryStartEndTimeTest {
                 getPage()
         );
         //Will return 10 days because  the date start is +10 from now
-        assertThat(idamLogon.getContent().size()).isEqualTo(10);
+        assertThat(idamLogon.getContent()).hasSize(10);
     }
 
     @Test
     void shouldFindIdamLogonByStartTimeEndTime2() {
-        final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository.findIdamLogon(
+        final Page<IdamLogonAudit> idamLogon = idamLogonAuditFindLogonRepository.findIdamLogon(
                 "1",
                 null,
                 valueOf(now()),
@@ -82,13 +83,13 @@ class IdamLogonRepositoryStartEndTimeTest {
                 ENCRYPTION_KEY,
                 getPage()
         );
-        assertThat(idamLogon.getContent().size()).isEqualTo(1);
+        assertThat(idamLogon.getContent()).hasSize(1);
         assertResults(idamLogon.getContent(), 1);
     }
 
     @Test
     void shouldNotFindIdamLogonStartTimeAndEndTime() {
-        final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository.findIdamLogon(
+        final Page<IdamLogonAudit> idamLogon = idamLogonAuditFindLogonRepository.findIdamLogon(
                 null,
                 null,
                 valueOf(now().plusDays(20)),
@@ -96,12 +97,12 @@ class IdamLogonRepositoryStartEndTimeTest {
                 ENCRYPTION_KEY,
                 getPage()
         );
-        assertThat(idamLogon.getContent().size()).isEqualTo(0);
+        assertThat(idamLogon.getContent()).isEmpty();
     }
 
     @Test
     void shouldNotFindIdamLogonEndTime() {
-        final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository.findIdamLogon(
+        final Page<IdamLogonAudit> idamLogon = idamLogonAuditFindLogonRepository.findIdamLogon(
                 null,
                 null,
                 null,
@@ -109,12 +110,12 @@ class IdamLogonRepositoryStartEndTimeTest {
                 ENCRYPTION_KEY,
                 getPage()
         );
-        assertThat(idamLogon.getContent().size()).isEqualTo(0);
+        assertThat(idamLogon.getContent()).isEmpty();
     }
 
     @Test
     void shouldNotFindIdamLogonByStartTimeEndTime() {
-        final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository.findIdamLogon(
+        final Page<IdamLogonAudit> idamLogon = idamLogonAuditFindLogonRepository.findIdamLogon(
                 null,
                 null,
                 valueOf(now().minusDays(1)),
@@ -122,12 +123,12 @@ class IdamLogonRepositoryStartEndTimeTest {
                 ENCRYPTION_KEY,
                 getPage()
         );
-        assertThat(idamLogon.getContent().size()).isEqualTo(0);
+        assertThat(idamLogon.getContent()).isEmpty();
     }
 
     @Test
-    void shouldNotFindIdamLogonWithioutStartTimeAndEndTime() {
-        final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository.findIdamLogon(
+    void shouldFindAllIdamLogonsWithoutStartTimeAndEndTime() {
+        final Page<IdamLogonAudit> idamLogon = idamLogonAuditFindLogonRepository.findIdamLogon(
             null,
             null,
             null,
@@ -135,7 +136,7 @@ class IdamLogonRepositoryStartEndTimeTest {
             ENCRYPTION_KEY,
             getPage()
         );
-        assertThat(idamLogon.getContent().size()).isEqualTo(0);
+        assertThat(idamLogon.getContent()).hasSize(NUMBER_OF_ENTRIES);
     }
 
 

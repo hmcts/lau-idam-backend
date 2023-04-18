@@ -42,6 +42,8 @@ class IdamLogonAuditRepositoryTest {
     @Autowired
     private IdamLogonAuditRepository idamLogonAuditRepository;
 
+    private IdamLogonAuditFindLogonRepository idamLogonAuditFindLogonRepository;
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -58,11 +60,12 @@ class IdamLogonAuditRepositoryTest {
                             valueOf(now().plusDays(i))
                     ), ENCRYPTION_KEY);
         }
+        idamLogonAuditFindLogonRepository = new IdamLogonAuditFindLogonRepository(entityManager);
     }
 
     @Test
     void shouldSearchByEmail() {
-        final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository
+        final Page<IdamLogonAudit> idamLogon = idamLogonAuditFindLogonRepository
                 .findIdamLogon(null, "1", valueOf(now()),
                                valueOf(now().plusDays(20)), ENCRYPTION_KEY, getPage());
 
@@ -72,7 +75,7 @@ class IdamLogonAuditRepositoryTest {
 
     @Test
     void shouldSearchUserId() {
-        final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository
+        final Page<IdamLogonAudit> idamLogon = idamLogonAuditFindLogonRepository
                 .findIdamLogon("1",
                         null,
                                valueOf(now()),
@@ -86,7 +89,7 @@ class IdamLogonAuditRepositoryTest {
 
     @Test
     void shouldGetAllRecords() {
-        final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository
+        final Page<IdamLogonAudit> idamLogon = idamLogonAuditFindLogonRepository
                 .findIdamLogon(null,
                         null,
                          valueOf(now()),
@@ -99,7 +102,7 @@ class IdamLogonAuditRepositoryTest {
 
     @Test
     void shouldFindPageableResults() {
-        final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository.findIdamLogon(null,
+        final Page<IdamLogonAudit> idamLogon = idamLogonAuditFindLogonRepository.findIdamLogon(null,
                 null,
                  valueOf(now()),
                  valueOf(now().plusDays(20)),
@@ -121,7 +124,7 @@ class IdamLogonAuditRepositoryTest {
                         "77777",
                         valueOf(now())
                 ),ENCRYPTION_KEY);
-        final Page<IdamLogonAudit> idamLogon = idamLogonAuditRepository
+        final Page<IdamLogonAudit> idamLogon = idamLogonAuditFindLogonRepository
                 .findIdamLogon("77777",
                         null,
                                valueOf(now().minusDays(1)),
@@ -134,7 +137,7 @@ class IdamLogonAuditRepositoryTest {
 
         idamLogonAuditRepository.deleteById(idamLogon.getContent().get(0).getId());
 
-        final Page<IdamLogonAudit> idamLogon1 = idamLogonAuditRepository
+        final Page<IdamLogonAudit> idamLogon1 = idamLogonAuditFindLogonRepository
                 .findIdamLogon("77777",
                         null,
                         null,
