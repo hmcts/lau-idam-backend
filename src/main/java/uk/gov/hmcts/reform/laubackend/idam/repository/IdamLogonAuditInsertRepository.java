@@ -1,13 +1,12 @@
 package uk.gov.hmcts.reform.laubackend.idam.repository;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import uk.gov.hmcts.reform.laubackend.idam.domain.IdamLogonAudit;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.transaction.Transactional;
 
 @Repository
 public class IdamLogonAuditInsertRepository {

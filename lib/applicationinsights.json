@@ -1,0 +1,6 @@
+{
+  "connectionString": "${file:/mnt/secrets/lau/app-insights-connection-string}",
+  "role": {
+    "name": "lau-idam-backend"
+  }
+}

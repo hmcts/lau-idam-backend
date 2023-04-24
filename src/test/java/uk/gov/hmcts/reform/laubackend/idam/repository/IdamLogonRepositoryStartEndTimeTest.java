@@ -1,5 +1,7 @@
 package uk.gov.hmcts.reform.laubackend.idam.repository;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -16,8 +18,6 @@ import uk.gov.hmcts.reform.laubackend.idam.utils.TimestampUtil;
 
 import java.sql.Timestamp;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import static java.sql.Timestamp.valueOf;
 import static java.time.LocalDateTime.now;
@@ -28,9 +28,9 @@ import static org.springframework.data.domain.PageRequest.of;
 @RunWith(SpringRunner.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestPropertySource(properties = {
-        "spring.jpa.hibernate.ddl-auto=update",
-        "spring.liquibase.enabled=false",
-        "spring.flyway.enabled=true"
+    "spring.jpa.hibernate.ddl-auto=update",
+    "spring.liquibase.enabled=false",
+    "spring.flyway.enabled=true"
 })
 @Import({TimestampUtil.class})
 class IdamLogonRepositoryStartEndTimeTest {

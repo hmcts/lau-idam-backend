@@ -9,22 +9,22 @@ Feature: The application's DELETE logon endpoint
 
   Scenario: The backend is unable to process logon DELETE requests due to missing s2s header
     Given LAU IdAm backend application is healthy
-    And I request DELETE "/audit/logon/deleteAuditLogonRecord/" logon endpoint with missing s2s header
+    And I request DELETE "/audit/logon/deleteAuditLogonRecord" logon endpoint with missing s2s header
     Then http "403" response is returned for DELETE logon
 
   Scenario: The backend is unable to process logon DELETE requests due to invalid authorization header
     Given LAU IdAm backend application is healthy
-    And I request DELETE "/audit/logon/deleteAuditLogonRecord/" logon endpoint with missing authorization header
+    And I request DELETE "/audit/logon/deleteAuditLogonRecord" logon endpoint with missing authorization header
     Then http "401" response is returned for DELETE logon
 
   Scenario: The backend is unable to process logon DELETE requests due invalid case search id
     Given LAU IdAm backend application is healthy
-    And I request DELETE "/audit/logon/deleteAuditLogonRecord/" logon endpoint with invalid logonId "000000"
+    And I request DELETE "/audit/logon/deleteAuditLogonRecord" logon endpoint with invalid logonId "000000"
     Then http "404" response is returned for DELETE logon
 
   Scenario: The backend is unable to process logon DELETE requests due invalid case search id
     Given LAU IdAm backend application is healthy
-    And I request DELETE "/audit/logon/deleteAuditLogonRecord/" logon endpoint with missing logonId
+    And I request DELETE "/audit/logon/deleteAuditLogonRecord" logon endpoint with missing logonId
     Then http "400" response is returned for DELETE logon
 
 

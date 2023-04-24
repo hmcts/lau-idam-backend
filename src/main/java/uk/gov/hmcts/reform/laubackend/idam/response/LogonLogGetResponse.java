@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.laubackend.idam.response;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import uk.gov.hmcts.reform.laubackend.idam.dto.LogonLog;
@@ -11,20 +10,20 @@ import java.util.List;
 
 @Getter
 @Setter
-@ApiModel(description = "IdAM Logon GET Response")
+@Schema(description = "IdAM Logon GET Response")
 public class LogonLogGetResponse implements Serializable {
 
     public static final long serialVersionUID = 432973322;
 
     private List<LogonLog> logonLog;
 
-    @ApiModelProperty(notes = "The index of the first record out of the full result set provided in the result set")
+    @Schema(description = "The index of the first record out of the full result set provided in the result set")
     private int startRecordNumber;
 
-    @ApiModelProperty(notes = "Indicates whether there are more records beyond the current page in the full result set")
+    @Schema(description = "Indicates whether there are more records beyond the current page in the full result set")
     private boolean moreRecords;
 
-    @ApiModelProperty(notes = "The total number of records in the full result set")
+    @Schema(description = "The total number of records in the full result set")
     private long totalNumberOfRecords;
 
     public static LogonLogGetResponse logonLogResponse() {
