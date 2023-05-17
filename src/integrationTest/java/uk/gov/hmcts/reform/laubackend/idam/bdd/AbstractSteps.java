@@ -1,7 +1,7 @@
 package uk.gov.hmcts.reform.laubackend.idam.bdd;
 
 import com.google.gson.Gson;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 import uk.gov.hmcts.reform.laubackend.idam.helper.RestHelper;
 

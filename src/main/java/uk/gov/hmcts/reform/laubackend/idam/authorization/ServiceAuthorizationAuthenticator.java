@@ -1,11 +1,10 @@
 package uk.gov.hmcts.reform.laubackend.idam.authorization;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.laubackend.idam.exceptions.InvalidServiceAuthorizationException;
-
-import javax.servlet.http.HttpServletRequest;
 
 import static uk.gov.hmcts.reform.laubackend.idam.constants.CommonConstants.SERVICE_AUTHORISATION_HEADER;
 

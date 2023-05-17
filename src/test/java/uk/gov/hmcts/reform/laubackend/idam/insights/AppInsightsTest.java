@@ -16,7 +16,6 @@ import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.GET_
 
 class AppInsightsTest {
     private AppInsights classUnderTest;
-    private static final String APPINSIGHTS_INSTRUMENT_KEY = "key";
 
     @Mock
     private TelemetryClient telemetryClient;
@@ -25,9 +24,8 @@ class AppInsightsTest {
     void setUp() {
         MockitoAnnotations.initMocks(this);
         TelemetryContext telemetryContext = new TelemetryContext();
-        telemetryContext.setInstrumentationKey("some-key");
         doReturn(telemetryContext).when(telemetryClient).getContext();
-        classUnderTest = new AppInsights(APPINSIGHTS_INSTRUMENT_KEY, telemetryClient);
+        classUnderTest = new AppInsights(telemetryClient);
     }
 
     @Test
@@ -44,12 +42,11 @@ class AppInsightsTest {
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     void testTelemetry() {
         TelemetryContext telemetryContext = new TelemetryContext();
-        telemetryContext.setInstrumentationKey("key");
 
         TelemetryClient telemetryClient = mock(TelemetryClient.class);
         when(telemetryClient.getContext()).thenReturn(telemetryContext);
 
-        AppInsights appInsights = new AppInsights(APPINSIGHTS_INSTRUMENT_KEY, telemetryClient);
+        AppInsights appInsights = new AppInsights(telemetryClient);
 
         Assert.isInstanceOf(AppInsights.class, appInsights);
     }

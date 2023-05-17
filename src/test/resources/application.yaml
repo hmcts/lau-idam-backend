@@ -55,3 +55,11 @@ flyway:
     strategy: "false"
 
 default.page.size: ${LAU_PAGE_SIZE_DEFAULT:10000}
+
+springdoc:
+  swagger-ui:
+    path: "/swagger-ui.html"
+  api-docs:
+    path: v2/api-docs
+  packagesToScan: uk.gov.hmcts.reform.laubackend.idam.controllers
+  pathsToMatch: /**

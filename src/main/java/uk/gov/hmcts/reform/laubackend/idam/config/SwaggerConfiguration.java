@@ -1,61 +1,42 @@
 package uk.gov.hmcts.reform.laubackend.idam.config;
 
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
 import org.flywaydb.core.internal.util.StringUtils;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.CorsEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementPortType;
 import org.springframework.boot.actuate.endpoint.ExposableEndpoint;
 import org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver;
+import org.springframework.boot.actuate.endpoint.web.EndpointMapping;
 import org.springframework.boot.actuate.endpoint.web.EndpointMediaTypes;
 import org.springframework.boot.actuate.endpoint.web.ExposableWebEndpoint;
 import org.springframework.boot.actuate.endpoint.web.WebEndpointsSupplier;
-import org.springframework.boot.actuate.endpoint.web.EndpointMapping;
 import org.springframework.boot.actuate.endpoint.web.annotation.ControllerEndpointsSupplier;
 import org.springframework.boot.actuate.endpoint.web.annotation.ServletEndpointsSupplier;
 import org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
-import uk.gov.hmcts.reform.laubackend.idam.Application;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 @Configuration
-@EnableSwagger2
 public class SwaggerConfiguration {
 
     @Bean
-    public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2)
-            .useDefaultResponseMessages(false)
-            .select()
-            .apis(RequestHandlerSelectors.basePackage(Application.class.getPackage().getName() + ".controllers"))
-            .paths(PathSelectors.any())
-            .build()
-            .apiInfo(apiDetails());
-    }
+    public OpenAPI lauIdamBackendOpenApi() {
+        License licence = new License().name("REFORM Common Components").url("");
 
-    private ApiInfo apiDetails() {
-        return new ApiInfo(
-            "LAU IdAM Back-End API",
-            "Log and Audit IdAM Back-End API, used for auditing IdAM logons.",
-            "0.1",
-            "",
-            new Contact("", "", ""),
-            "REFORM Common Components.",
-            "",
-            Collections.emptyList()
-        );
+        Info info = new Info().title("LAU IdAM Back-End API")
+            .description("Log and Audit IdAM Back-End API, used for auditing IdAM logons.")
+            .version("0.1")
+            .license(licence);
+
+        return new OpenAPI().info(info);
     }
 
     @Bean

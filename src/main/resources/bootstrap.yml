@@ -5,7 +5,6 @@ spring:
       prefixed: false
       paths: /mnt/secrets/lau
       aliases:
-        AppInsightsInstrumentationKey: azure.application-insights.instrumentation-key
         idam-backend-POSTGRES-PASS: ${LAU_IDAM_DB_ADMIN_PASSWORD:LAU_IDAM_DB_ADMIN_PASSWORD}
         idam-backend-POSTGRES-USER: ${LAU_IDAM_DB_ADMIN_USERNAME:LAU_IDAM_DB_ADMIN_USERNAME}
         idam-backend-app-db-password: ${LAU_IDAM_DB_PASSWORD:LAU_IDAM_DB_PASSWORD}
@@ -13,3 +12,4 @@ spring:
         idam-flyway-password: flyway.password
         backend-encryption-key: ${LAU_IDAM_ENCRYPTION_KEY:LAU_IDAM_ENCRYPTION_KEY}
         idam-client-secret: ${IDAM_CLIENT_SECRET:IDAM_CLIENT_SECRET}
+        app-insights-connection-string: app-insights-connection-string

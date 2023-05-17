@@ -11,6 +11,5 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @CucumberContextConfiguration
 @SpringBootTest(classes = Application.class, webEnvironment = RANDOM_PORT)
 @Slf4j
-@SuppressWarnings({"PMD.AbstractClassWithoutAnyMethod", "PMD.AbstractClassWithoutAbstractMethod"})
-public abstract class SpringBootIntegrationTest {
+public class SpringBootIntegrationTest {
 }

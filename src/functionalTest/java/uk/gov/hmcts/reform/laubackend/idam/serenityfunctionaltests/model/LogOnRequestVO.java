@@ -2,8 +2,7 @@ package uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import javax.annotation.Generated;
+import jakarta.annotation.Generated;
 
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

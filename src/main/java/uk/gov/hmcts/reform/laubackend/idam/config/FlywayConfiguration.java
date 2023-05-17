@@ -14,11 +14,11 @@ import org.springframework.context.annotation.Configuration;
 import uk.gov.hmcts.reform.laubackend.idam.utils.FlywayNoOpStrategy;
 
 @AutoConfigureAfter({
-        DataSourceAutoConfiguration.class,
-        HibernateJpaAutoConfiguration.class
+    DataSourceAutoConfiguration.class,
+    HibernateJpaAutoConfiguration.class
 })
 @AutoConfigureBefore({
-        FlywayAutoConfiguration.class
+    FlywayAutoConfiguration.class
 })
 @Configuration
 @ConditionalOnClass(Flyway.class)

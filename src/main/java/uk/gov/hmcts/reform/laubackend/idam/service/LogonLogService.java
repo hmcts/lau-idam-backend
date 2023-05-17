@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.laubackend.idam.service;
 import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -110,5 +111,11 @@ public class LogonLogService {
 
     public void deleteLogonLogById(final String logonId) {
         idamLogonAuditRepository.deleteById(Long.valueOf(logonId));
+    }
+
+    public void verifyLogonLogExists(String id) {
+        if (idamLogonAuditRepository.findById(Long.valueOf(id)).isEmpty()) {
+            throw new EmptyResultDataAccessException(1);
+        }
     }
 }
