@@ -26,23 +26,9 @@ public class LogOnGetApiSteps extends BaseSteps {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LogOnGetApiSteps.class);
 
-    @Step("Given a valid service token is generated")
-    public String givenAValidServiceTokenIsGenerated() {
-        return authorizationHeaderHelper.getServiceToken();
-    }
-
     @Step("And valid Authorization token is generated")
     public String validAuthorizationTokenIsGenerated() throws JSONException {
         return authorizationHeaderHelper.getAuthorizationToken();
-    }
-
-    @Step("Then a success response is returned")
-    public String thenASuccessResposeIsReturned(Response response) {
-        Assert.assertTrue(
-            "Response status code is not 200, but it is " + response.getStatusCode(),
-            response.statusCode() == 200 || response.statusCode() == 201
-        );
-        return TestConstants.SUCCESS;
     }
 
     @SuppressWarnings({"PMD.AvoidUsingHardCodedIP"})
@@ -165,16 +151,6 @@ public class LogOnGetApiSteps extends BaseSteps {
         queryParamMap.put("startTimestamp", "");
         queryParamMap.put("endTimestamp", "");
         return queryParamMap;
-    }
-
-    @SuppressWarnings({"PMD.SimplifiableTestAssertion"})
-    @Step("Then bad response is returned")
-    public String thenBadResponseIsReturned(Response response, int expectedStatusCode) {
-        Assert.assertTrue(
-            "Response status code is not " + expectedStatusCode + ", but it is " + response.getStatusCode(),
-            response.statusCode() == expectedStatusCode
-        );
-        return TestConstants.SUCCESS;
     }
 
     @Step("Given the invalid authorization token is generated")

@@ -1,11 +1,15 @@
 package uk.gov.hmcts.reform.laubackend.idam.utils;
 
+import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLog;
 import uk.gov.hmcts.reform.laubackend.idam.dto.LogonInputParamsHolder;
 import uk.gov.hmcts.reform.laubackend.idam.dto.LogonLog;
 import uk.gov.hmcts.reform.laubackend.idam.exceptions.InvalidRequestException;
 
+import java.util.List;
+
 import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.EMAIL_ADDRESS_GET_EXCEPTION_MESSAGE;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.EMAIL_ADDRESS_POST_EXCEPTION_MESSAGE;
+import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.FIRSTNAME_POST_EXCEPTION_MESSAGE;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.IPADDRESS_POST_EXCEPTION_MESSAGE;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.LOGIN_STATE_EXCEPTION_MESSAGE;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.SERVICE_POST_EXCEPTION_MESSAGE;
@@ -17,12 +21,16 @@ import static uk.gov.hmcts.reform.laubackend.idam.constants.RegexConstants.TIMES
 import static uk.gov.hmcts.reform.laubackend.idam.constants.RegexConstants.TIMESTAMP_POST_REGEX;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifierHelper.verifyEmailAddress;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifierHelper.verifyIpAddress;
+import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifierHelper.verifyLength;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifierHelper.verifyLoginState;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifierHelper.verifyService;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifierHelper.verifyTimestamp;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifierHelper.verifyUserId;
 
 public final class InputParamsVerifier {
+
+    private static final int MAX_NAME_LENGTH = 64;
+
     private InputParamsVerifier() {
     }
 
@@ -42,5 +50,17 @@ public final class InputParamsVerifier {
         verifyEmailAddress(inputParamsHolder.getEmailAddress(), EMAIL_ADDRESS_GET_EXCEPTION_MESSAGE);
         verifyTimestamp(inputParamsHolder.getStartTime(), TIMESTAMP_GET_EXCEPTION_MESSAGE, TIMESTAMP_GET_REGEX);
         verifyTimestamp(inputParamsHolder.getEndTime(), TIMESTAMP_GET_EXCEPTION_MESSAGE, TIMESTAMP_GET_REGEX);
+    }
+
+    public static void verifyUserDeletionRequestParams(
+        final List<DeletionLog> deletionLogs
+    ) throws InvalidRequestException {
+        for (DeletionLog log: deletionLogs) {
+            verifyUserId(log.getUserId(), USERID_POST_EXCEPTION_MESSAGE);
+            verifyEmailAddress(log.getEmailAddress(), EMAIL_ADDRESS_POST_EXCEPTION_MESSAGE);
+            verifyLength(log.getFirstName(), MAX_NAME_LENGTH, FIRSTNAME_POST_EXCEPTION_MESSAGE);
+            verifyLength(log.getLastName(), MAX_NAME_LENGTH, FIRSTNAME_POST_EXCEPTION_MESSAGE);
+            verifyTimestamp(log.getDeletionTimestamp(), TIMESTAMP_POST_EXCEPTION_MESSAGE, TIMESTAMP_POST_REGEX);
+        }
     }
 }

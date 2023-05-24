@@ -118,21 +118,21 @@ public class UserDeletionAuditFindRepository {
         if (userDeletionUser == null) {
             return usedParams;
         }
-        if (!StringUtils.isEmpty(userDeletionUser.userId())) {
+        if (!StringUtils.isEmpty(userDeletionUser.getUserId())) {
             queryParts.add(USER_CRITERIA);
-            usedParams.put("userId", userDeletionUser.userId());
+            usedParams.put("userId", userDeletionUser.getUserId());
         }
-        if (!StringUtils.isEmpty(userDeletionUser.emailAddress())) {
+        if (!StringUtils.isEmpty(userDeletionUser.getEmailAddress())) {
             queryParts.add(EMAIL_CRITERIA);
-            usedParams.put("emailAddress", userDeletionUser.emailAddress());
+            usedParams.put("emailAddress", userDeletionUser.getEmailAddress());
         }
-        if (!StringUtils.isEmpty(userDeletionUser.firstName())) {
+        if (!StringUtils.isEmpty(userDeletionUser.getFirstName())) {
             queryParts.add(FIRST_NAME_CRITERIA);
-            usedParams.put("firstName", userDeletionUser.firstName());
+            usedParams.put("firstName", userDeletionUser.getFirstName());
         }
-        if (!StringUtils.isEmpty(userDeletionUser.lastName())) {
+        if (!StringUtils.isEmpty(userDeletionUser.getLastName())) {
             queryParts.add(LAST_NAME_CRITERIA);
-            usedParams.put("lastName", userDeletionUser.lastName());
+            usedParams.put("lastName", userDeletionUser.getLastName());
         }
         return usedParams;
     }
