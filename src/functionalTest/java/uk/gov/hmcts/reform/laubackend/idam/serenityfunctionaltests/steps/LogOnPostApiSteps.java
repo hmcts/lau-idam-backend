@@ -1,11 +1,8 @@
 package uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.steps;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import io.restassured.response.Response;
 import net.thucydides.core.annotations.Step;
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.model.LogOnRequestVO;
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.model.LogonLog;
-import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants;
 
 
 public class LogOnPostApiSteps extends BaseSteps {
@@ -24,11 +21,6 @@ public class LogOnPostApiSteps extends BaseSteps {
         LogOnRequestVO logOnRequestVO = new LogOnRequestVO();
         logOnRequestVO.setLogonLog(logonLog);
         return logOnRequestVO;
-    }
-
-    @Step("When the POST service is invoked")
-    public Response whenThePostServiceIsInvoked(String serviceToken, Object logonLog) throws JsonProcessingException {
-        return performPostOperation(TestConstants.LOGON_ENDPOINT, null, null, logonLog, serviceToken);
     }
 
     @Step("Given invalid POST service body is generated")

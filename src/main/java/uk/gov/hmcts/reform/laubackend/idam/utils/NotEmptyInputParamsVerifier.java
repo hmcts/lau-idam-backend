@@ -1,9 +1,12 @@
 
 package uk.gov.hmcts.reform.laubackend.idam.utils;
 
+import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLog;
 import uk.gov.hmcts.reform.laubackend.idam.dto.LogonInputParamsHolder;
 import uk.gov.hmcts.reform.laubackend.idam.dto.LogonLog;
 import uk.gov.hmcts.reform.laubackend.idam.exceptions.InvalidRequestException;
+
+import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -39,6 +42,25 @@ public final class NotEmptyInputParamsVerifier {
             throw new InvalidRequestException("Both startTime and endTime must be present "
                                                   + "and at least one of the parameters ((userId, emailAddress "
                                                   + ") must not be empty", BAD_REQUEST);
+        }
+    }
+
+    public static void verifyUserDeletionPostRequestParamsPresence(final List<DeletionLog> logs)
+        throws InvalidRequestException {
+
+        if (logs == null) {
+            throw new InvalidRequestException("At least one deletion log is required", BAD_REQUEST);
+        }
+
+        for (DeletionLog log: logs) {
+            boolean missingUserId = isEmpty(log.getUserId());
+            boolean missingEmail = isEmpty(log.getEmailAddress());
+            boolean missingName = isEmpty(log.getFirstName()) || isEmpty(log.getLastName());
+            boolean missingTimestamp = isEmpty(log.getDeletionTimestamp());
+
+            if (missingUserId || missingEmail || missingName || missingTimestamp) {
+                throw new InvalidRequestException("All parameters for all deletion logs are required", BAD_REQUEST);
+            }
         }
     }
 }

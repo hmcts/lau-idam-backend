@@ -9,10 +9,13 @@ import io.restassured.http.Header;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import net.serenitybdd.rest.SerenityRest;
+import net.thucydides.core.annotations.Step;
+import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.config.EnvConfig;
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.helper.AuthorizationHeaderHelper;
+import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -108,4 +111,48 @@ public class BaseSteps {
                 .then()
                 .extract().response();
     }
+
+    @Step("Given a valid service token is generated")
+    public String givenAValidServiceTokenIsGenerated() {
+        return authorizationHeaderHelper.getServiceToken();
+    }
+
+    @Step("Then a success response is returned")
+    public String thenASuccessResposeIsReturned(Response response) {
+        Assert.assertTrue(
+            "Response status code is not 200, but it is " + response.getStatusCode(),
+            response.statusCode() == 200 || response.statusCode() == 201
+        );
+        return TestConstants.SUCCESS;
+    }
+
+    @Step("Then a forbidden response is returned")
+    public String thenAForbiddenResposeIsReturned(Response response) {
+        Assert.assertEquals(
+            "Response status code is not 403, but it is " + response.getStatusCode(),
+            403, response.statusCode()
+        );
+        return TestConstants.SUCCESS;
+    }
+
+    @Step("When the POST service is invoked")
+    public Response whenThePostServiceIsInvoked(
+        String endpoint,
+        String serviceToken,
+        Object body
+    ) throws JsonProcessingException {
+        return performPostOperation(endpoint, null, null, body, serviceToken);
+    }
+
+    @SuppressWarnings({"PMD.SimplifiableTestAssertion"})
+    @Step("Then bad response is returned")
+    public String thenBadResponseIsReturned(Response response, int expectedStatusCode) {
+        Assert.assertTrue(
+            "Response status code is not " + expectedStatusCode + ", but it is " + response.getStatusCode(),
+            response.statusCode() == expectedStatusCode
+        );
+        return TestConstants.SUCCESS;
+    }
+
+
 }
