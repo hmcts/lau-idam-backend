@@ -379,7 +379,7 @@ dependencies {
     testImplementation group: 'io.rest-assured', name: 'xml-path', version: versions.restAssured
     testImplementation group: 'com.google.code.gson', name: 'gson', version: '2.10'
     testImplementation group: 'com.googlecode.junit-toolbox', name: 'junit-toolbox', version: '2.4'
-    testImplementation group: 'org.testng', name: 'testng', version: '7.7.1'
+    testImplementation group: 'org.testng', name: 'testng', version: '7.8.0'
 
     cucumberRuntime group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber
     cucumberRuntime group: 'org.springframework', name: 'spring-web', version: versions.springFramework
@@ -390,7 +390,7 @@ dependencies {
     cucumberRuntime group: 'net.serenity-bdd', name: 'serenity-rest-assured'
     cucumberRuntime group: 'com.google.code.gson', name: 'gson', version: '2.10'
     cucumberRuntime group: 'com.googlecode.junit-toolbox', name: 'junit-toolbox', version: '2.4'
-    cucumberRuntime group: 'org.testng', name: 'testng', version: '7.7.1'
+    cucumberRuntime group: 'org.testng', name: 'testng', version: '7.8.0'
 
     testCompileOnly group: 'org.projectlombok', name: 'lombok'
     testAnnotationProcessor group: 'org.projectlombok', name: 'lombok'
