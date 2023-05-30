@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.laubackend.idam.domain.IdamLogonAudit;
 import uk.gov.hmcts.reform.laubackend.idam.dto.LogonInputParamsHolder;
@@ -109,7 +108,7 @@ public class LogonLogService {
         final String pageSize = isEmpty(size) ? defaultPageSize : size.trim();
         final String pageNumber = isEmpty(page) ? "1" : page.trim();
 
-        return of(parseInt(pageNumber) - 1, parseInt(pageSize), Sort.by("log_timestamp"));
+        return of(parseInt(pageNumber) - 1, parseInt(pageSize));
     }
 
     public void deleteLogonLogById(final String logonId) {

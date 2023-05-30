@@ -9,7 +9,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import uk.gov.hmcts.reform.laubackend.idam.domain.IdamLogonAudit;
 import uk.gov.hmcts.reform.laubackend.idam.dto.LogonInputParamsHolder;
 import uk.gov.hmcts.reform.laubackend.idam.dto.LogonLog;
@@ -26,7 +25,7 @@ import java.util.List;
 import static java.lang.Integer.parseInt;
 import static java.sql.Timestamp.valueOf;
 import static java.time.LocalDateTime.now;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -67,16 +66,16 @@ class LogonLogServiceTest {
 
         when(idamLogonAuditFindLogonRepository
                 .findIdamLogon("1", "2", null, null, null,
-                        PageRequest.of(0, parseInt("10000"), Sort.by("log_timestamp"))))
+                        PageRequest.of(0, parseInt("10000"))))
                 .thenReturn(pageResults);
 
         final LogonLogGetResponse logonLog = logonLogService.getLogonLog(inputParamsHolder);
 
         verify(idamLogonAuditFindLogonRepository, times(1))
                 .findIdamLogon("1", "2", null, null, null,
-                        PageRequest.of(0, parseInt("10000"), Sort.by("log_timestamp")));
+                        PageRequest.of(0, parseInt("10000")));
 
-        assertThat(logonLog.getLogonLog().size()).isEqualTo(1);
+        assertThat(logonLog.getLogonLog()).hasSize(1);
         assertThat(logonLog.getLogonLog().get(0).getUserId()).isEqualTo("1");
         assertThat(logonLog.getLogonLog().get(0).getEmailAddress()).isEqualTo("2");
         assertThat(logonLog.getLogonLog().get(0).getService()).isEqualTo("3");

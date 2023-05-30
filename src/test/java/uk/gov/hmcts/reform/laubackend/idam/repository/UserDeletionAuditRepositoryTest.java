@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.reform.laubackend.idam.domain.UserDeletionAudit;
@@ -20,6 +19,7 @@ import uk.gov.hmcts.reform.laubackend.idam.dto.UserDeletionUser;
 import uk.gov.hmcts.reform.laubackend.idam.utils.TimestampUtil;
 
 import java.sql.Timestamp;
+import java.util.Comparator;
 import java.util.List;
 
 import static java.sql.Timestamp.valueOf;
@@ -36,6 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
     "spring.flyway.enabled=true"
 })
 @Import({TimestampUtil.class})
+@SuppressWarnings("PMD.TooManyMethods")
 class UserDeletionAuditRepositoryTest {
     private static final int RECORD_NUMBER = 20;
 
@@ -76,6 +77,22 @@ class UserDeletionAuditRepositoryTest {
 
         assertThat(userDeletion.getContent()).hasSize(1);
         assertResults(userDeletion.getContent(), 1);
+    }
+
+    @Test
+    @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
+    void shouldReturnResultsInDescOrderByTimestamp() {
+        final Page<UserDeletionAudit> userDeletion = userDeletionAuditFindRepository
+            .findUserDeletion(getUserDeletionUser(null, null, null, null),
+                              valueOf(now()),
+                              valueOf(now().plusDays(20)),
+                              ENCRYPTION_KEY,
+                              getPage());
+
+        assertThat(userDeletion.getContent()).hasSize(20);
+        assertThat(userDeletion.getContent())
+            .extracting("timestamp", Timestamp.class)
+            .isSortedAccordingTo(Comparator.reverseOrder());
     }
 
     @Test
@@ -137,7 +154,7 @@ class UserDeletionAuditRepositoryTest {
             valueOf(now()),
             valueOf(now().plusDays(20)),
             ENCRYPTION_KEY,
-            PageRequest.of(1, 10, Sort.by("deletion_timestamp"))
+            PageRequest.of(1, 10)
         );
 
         assertThat(userDeletion.getTotalElements()).isEqualTo(20);

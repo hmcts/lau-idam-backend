@@ -34,6 +34,8 @@ public class IdamLogonAuditFindLogonRepository {
         encode(hmac(:emailAddress, :encryptionKey , 'sha256'), 'hex')
         = ila.email_address_mac""";
 
+    private static final String ORDER = "ORDER BY log_timestamp DESC";
+
     @PersistenceContext
     private final EntityManager entityManager;
 
@@ -55,6 +57,8 @@ public class IdamLogonAuditFindLogonRepository {
         queryParts.add(FROM);
 
         addSearchCriteria(queryParts, userId, emailAddress, startTime, endTime);
+
+        queryParts.add(ORDER);
 
         final String queryString = String.join(" ", queryParts);
         final Query query = entityManager.createNativeQuery(queryString, IdamLogonAudit.class);
