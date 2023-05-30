@@ -44,6 +44,7 @@ public class UserDeletionAuditFindRepository {
     private static final String EMAIL_CRITERIA = "AND email_address_hmac = hash_value(:emailAddress, :encryptionKey)";
     private static final String FIRST_NAME_CRITERIA = "AND first_name_hmac = hash_value(:firstName, :encryptionKey)";
     private static final String LAST_NAME_CRITERIA = "AND last_name_hmac = hash_value(:lastName, :encryptionKey)";
+    private static final String ORDER = "ORDER by deletion_timestamp DESC";
 
     @PersistenceContext
     private final EntityManager entityManager;
@@ -61,6 +62,7 @@ public class UserDeletionAuditFindRepository {
         queryParts.add(TIME_RANGE_CRITERIA);
 
         Map<String, String> usedParams = addSearchCriteria(queryParts, userDeletionUser);
+        queryParts.add(ORDER);
 
         final String queryString = String.join(" ", queryParts);
         final Query query = entityManager.createNativeQuery(queryString, UserDeletionAudit.class);

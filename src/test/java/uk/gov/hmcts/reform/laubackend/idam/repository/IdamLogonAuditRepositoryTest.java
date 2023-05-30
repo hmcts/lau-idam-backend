@@ -11,13 +11,13 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.reform.laubackend.idam.domain.IdamLogonAudit;
 import uk.gov.hmcts.reform.laubackend.idam.utils.TimestampUtil;
 
 import java.sql.Timestamp;
+import java.util.Comparator;
 import java.util.List;
 
 import static java.sql.Timestamp.valueOf;
@@ -64,12 +64,26 @@ class IdamLogonAuditRepositoryTest {
     }
 
     @Test
+    @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
+    void shouldReturnInDescendingOrderByTimestamp() {
+        final Page<IdamLogonAudit> idamLogon = idamLogonAuditFindLogonRepository
+            .findIdamLogon(null, null, valueOf(now()),
+                           valueOf(now().plusDays(20)), ENCRYPTION_KEY, getPage());
+        List<IdamLogonAudit> items = idamLogon.getContent();
+
+        assertThat(items)
+            .as("Results are not sorted in descending order")
+            .extracting("timestamp", Timestamp.class)
+            .isSortedAccordingTo(Comparator.reverseOrder());
+    }
+
+    @Test
     void shouldSearchByEmail() {
         final Page<IdamLogonAudit> idamLogon = idamLogonAuditFindLogonRepository
                 .findIdamLogon(null, "1", valueOf(now()),
                                valueOf(now().plusDays(20)), ENCRYPTION_KEY, getPage());
 
-        assertThat(idamLogon.getContent().size()).isEqualTo(1);
+        assertThat(idamLogon.getContent()).hasSize(1);
         assertResults(idamLogon.getContent(), 1);
     }
 
@@ -83,7 +97,7 @@ class IdamLogonAuditRepositoryTest {
                         ENCRYPTION_KEY,
                         getPage());
 
-        assertThat(idamLogon.getContent().size()).isEqualTo(1);
+        assertThat(idamLogon.getContent()).hasSize(1);
         assertResults(idamLogon.getContent(), 1);
     }
 
@@ -97,7 +111,7 @@ class IdamLogonAuditRepositoryTest {
                         ENCRYPTION_KEY,
                         getPage());
 
-        assertThat(idamLogon.getContent().size()).isEqualTo(20);
+        assertThat(idamLogon.getContent()).hasSize(20);
     }
 
     @Test
@@ -107,11 +121,11 @@ class IdamLogonAuditRepositoryTest {
                  valueOf(now()),
                  valueOf(now().plusDays(20)),
                 ENCRYPTION_KEY,
-                of(1, 10, Sort.by("log_timestamp"))
+                of(1, 10)
         );
 
         assertThat(idamLogon.getTotalElements()).isEqualTo(20);
-        assertThat(idamLogon.getContent().size()).isEqualTo(10);
+        assertThat(idamLogon.getContent()).hasSize(10);
     }
 
     @Test
@@ -132,7 +146,7 @@ class IdamLogonAuditRepositoryTest {
                         ENCRYPTION_KEY,
                         getPage());
 
-        assertThat(idamLogon.getContent().size()).isEqualTo(1);
+        assertThat(idamLogon.getContent()).hasSize(1);
         assertThat(idamLogon.getContent().get(0).getUserId()).isEqualTo("77777");
 
         idamLogonAuditRepository.deleteById(idamLogon.getContent().get(0).getId());
@@ -145,7 +159,7 @@ class IdamLogonAuditRepositoryTest {
                         ENCRYPTION_KEY,
                         getPage());
 
-        assertThat(idamLogon1.getContent().size()).isEqualTo(0);
+        assertThat(idamLogon1.getContent()).isEmpty();
     }
 
     private void assertResults(final List<IdamLogonAudit> content, final int value) {
