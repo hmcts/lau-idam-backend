@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.laubackend.idam.utils;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLogGetRequestParams;
 import uk.gov.hmcts.reform.laubackend.idam.dto.LogonInputParamsHolder;
 import uk.gov.hmcts.reform.laubackend.idam.dto.LogonLog;
 import uk.gov.hmcts.reform.laubackend.idam.exceptions.InvalidRequestException;
@@ -9,11 +10,13 @@ import uk.gov.hmcts.reform.laubackend.idam.exceptions.InvalidRequestException;
 import static org.apache.commons.lang3.RandomStringUtils.random;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.NotEmptyInputParamsVerifier.verifyLogonLogRequestAreNotEmpty;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.NotEmptyInputParamsVerifier.verifyRequestLogonParamsAreNotEmpty;
+import static uk.gov.hmcts.reform.laubackend.idam.utils.NotEmptyInputParamsVerifier.verifyUserDeletionGetRequestParamsPresence;
 
-@SuppressWarnings({"PMD.AvoidDuplicateLiterals"})
+@SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.TooManyMethods"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class NotEmptyInputParamsVerifierTest {
 
@@ -157,4 +160,65 @@ class NotEmptyInputParamsVerifierTest {
         }
     }
 
+    @Test
+    void shouldNotThrowExceptionWhenUserDeleteAuditGetParamsArePopulated() {
+        String start = "2023-05-23T09:23:54";
+        String end = "2023-05-24T09:23:54";
+        final var p1 = new DeletionLogGetRequestParams(
+            "userId", "", "", "", start, end, null, null);
+        assertDoesNotThrow(() -> verifyUserDeletionGetRequestParamsPresence(p1));
+
+        final var p2 = new DeletionLogGetRequestParams(
+            "", "email", "", "", start, end, null, null);
+        assertDoesNotThrow(() -> verifyUserDeletionGetRequestParamsPresence(p2));
+
+        final var p3 = new DeletionLogGetRequestParams(
+            "", null, "John", "", start, end, null, null);
+        assertDoesNotThrow(() -> verifyUserDeletionGetRequestParamsPresence(p3));
+
+        final var p4 = new DeletionLogGetRequestParams(
+            null, "", "", "Smith", start, end, null, null);
+        assertDoesNotThrow(() -> verifyUserDeletionGetRequestParamsPresence(p4));
+
+        final var p5 = new DeletionLogGetRequestParams(
+            null, "", "John", "Smith", start, end, null, null);
+        assertDoesNotThrow(() -> verifyUserDeletionGetRequestParamsPresence(p5));
+
+        final var p6 = new DeletionLogGetRequestParams(
+            "userId", "email", "John", "Smith", start, end, null, null);
+        assertDoesNotThrow(() -> verifyUserDeletionGetRequestParamsPresence(p6));
+
+        final var p7 = new DeletionLogGetRequestParams(
+            "userId", "email", null, null, start, end, null, null);
+        assertDoesNotThrow(() -> verifyUserDeletionGetRequestParamsPresence(p7));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenRequiredUserDeleteAuditGetParamsAreNotPresent() {
+        String start = "2023-05-23T09:23:54";
+        String end = "2023-05-24T09:23:54";
+        final var p1 = new DeletionLogGetRequestParams(
+            "", "", "", "", start, end, null, null);
+        assertThrows(InvalidRequestException.class, () -> verifyUserDeletionGetRequestParamsPresence(p1));
+
+        final var p2 = new DeletionLogGetRequestParams(
+            null, null, null, null, start, end, null, null);
+        assertThrows(InvalidRequestException.class, () -> verifyUserDeletionGetRequestParamsPresence(p2));
+
+        final var p3 = new DeletionLogGetRequestParams(
+            "", null, "John", "", null, end, null, null);
+        assertThrows(InvalidRequestException.class, () -> verifyUserDeletionGetRequestParamsPresence(p3));
+
+        final var p4 = new DeletionLogGetRequestParams(
+            null, "", "", "Smith", start, "", null, null);
+        assertThrows(InvalidRequestException.class, () -> verifyUserDeletionGetRequestParamsPresence(p4));
+
+        final var p5 = new DeletionLogGetRequestParams(
+            null, "", "John", "Smith", null, "", null, null);
+        assertThrows(InvalidRequestException.class, () -> verifyUserDeletionGetRequestParamsPresence(p5));
+
+        final var p6 = new DeletionLogGetRequestParams(
+            "userId", "email", "John", "Smith", "", end, null, null);
+        assertThrows(InvalidRequestException.class, () -> verifyUserDeletionGetRequestParamsPresence(p6));
+    }
 }

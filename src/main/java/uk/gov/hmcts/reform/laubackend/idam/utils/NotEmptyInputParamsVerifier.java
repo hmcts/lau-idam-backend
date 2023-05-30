@@ -2,6 +2,7 @@
 package uk.gov.hmcts.reform.laubackend.idam.utils;
 
 import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLog;
+import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLogGetRequestParams;
 import uk.gov.hmcts.reform.laubackend.idam.dto.LogonInputParamsHolder;
 import uk.gov.hmcts.reform.laubackend.idam.dto.LogonLog;
 import uk.gov.hmcts.reform.laubackend.idam.exceptions.InvalidRequestException;
@@ -10,6 +11,7 @@ import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.MISSING_GET_USER_DELETION_PARAMETERS_MESSAGE;
 
 @SuppressWarnings({"PMD.UselessParentheses"})
 public final class NotEmptyInputParamsVerifier {
@@ -62,6 +64,25 @@ public final class NotEmptyInputParamsVerifier {
                 throw new InvalidRequestException("All parameters for all deletion logs are required", BAD_REQUEST);
             }
         }
+    }
+
+    public static void verifyUserDeletionGetRequestParamsPresence(
+        final DeletionLogGetRequestParams params
+    ) throws InvalidRequestException {
+        if (params == null) {
+            throw new InvalidRequestException("Some parameters are required", BAD_REQUEST);
+        }
+        boolean missingStartEndTime = isEmpty(params.startTimestamp()) || isEmpty(params.endTimestamp());
+        boolean noUserId = isEmpty(params.userId());
+        boolean noEmail = isEmpty(params.emailAddress());
+        boolean noFirstName = isEmpty(params.firstName());
+        boolean noLastName = isEmpty(params.lastName());
+        boolean oneExtraParamPresent = List.of(noUserId, noEmail, noFirstName, noLastName).contains(Boolean.FALSE);
+
+        if (missingStartEndTime || !oneExtraParamPresent) {
+            throw new InvalidRequestException(MISSING_GET_USER_DELETION_PARAMETERS_MESSAGE, BAD_REQUEST);
+        }
+
     }
 }
 
