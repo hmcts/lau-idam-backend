@@ -11,7 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.reform.laubackend.idam.domain.UserDeletionAudit;
-import uk.gov.hmcts.reform.laubackend.idam.dto.UserDeletionUser;
+import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLogGetRequestParams;
+import uk.gov.hmcts.reform.laubackend.idam.utils.TimestampUtil;
 
 import java.sql.Timestamp;
 import java.util.Arrays;
@@ -24,6 +25,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequiredArgsConstructor
 @SuppressWarnings("unchecked")
 public class UserDeletionAuditFindRepository {
+
+    private final TimestampUtil timestampUtil;
 
     private static final int MAX_RESULT_COUNT = 10_000;
 
@@ -39,7 +42,6 @@ public class UserDeletionAuditFindRepository {
     private static final String TIME_RANGE_CRITERIA =
         "deletion_timestamp >= :startTime AND deletion_timestamp <= :endTime";
 
-
     private static final String USER_CRITERIA = "AND user_id = :userId";
     private static final String EMAIL_CRITERIA = "AND email_address_hmac = hash_value(:emailAddress, :encryptionKey)";
     private static final String FIRST_NAME_CRITERIA = "AND first_name_hmac = hash_value(:firstName, :encryptionKey)";
@@ -51,21 +53,22 @@ public class UserDeletionAuditFindRepository {
 
     @Transactional(readOnly = true)
     public Page<UserDeletionAudit> findUserDeletion(
-        final UserDeletionUser userDeletionUser,
-        final Timestamp startTime,
-        final Timestamp endTime,
+        final DeletionLogGetRequestParams params,
         final String encryptionKey,
-        final Pageable pageable) {
+        final Pageable pageable
+    ) {
 
         final List<String> queryParts = new LinkedList<>();
         queryParts.add(SELECT);
         queryParts.add(TIME_RANGE_CRITERIA);
 
-        Map<String, String> usedParams = addSearchCriteria(queryParts, userDeletionUser);
+        Map<String, String> usedParams = addSearchCriteria(queryParts, params);
         queryParts.add(ORDER);
-
+        
         final String queryString = String.join(" ", queryParts);
         final Query query = entityManager.createNativeQuery(queryString, UserDeletionAudit.class);
+        final Timestamp startTime = timestampUtil.getTimestampValue(params.startTimestamp());
+        final Timestamp endTime = timestampUtil.getTimestampValue(params.endTimestamp());
         setQueryParams(query, usedParams, startTime, endTime);
         query.setParameter("encryptionKey", encryptionKey);
         query.setFirstResult((int) pageable.getOffset());
@@ -73,12 +76,12 @@ public class UserDeletionAuditFindRepository {
 
         final List<UserDeletionAudit> results = query.getResultList();
 
-        long totalCount = countResults(userDeletionUser, startTime, endTime,  encryptionKey);
+        long totalCount = countResults(params, startTime, endTime,  encryptionKey);
 
         return new PageImpl<>(results, pageable, totalCount);
     }
 
-    private long countResults(final UserDeletionUser userDeletionUser,
+    private long countResults(final DeletionLogGetRequestParams params,
                               final Timestamp startTime,
                               final Timestamp endTime,
                               final String encryptionKey) {
@@ -89,7 +92,7 @@ public class UserDeletionAuditFindRepository {
         String innerQuery = "SELECT 1 FROM user_deletion_audit WHERE %s LIMIT %s";
 
         clauses.add(TIME_RANGE_CRITERIA);
-        Map<String, String> usedParams = addSearchCriteria(clauses, userDeletionUser);
+        Map<String, String> usedParams = addSearchCriteria(clauses, params);
         innerQuery = String.format(innerQuery, String.join(" ", clauses), MAX_RESULT_COUNT);
         fullQuery = String.format(fullQuery, innerQuery);
         final Query query = entityManager.createNativeQuery(fullQuery);
@@ -115,26 +118,29 @@ public class UserDeletionAuditFindRepository {
         query.setParameter("endTime", endTime);
     }
 
-    private Map<String, String> addSearchCriteria(List<String> queryParts, final UserDeletionUser userDeletionUser) {
+    private Map<String, String> addSearchCriteria(
+        final List<String> queryParts,
+        final DeletionLogGetRequestParams params
+    ) {
         Map<String, String> usedParams = new ConcurrentHashMap<>();
-        if (userDeletionUser == null) {
+        if (params == null) {
             return usedParams;
         }
-        if (!StringUtils.isEmpty(userDeletionUser.getUserId())) {
+        if (!StringUtils.isEmpty(params.userId())) {
             queryParts.add(USER_CRITERIA);
-            usedParams.put("userId", userDeletionUser.getUserId());
+            usedParams.put("userId", params.userId());
         }
-        if (!StringUtils.isEmpty(userDeletionUser.getEmailAddress())) {
+        if (!StringUtils.isEmpty(params.emailAddress())) {
             queryParts.add(EMAIL_CRITERIA);
-            usedParams.put("emailAddress", userDeletionUser.getEmailAddress());
+            usedParams.put("emailAddress", params.emailAddress());
         }
-        if (!StringUtils.isEmpty(userDeletionUser.getFirstName())) {
+        if (!StringUtils.isEmpty(params.firstName())) {
             queryParts.add(FIRST_NAME_CRITERIA);
-            usedParams.put("firstName", userDeletionUser.getFirstName());
+            usedParams.put("firstName", params.firstName());
         }
-        if (!StringUtils.isEmpty(userDeletionUser.getLastName())) {
+        if (!StringUtils.isEmpty(params.lastName())) {
             queryParts.add(LAST_NAME_CRITERIA);
-            usedParams.put("lastName", userDeletionUser.getLastName());
+            usedParams.put("lastName", params.lastName());
         }
         return usedParams;
     }

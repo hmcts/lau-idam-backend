@@ -11,25 +11,32 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLog;
+import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLogGetRequestParams;
 import uk.gov.hmcts.reform.laubackend.idam.exceptions.InvalidRequestException;
 import uk.gov.hmcts.reform.laubackend.idam.insights.AppInsights;
 import uk.gov.hmcts.reform.laubackend.idam.request.UserDeletionPostRequest;
+import uk.gov.hmcts.reform.laubackend.idam.response.UserDeletionGetResponse;
 import uk.gov.hmcts.reform.laubackend.idam.response.UserDeletionPostResponse;
 import uk.gov.hmcts.reform.laubackend.idam.service.UserDeletionAuditService;
 
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.reform.laubackend.idam.constants.CommonConstants.AUTHORISATION_HEADER;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.CommonConstants.SERVICE_AUTHORISATION_HEADER;
+import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.GET_DELETED_ACCOUNTS_INVALID_REQUEST_EXCEPTION;
 import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.POST_DELETION_INVALID_REQUEST_EXCEPTION;
 import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.POST_DELETION_REQUEST_EXCEPTION;
-import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifier.verifyUserDeletionRequestParams;
+import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifier.verifyUserDeletionGetRequestParams;
+import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifier.verifyUserDeletionPostRequestParams;
+import static uk.gov.hmcts.reform.laubackend.idam.utils.NotEmptyInputParamsVerifier.verifyUserDeletionGetRequestParamsPresence;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.NotEmptyInputParamsVerifier.verifyUserDeletionPostRequestParamsPresence;
 
 @RestController
@@ -38,14 +45,15 @@ import static uk.gov.hmcts.reform.laubackend.idam.utils.NotEmptyInputParamsVerif
 @Tag(name = "User deletion operations", description = ""
     + "This is the Log and Audit Back-End API that will audit user account deletions. "
     + "The API will be invoked by IdAM service.")
+@SuppressWarnings({"PMD.ExcessiveImports","PMD.UnnecessaryAnnotationValueElement"})
 public class UserDeletionAuditController {
 
     private final AppInsights appInsights;
     private final UserDeletionAuditService userDeletionAuditService;
 
-    @Operation(tags = "POST end-point", summary = "Save IdAM user deletion audit", description = "This operation will "
-        + "persist IdAM user deletion entries which are posted in the request. Single IdAM UserDeletionAudit "
-        + "per request will be stored in the database.")
+    @Operation(tags = "User Accounts endpoints", summary = "Save IdAM user deletion audit",
+        description = "This operation will persist IdAM user deletion entries which are posted in the request. "
+        + "Single IdAM UserDeletionAudit per request will be stored in the database.")
     @ApiResponses({
         @ApiResponse(
             responseCode = "201",
@@ -82,7 +90,7 @@ public class UserDeletionAuditController {
 
             List<DeletionLog> requestLogs = userDeletionPostRequest.getDeletionLogs();
             verifyUserDeletionPostRequestParamsPresence(requestLogs);
-            verifyUserDeletionRequestParams(requestLogs);
+            verifyUserDeletionPostRequestParams(requestLogs);
             List<DeletionLog> deletionLogs = userDeletionAuditService.saveUserDeletion(requestLogs);
             final UserDeletionPostResponse userDeletionPostResponse = new UserDeletionPostResponse(deletionLogs);
 
@@ -107,5 +115,63 @@ public class UserDeletionAuditController {
             );
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @Operation(
+        tags = "User Accounts endpoints",
+        summary = "Retrieve deleted user accounts",
+        description = "Query deleted user accounts based on search conditions provided via URL params"
+    )
+    @ApiResponses({
+        @ApiResponse(
+            responseCode = "200",
+            description = "Request executed successfully. Response will contain list of deletion logs",
+            content = { @Content(schema = @Schema(implementation = UserDeletionGetResponse.class))}),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Missing required parameter(s). startTimestamp and endStamp are both "
+                + "required and at least one of userId, emailAddress, firstName or lastName",
+            content = { @Content(schema = @Schema(implementation = UserDeletionGetResponse.class))}),
+        @ApiResponse(
+            responseCode = "403",
+            description = "Forbidden",
+            content = { @Content(schema = @Schema(implementation = UserDeletionGetResponse.class))}),
+        @ApiResponse(
+            responseCode = "500",
+            description = "Internal Server Error",
+            content = { @Content(schema = @Schema(implementation = UserDeletionGetResponse.class))})
+    })
+    @GetMapping(
+        path = "/audit/deletedAccounts",
+        produces = APPLICATION_JSON_VALUE
+    )
+    @ResponseBody
+    public ResponseEntity<UserDeletionGetResponse> getUserDeletions(
+        @Parameter(name = "Authorization", example = "Bearer eyJ0eXAiOiJK.........")
+        @RequestHeader(value = AUTHORISATION_HEADER) String authToken,
+        @Parameter(name = "Service Authorization", example = "Bearer eyJ0eXAiOiJK.........")
+        @RequestHeader(value = SERVICE_AUTHORISATION_HEADER) String serviceAuthToken,
+        DeletionLogGetRequestParams requestParams
+    ) {
+        try {
+            verifyUserDeletionGetRequestParamsPresence(requestParams);
+            verifyUserDeletionGetRequestParams(requestParams);
+
+            final UserDeletionGetResponse response = userDeletionAuditService.getUserDeletions(requestParams);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+
+        } catch (final InvalidRequestException ire) {
+            log.error("getDeletedAccounts API call failed due to error - {}",
+                      ire.getMessage(),
+                      ire
+            );
+            appInsights.trackEvent(
+                GET_DELETED_ACCOUNTS_INVALID_REQUEST_EXCEPTION.toString(),
+                appInsights.trackingMap("exception", ire.getMessage())
+            );
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
     }
 }

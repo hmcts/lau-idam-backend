@@ -21,8 +21,8 @@ import static java.time.LocalDateTime.now;
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.gov.hmcts.reform.laubackend.idam.repository.UserDeletionAuditRepositoryTest.assertResults;
 import static uk.gov.hmcts.reform.laubackend.idam.repository.UserDeletionAuditRepositoryTest.getPage;
+import static uk.gov.hmcts.reform.laubackend.idam.repository.UserDeletionAuditRepositoryTest.getRequestParams;
 import static uk.gov.hmcts.reform.laubackend.idam.repository.UserDeletionAuditRepositoryTest.getUserDeletionAudit;
-import static uk.gov.hmcts.reform.laubackend.idam.repository.UserDeletionAuditRepositoryTest.getUserDeletionUser;
 
 @DataJpaTest
 @RunWith(SpringRunner.class)
@@ -57,7 +57,8 @@ class UserDeletionRepositoryStartEndTimeTest {
                     Timestamp.valueOf(now().plusDays(i))
                 ), ENCRYPTION_KEY);
         }
-        userDeletionAuditFindRepository = new UserDeletionAuditFindRepository(entityManager);
+
+        userDeletionAuditFindRepository = new UserDeletionAuditFindRepository(new TimestampUtil(), entityManager);
     }
 
 
@@ -65,11 +66,17 @@ class UserDeletionRepositoryStartEndTimeTest {
     @DisplayName("Should find half by searching first half time range")
     void shouldFindHalfByTimeRange() {
         final Page<UserDeletionAudit> userDeletion = userDeletionAuditFindRepository
-            .findUserDeletion(getUserDeletionUser(null, null, null, null),
-                              Timestamp.valueOf(now()),
-                              Timestamp.valueOf(now().plusDays(10)),
-                              ENCRYPTION_KEY,
-                              getPage());
+            .findUserDeletion(
+                getRequestParams(
+                    null,
+                    null,
+                    null,
+                    null,
+                    now().toString(),
+                    now().plusDays(10).toString()
+                ),
+                ENCRYPTION_KEY,
+                getPage());
 
         assertThat(userDeletion.getContent()).hasSize(10);
     }
@@ -78,11 +85,14 @@ class UserDeletionRepositoryStartEndTimeTest {
     @DisplayName("Should find half by searching second half time range")
     void shouldFindOtherHalfByTimeRange() {
         final Page<UserDeletionAudit> userDeletion = userDeletionAuditFindRepository
-            .findUserDeletion(getUserDeletionUser(null, null, null, null),
-                              Timestamp.valueOf(now().plusDays(10)),
-                              Timestamp.valueOf(now().plusDays(20)),
-                              ENCRYPTION_KEY,
-                              getPage());
+            .findUserDeletion(
+                getRequestParams(
+                    null, null, null, null,
+                    now().plusDays(10).toString(),
+                    now().plusDays(20).toString()
+                ),
+                ENCRYPTION_KEY,
+                getPage());
 
         assertThat(userDeletion.getContent()).hasSize(10);
     }
@@ -91,11 +101,14 @@ class UserDeletionRepositoryStartEndTimeTest {
     @DisplayName("Should find all by time range")
     void shouldFindAllByTimeRange() {
         final Page<UserDeletionAudit> userDeletion = userDeletionAuditFindRepository
-            .findUserDeletion(getUserDeletionUser(null, null, null, null),
-                              Timestamp.valueOf(now()),
-                              Timestamp.valueOf(now().plusDays(20)),
-                              ENCRYPTION_KEY,
-                              getPage());
+            .findUserDeletion(
+                getRequestParams(
+                    null, null, null, null,
+                    now().toString(),
+                    now().plusDays(20).toString()
+                ),
+                ENCRYPTION_KEY,
+                getPage());
 
         assertThat(userDeletion.getContent()).hasSize(RECORD_NUMBER);
     }
@@ -103,11 +116,14 @@ class UserDeletionRepositoryStartEndTimeTest {
     @Test
     void shouldFindOneByTimeRange() {
         final Page<UserDeletionAudit> userDeletion = userDeletionAuditFindRepository
-            .findUserDeletion(getUserDeletionUser(null, null, null, null),
-                              Timestamp.valueOf(now()),
-                              Timestamp.valueOf(now().plusDays(1)),
-                              ENCRYPTION_KEY,
-                              getPage());
+            .findUserDeletion(
+                getRequestParams(
+                    null, null, null, null,
+                    now().toString(),
+                    now().plusDays(1).toString()
+                ),
+                ENCRYPTION_KEY,
+                getPage());
         assertThat(userDeletion.getContent()).hasSize(1);
         assertResults(userDeletion.getContent(), 1);
     }
@@ -115,24 +131,29 @@ class UserDeletionRepositoryStartEndTimeTest {
     @Test
     void shouldNotFindFromFutureByTimeRange() {
         final Page<UserDeletionAudit> userDeletion = userDeletionAuditFindRepository
-            .findUserDeletion(getUserDeletionUser(null, null, null, null),
-                              Timestamp.valueOf(now().plusDays(20)),
-                              Timestamp.valueOf(now().plusDays(40)),
-                              ENCRYPTION_KEY,
-                              getPage());
+            .findUserDeletion(
+                getRequestParams(
+                    null, null, null, null,
+                    now().plusDays(20).toString(),
+                    now().plusDays(40).toString()
+                ),
+                ENCRYPTION_KEY,
+                getPage());
         assertThat(userDeletion.getContent()).isEmpty();
     }
 
     @Test
     void shouldNotFindBeforeRecordsBeganByTimeRange() {
         final Page<UserDeletionAudit> userDeletion = userDeletionAuditFindRepository
-            .findUserDeletion(getUserDeletionUser(null, null, null, null),
-                              Timestamp.valueOf(now().minusDays(10)),
-                              Timestamp.valueOf(now().minusDays(1)),
-                              ENCRYPTION_KEY,
-                              getPage());
+            .findUserDeletion(
+                getRequestParams(
+                    null, null, null, null,
+                    now().minusDays(10).toString(),
+                    now().minusDays(1).toString()
+                ),
+                ENCRYPTION_KEY,
+                getPage());
 
         assertThat(userDeletion.getContent()).isEmpty();
     }
-
 }

@@ -72,7 +72,7 @@ public class CommonSteps {
     }
 
     @Then("HTTP {string} Unauthorized response is returned")
-    public void assertUnauthorizedRseponse(final String responseCode) {
+    public void assertUnauthorizedResponse(final String responseCode) {
         assertThat(httpStatusResponseCode).isEqualTo(parseInt(responseCode));
     }
 }

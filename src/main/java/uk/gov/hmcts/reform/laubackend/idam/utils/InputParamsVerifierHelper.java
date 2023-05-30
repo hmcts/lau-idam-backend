@@ -6,10 +6,13 @@ import uk.gov.hmcts.reform.laubackend.idam.exceptions.InvalidRequestException;
 import static java.util.regex.Pattern.compile;
 import static org.apache.commons.lang3.EnumUtils.isValidEnum;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.isNumeric;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.appendExceptionParameter;
 
 public final class InputParamsVerifierHelper {
+
+    private static final long MIN_POSITIVE_NUMBER = 1L;
 
     private InputParamsVerifierHelper() {
     }
@@ -66,8 +69,21 @@ public final class InputParamsVerifierHelper {
     }
 
     public static void verifyLength(String value, int length, String message) throws InvalidRequestException {
-        if (isEmpty(value) || value.length() > length) {
+        if (!isEmpty(value) && value.length() > length) {
             throw new InvalidRequestException(message, BAD_REQUEST);
+        }
+    }
+
+    public static void verifyPositiveNumeric(String value, String message) throws InvalidRequestException {
+        if (!isEmpty(value)) {
+            if (!isNumeric(value)) {
+                throw new InvalidRequestException(message, BAD_REQUEST);
+            }
+
+            long number = Long.parseLong(value);
+            if (number < MIN_POSITIVE_NUMBER) {
+                throw new InvalidRequestException(message, BAD_REQUEST);
+            }
         }
     }
 }

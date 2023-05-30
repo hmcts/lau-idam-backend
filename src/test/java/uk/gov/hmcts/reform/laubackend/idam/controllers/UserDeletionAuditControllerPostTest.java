@@ -32,7 +32,7 @@ import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.POST
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-class UserDeletionAuditControllerTest {
+class UserDeletionAuditControllerPostTest {
 
     private static final String USERID = "1234";
     private static final String EMAIL = "john.smith@example.net";
@@ -64,7 +64,7 @@ class UserDeletionAuditControllerTest {
     }
 
     @Test
-    void shouldReturnBadRequestOnMissingArgs() {
+    void shouldReturnBadRequestOnMissingPostArgs() {
 
         final var deletionLog1 = new DeletionLog(USERID, EMAIL, FIRST_NAME, LAST_NAME, TIMESTAMP);
         final var deletionLog2 = new DeletionLog(USERID, null, FIRST_NAME, LAST_NAME, TIMESTAMP);
@@ -79,7 +79,7 @@ class UserDeletionAuditControllerTest {
     }
 
     @Test
-    void shouldReturnInternalServerErrorOnError() {
+    void shouldReturnInternalServerErrorOnPostError() {
         final DeletionLog deletionLog = new DeletionLog(USERID, EMAIL, FIRST_NAME, LAST_NAME, TIMESTAMP);
         final var deletionLogs = Arrays.asList(deletionLog);
         final UserDeletionPostRequest request = new UserDeletionPostRequest(deletionLogs);
@@ -97,13 +97,13 @@ class UserDeletionAuditControllerTest {
     }
 
     @Test
-    void shouldReturnBadRequestOnEmptyRequest() {
+    void shouldReturnBadRequestOnEmptyPostRequest() {
         final var responseEntity = controller.saveUserDeletion(null, null);
         assertResponseIsBadRequest(responseEntity, "Empty request didn't return BAD_REQUEST");
     }
 
     @Test
-    void shouldReturnBadRequestOnInvalidParams() {
+    void shouldReturnBadRequestOnInvalidPostParams() {
         final String assertMessage = "Invalid request param didn't return BAD_REQUEST";
 
         String longUserId = StringUtils.repeat("a", 65);

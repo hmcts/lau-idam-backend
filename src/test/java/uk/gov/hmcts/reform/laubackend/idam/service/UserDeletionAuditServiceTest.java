@@ -6,16 +6,26 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.reform.laubackend.idam.domain.UserDeletionAudit;
 import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLog;
+import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLogGetRequestParams;
+import uk.gov.hmcts.reform.laubackend.idam.repository.UserDeletionAuditFindRepository;
 import uk.gov.hmcts.reform.laubackend.idam.repository.UserDeletionAuditInsertRepository;
 import uk.gov.hmcts.reform.laubackend.idam.repository.UserDeletionAuditRepository;
+import uk.gov.hmcts.reform.laubackend.idam.response.UserDeletionGetResponse;
 import uk.gov.hmcts.reform.laubackend.idam.utils.TimestampUtil;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Arrays;
+import java.util.List;
 
+import static java.lang.Integer.parseInt;
 import static java.time.LocalDateTime.now;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,10 +47,33 @@ class UserDeletionAuditServiceTest {
     private UserDeletionAuditInsertRepository userDeletionAuditInsertRepository;
 
     @Mock
+    private UserDeletionAuditFindRepository userDeletionAuditFindRepository;
+
+    @Mock
     private TimestampUtil timestampUtil;
 
     @InjectMocks
     private UserDeletionAuditService userDeletionAuditService;
+
+    @Test
+    void shouldGetUserDeletionAuditRepositoryResponse() {
+        final List<UserDeletionAudit> userDeletions = Arrays.asList(getUserDeletionAudit());
+        final Page<UserDeletionAudit> results = new PageImpl<>(userDeletions);
+        when(userDeletionAuditFindRepository.findUserDeletion(any(), any(), any()))
+            .thenReturn(results);
+        final DeletionLogGetRequestParams params = new DeletionLogGetRequestParams(
+            "", "", "", "", "", "", "10000", "1");
+
+        final UserDeletionGetResponse response = userDeletionAuditService.getUserDeletions(params);
+
+        var pageable = PageRequest.of(0, parseInt("10000"), Sort.by(Sort.Direction.DESC, "deletion_timestamp"));
+        verify(userDeletionAuditFindRepository, times(1))
+            .findUserDeletion(params, null, pageable);
+        assertThat(response.getDeletionLogs()).hasSize(1);
+        var returned = response.getDeletionLogs().get(0);
+        assertEquals("1", returned.getUserId(), "UserId mismatch");
+        assertEquals("email", returned.getEmailAddress(), "email mismatch");
+    }
 
     @Test
     void shouldSaveUserDeletionsUsingEncryption() {
@@ -123,5 +156,15 @@ class UserDeletionAuditServiceTest {
         assertEquals("Last Name", response.get(0).getLastName(), "Last names are not equal");
         String timestampStr = new TimestampUtil().timestampConvertor(timestamp);
         assertEquals(timestampStr, response.get(0).getDeletionTimestamp(), "Timestamps are not equal");
+    }
+
+    private UserDeletionAudit getUserDeletionAudit() {
+        return UserDeletionAudit.builder()
+            .userId("1")
+            .emailAddress("email")
+            .firstName("John")
+            .lastName("Smith")
+            .timestamp(Timestamp.from(Instant.now()))
+            .build();
     }
 }
