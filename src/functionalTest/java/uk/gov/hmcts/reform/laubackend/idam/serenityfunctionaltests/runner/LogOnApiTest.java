@@ -39,7 +39,11 @@ public class LogOnApiTest {
 
         String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated();
         LogOnRequestVO logOnRequestVO = logOnPostApiSteps.generateLogOnPostRequestBody();
-        Response response = logOnPostApiSteps.whenThePostServiceIsInvoked(authServiceToken, logOnRequestVO);
+        Response response = logOnPostApiSteps.whenThePostServiceIsInvoked(
+            TestConstants.LOGON_ENDPOINT,
+            authServiceToken,
+            logOnRequestVO
+        );
         String successOrFailure = logOnGetApiSteps.thenASuccessResposeIsReturned(response);
         Assert.assertEquals(
             successOrFailure,
@@ -57,7 +61,11 @@ public class LogOnApiTest {
 
         String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated();
         LogOnRequestVO logOnRequestVO = logOnPostApiSteps.generateInvalidLogonPostRequestBody();
-        Response response = logOnPostApiSteps.whenThePostServiceIsInvoked(authServiceToken, logOnRequestVO);
+        Response response = logOnPostApiSteps.whenThePostServiceIsInvoked(
+            TestConstants.LOGON_ENDPOINT,
+            authServiceToken,
+            logOnRequestVO
+        );
         String successOrFailure = logOnGetApiSteps.thenBadResponseIsReturned(response, 400);
         Assert.assertEquals(
             successOrFailure,
@@ -74,7 +82,11 @@ public class LogOnApiTest {
         String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated();
         final String authorizationToken = logOnGetApiSteps.validAuthorizationTokenIsGenerated();
         LogOnRequestVO logOnRequestVO = logOnPostApiSteps.generateLogOnPostRequestBody();
-        final Response postResponse = logOnPostApiSteps.whenThePostServiceIsInvoked(authServiceToken, logOnRequestVO);
+        final Response postResponse = logOnPostApiSteps.whenThePostServiceIsInvoked(
+            TestConstants.LOGON_ENDPOINT,
+            authServiceToken,
+            logOnRequestVO
+        );
         Map<String, String> queryParamMap = logOnGetApiSteps.givenValidParamsAreSuppliedForGetLogonApi();
         Response response = logOnGetApiSteps.whenTheGetLogonServiceIsInvokedWithTheGivenParams(
             authServiceToken,
@@ -133,7 +145,7 @@ public class LogOnApiTest {
 
     @Test
     @Title("Assert response code of 401 for GET LogonApi with missing User Authorization token")
-    public void assertResponseCodeOf401ForMissingAuthorizationTokenForLogonApi() throws JSONException {
+    public void assertResponseCodeOf401ForMissingAuthorizationTokenForLogonApi() {
         String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated();
         Map<String, String> queryParamMap = logOnGetApiSteps.givenValidParamsAreSuppliedForGetLogonApi();
         Response response = logOnGetApiSteps.whenTheGetLogonServiceIsInvokedWithTheGivenParams(

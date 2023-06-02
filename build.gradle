@@ -18,7 +18,7 @@ plugins {
     id 'net.serenity-bdd.serenity-gradle-plugin' version '3.7.0'
     id 'org.flywaydb.flyway' version '9.19.1'
     id 'org.owasp.dependencycheck' version '8.2.1'
-    id 'org.sonarqube' version '4.0.0.2929'
+    id 'org.sonarqube' version '4.2.0.3129'
     id 'org.springframework.boot' version '3.0.6'
     id 'uk.gov.hmcts.java' version '0.12.43'
     id "info.solidsoft.pitest" version '1.9.11'
@@ -167,7 +167,7 @@ jacocoTestReport {
     reports {
         xml.required = true
         csv.required = false
-        xml.destination file("${buildDir}/reports/jacoco/test/jacocoTestReport.xml")
+        xml.outputLocation = file("${buildDir}/reports/jacoco/test/jacocoTestReport.xml")
     }
 }
 
@@ -207,7 +207,7 @@ sonarqube {
     properties {
         property "sonar.projectName", "Reform :: lau-idam-backend"
         property "sonar.projectKey", "uk.gov.hmcts.reform:lau-idam-backend"
-        property "sonar.coverage.jacoco.xmlReportPaths", "${jacocoTestReport.reports.xml.destination.path}"
+        property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
         property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
         property "sonar.pitest.mode", "reuseReport"
         property "sonar.pitest.reportsDirectory", "build/reports/pitest"

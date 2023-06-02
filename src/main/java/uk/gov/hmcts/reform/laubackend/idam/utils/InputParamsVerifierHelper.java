@@ -64,4 +64,10 @@ public final class InputParamsVerifierHelper {
             throw new InvalidRequestException(exceptionMessage, BAD_REQUEST);
         }
     }
+
+    public static void verifyLength(String value, int length, String message) throws InvalidRequestException {
+        if (isEmpty(value) || value.length() > length) {
+            throw new InvalidRequestException(message, BAD_REQUEST);
+        }
+    }
 }

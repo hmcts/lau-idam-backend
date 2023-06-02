@@ -16,6 +16,9 @@ public final class ExceptionMessageConstants {
     public static final String TIMESTAMP_POST_EXCEPTION_MESSAGE = "Unable to verify timestamp pattern: ";
     public static final String LOGIN_STATE_EXCEPTION_MESSAGE = "Unable to verify loginState pattern";
 
+    public static final String FIRSTNAME_POST_EXCEPTION_MESSAGE = "Unable to verify first name pattern";
+    public static final String LASTNAME_POST_EXCEPTION_MESSAGE = "Unable to verify last name pattern";
+
     public static String appendExceptionParameter(final String exceptionMessage,
                                                   final String exceptionParameter) {
         return exceptionMessage.concat(valueOf(exceptionParameter));
