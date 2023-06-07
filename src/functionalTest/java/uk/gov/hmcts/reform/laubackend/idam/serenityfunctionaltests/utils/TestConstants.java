@@ -10,6 +10,9 @@ public final class TestConstants {
     public static final String LOGON_DELETE_ENDPOINT = "/audit/logon/deleteAuditLogonRecord";
     public static final String SUCCESS = "Success";
 
+    /* deleted accounts endpoint */
+    public static final String DELETED_ACCOUNTS_ENDPOINT = "/audit/deletedAccounts";
+
     // Authorization constants
     public static final String GRANT_TYPE = "password";
     public static final String USERNAME = "lautest@test.com";

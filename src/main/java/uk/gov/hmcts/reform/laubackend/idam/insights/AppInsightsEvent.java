@@ -2,9 +2,15 @@ package uk.gov.hmcts.reform.laubackend.idam.insights;
 
 public enum AppInsightsEvent {
     GET_LOGON_REQUEST_INFO("Audit GET IdAM Logon Request Info: "),
-    GET_LOGON_REQUEST_INVALID_REQUEST_EXCEPTION("Audit GET IdAM Logon Requst InvalidRequestException: "),
+    GET_LOGON_REQUEST_INVALID_REQUEST_EXCEPTION("Audit GET IdAM Logon Request InvalidRequestException: "),
+    GET_DELETED_ACCOUNTS_INVALID_REQUEST_EXCEPTION(
+        "Audit GET IdAM Deleted Accounts InvalidRequestException"),
+
     POST_LOGON_REQUEST_EXCEPTION("Audit POST IdAM Logon Request Exception: "),
-    POST_LOGON_REQUEST_INVALID_REQUEST_EXCEPTION("Audit POST IdAM Logon Requst InvalidRequestException: ");
+    POST_LOGON_REQUEST_INVALID_REQUEST_EXCEPTION("Audit POST IdAM Logon Request InvalidRequestException: "),
+
+    POST_DELETION_REQUEST_EXCEPTION("Audit POST IdAM Deletion Request Exception: "),
+    POST_DELETION_INVALID_REQUEST_EXCEPTION("Audit POST IdAM Deletion Request InvalidRequestException: ");
 
     private String displayName;
 
