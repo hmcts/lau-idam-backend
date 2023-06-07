@@ -43,5 +43,6 @@
   "100000_A Client Error response code was returned by the server_http://lau-idam-backend-aat.service.core-compute-aat.internal/audit/logon?User%20ID=3748238\u0026Email%20Address=firstname.lastname@company.com\u0026Start%20Timestamp=2021-06-23%2022:20:05\u0026End%20Timestamp=2021-08-23%2022:20:05\u0026Size=500\u0026Page=1_GET" : "ignore",
   "10024_Information Disclosure - Sensitive Information in URL_http://lau-idam-backend-aat.service.core-compute-aat.internal/audit/logon?User%20ID=3748238\u0026Email%20Address=firstname.lastname@company.com\u0026Start%20Timestamp=2021-06-23%2022:20:05\u0026End%20Timestamp=2021-08-23%2022:20:05\u0026Size=500\u0026Page=1_GET": "ignore",
   "10096_Timestamp Disclosure - Unix_http://lau-idam-backend-aat.service.core-compute-aat.internal/audit/logon?User%20ID=3748238\\u0026Email%20Address=firstname.lastname@company.com\\u0026Start%20Timestamp=2021-06-23%2022:20:05\\u0026End%20Timestamp=2021-08-23%2022:20:05\\u0026Size=500\\u0026Page=1_GET": "ignore",
+  "10096_Timestamp Disclosure - Unix_http://lau-idam-backend-aat.service.core-compute-aat.internal/audit/deletedAccounts?requestParams=_GET": "ignore"
   "100000_A Client Error response code was returned by the server_http://lau-idam-backend-aat.service.core-compute-aat.internal/audit/deletedAccounts_POST" : "ignore"
 }
