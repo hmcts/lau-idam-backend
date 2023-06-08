@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
-import static com.google.common.collect.ImmutableMap.of;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -18,7 +17,6 @@ import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.
 import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.GRANT_TYPE;
 import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.PASSWORD;
 import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.REDIRECT_URI;
-import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.S2S_NAME;
 import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.S2S_URL;
 import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.SCOPE;
 import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.TOKEN_URL;
@@ -48,12 +46,10 @@ public class AuthorizationHeaderHelper {
     }
 
 
-    public String getServiceToken() {
+    public String getServiceToken(final String serviceName) {
 
         LOGGER.info("s2sUrl lease url: {}", S2S_URL + "/lease");
-        final Map<String, Object> params = of(
-                "microservice", S2S_NAME
-        );
+        final Map<String, Object> params = Map.of("microservice", serviceName);
 
         final Response response = RestAssured
                 .given()

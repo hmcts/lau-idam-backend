@@ -113,8 +113,8 @@ public class BaseSteps {
     }
 
     @Step("Given a valid service token is generated")
-    public String givenAValidServiceTokenIsGenerated() {
-        return authorizationHeaderHelper.getServiceToken();
+    public String givenAValidServiceTokenIsGenerated(final String serviceName) {
+        return authorizationHeaderHelper.getServiceToken(serviceName);
     }
 
     @Step("Then a success response is returned")

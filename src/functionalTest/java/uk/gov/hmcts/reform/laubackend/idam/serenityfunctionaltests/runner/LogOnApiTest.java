@@ -37,7 +37,8 @@ public class LogOnApiTest {
     public void assertHttpSuccessResponseCodeForPostRequestCaseViewApi()
             throws JsonProcessingException, JSONException {
 
-        String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated();
+        String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated(
+            TestConstants.FRONTEND_SERVICE_NAME);
         LogOnRequestVO logOnRequestVO = logOnPostApiSteps.generateLogOnPostRequestBody();
         Response response = logOnPostApiSteps.whenThePostServiceIsInvoked(
             TestConstants.LOGON_ENDPOINT,
@@ -59,7 +60,8 @@ public class LogOnApiTest {
     public void assertHttpBadResponseCodeForInvalidPostRequestBodyLogonApi()
         throws JsonProcessingException {
 
-        String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated();
+        String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated(
+            TestConstants.FRONTEND_SERVICE_NAME);
         LogOnRequestVO logOnRequestVO = logOnPostApiSteps.generateInvalidLogonPostRequestBody();
         Response response = logOnPostApiSteps.whenThePostServiceIsInvoked(
             TestConstants.LOGON_ENDPOINT,
@@ -79,7 +81,8 @@ public class LogOnApiTest {
     public void assertHttpSuccessResponseCodeForCaseViewApi() throws JsonProcessingException, ParseException,
         JSONException {
 
-        String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated();
+        String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated(
+            TestConstants.FRONTEND_SERVICE_NAME);
         final String authorizationToken = logOnGetApiSteps.validAuthorizationTokenIsGenerated();
         LogOnRequestVO logOnRequestVO = logOnPostApiSteps.generateLogOnPostRequestBody();
         final Response postResponse = logOnPostApiSteps.whenThePostServiceIsInvoked(
@@ -117,7 +120,8 @@ public class LogOnApiTest {
     @Test
     @Title("Assert response code of 400 for GET LogonApi with Empty Params")
     public void assertResponseCodeOf400WithInvalidParamsForLogonApi() throws JSONException {
-        String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated();
+        String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated(
+            TestConstants.FRONTEND_SERVICE_NAME);
         final String authorizationToken = logOnGetApiSteps.validAuthorizationTokenIsGenerated();
         Map<String, String> queryParamMap = logOnGetApiSteps.givenEmptyParamsAreSuppliedForGetLogon();
         Response response = logOnGetApiSteps.whenTheGetLogonServiceIsInvokedWithTheGivenParams(
@@ -146,7 +150,8 @@ public class LogOnApiTest {
     @Test
     @Title("Assert response code of 401 for GET LogonApi with missing User Authorization token")
     public void assertResponseCodeOf401ForMissingAuthorizationTokenForLogonApi() {
-        String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated();
+        String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated(
+            TestConstants.FRONTEND_SERVICE_NAME);
         Map<String, String> queryParamMap = logOnGetApiSteps.givenValidParamsAreSuppliedForGetLogonApi();
         Response response = logOnGetApiSteps.whenTheGetLogonServiceIsInvokedWithTheGivenParams(
             authServiceToken,
@@ -160,7 +165,8 @@ public class LogOnApiTest {
     @Test
     @Title("Assert response code of 401 for GET LogonApi with invalid User Authorization token")
     public void assertResponseCodeOf401ForInvalidAuthorizationTokenForLogonApi() throws JSONException {
-        String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated();
+        String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated(
+            TestConstants.FRONTEND_SERVICE_NAME);
         final String authorizationToken = logOnGetApiSteps.givenTheInvalidAuthorizationTokenIsGenerated();
         Map<String, String> queryParamMap = logOnGetApiSteps.givenValidParamsAreSuppliedForGetLogonApi();
         Response response = logOnGetApiSteps.whenTheGetLogonServiceIsInvokedWithTheGivenParams(

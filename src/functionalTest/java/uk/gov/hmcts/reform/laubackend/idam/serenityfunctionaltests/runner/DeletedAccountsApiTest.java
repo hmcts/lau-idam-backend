@@ -24,7 +24,8 @@ public class DeletedAccountsApiTest {
     public void assertHttpSuccessResponseCodeForPostRequestCaseViewApi()
         throws JsonProcessingException {
 
-        String authServiceToken = postApiSteps.givenAValidServiceTokenIsGenerated();
+        String authServiceToken = postApiSteps.givenAValidServiceTokenIsGenerated(
+            TestConstants.USER_DISPOSER_SERVICE_NAME);
         DeletedAccountsRequest request = postApiSteps.generateDeletedAccountsRequest();
 
         Response response = postApiSteps.whenThePostServiceIsInvoked(
@@ -45,7 +46,8 @@ public class DeletedAccountsApiTest {
     public void assertHttpBadResponseCodeForInvalidPostRequestBodyLogonApi()
         throws JsonProcessingException {
 
-        String authServiceToken = postApiSteps.givenAValidServiceTokenIsGenerated();
+        String authServiceToken = postApiSteps.givenAValidServiceTokenIsGenerated(
+            TestConstants.USER_DISPOSER_SERVICE_NAME);
         DeletedAccountsRequest request = postApiSteps.generateInvalidDeletedAccountsRequest();
         Response response = postApiSteps.whenThePostServiceIsInvoked(
             TestConstants.DELETED_ACCOUNTS_ENDPOINT,
