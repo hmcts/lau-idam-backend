@@ -78,7 +78,7 @@ idam:
     secret: ${IDAM_CLIENT_SECRET:12345678}
     redirect_uri: ${IDAM_CLIENT_REDIRECT_URI:http://localhost:3451/oauth2redirect}
 
-authorised.services: idam_api,lau_frontend
+authorised.services: idam_api,lau_frontend,idam-user-disposer
 authorised.roles: cft-audit-investigator
 db.allow.delete.record: ${DB_ALLOW_DELETE_RECORD:true}
 

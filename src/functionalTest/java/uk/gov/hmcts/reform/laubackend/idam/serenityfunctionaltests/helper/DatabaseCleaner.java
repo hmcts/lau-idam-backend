@@ -14,6 +14,7 @@ import static uk.gov.hmcts.reform.laubackend.idam.constants.CommonConstants.AUTH
 import static uk.gov.hmcts.reform.laubackend.idam.constants.CommonConstants.SERVICE_AUTHORISATION_HEADER;
 import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.config.EnvConfig.API_URL;
 import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.LOGON_DELETE_ENDPOINT;
+import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.FRONTEND_SERVICE_NAME;
 
 public final class DatabaseCleaner {
 
@@ -33,7 +34,7 @@ public final class DatabaseCleaner {
                 .baseUri(API_URL + LOGON_DELETE_ENDPOINT)
                 .queryParam("logonId", logonLogPostResponse.getLogonLog().getId())
                 .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
-                .header(SERVICE_AUTHORISATION_HEADER, authorizationHeaderHelper.getServiceToken())
+                .header(SERVICE_AUTHORISATION_HEADER, authorizationHeaderHelper.getServiceToken(FRONTEND_SERVICE_NAME))
                 .header(AUTHORISATION_HEADER, authorizationHeaderHelper.getAuthorizationToken())
                 .when()
                 .delete()
