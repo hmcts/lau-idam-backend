@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${LAU_IDAM_DB_HOST:localhost}:${LAU_IDAM_DB_PORT:5054}/${LAU_IDAM_DB_NAME:lau_idam}${LAU_IDAM_DB_CONN_OPTIONS:}
+    password: ${LAU_IDAM_DB_PASSWORD:laupass}
+
+idam:
+  s2s-auth:
+    url: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
+  api:
+    url: https://idam-api.aat.platform.hmcts.net
+  client:
+    id: ${IDAM_CLIENT_NAME:lau}
+    secret: gQ4pHYQ8TTYdQp8d
+    redirect_uri: https://lau-idam-backend-aat.service.core-compute-aat.internal/oauth2/callback (edited)

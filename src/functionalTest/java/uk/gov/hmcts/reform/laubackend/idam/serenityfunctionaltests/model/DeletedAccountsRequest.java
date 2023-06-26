@@ -12,4 +12,5 @@ import java.util.List;
 @NoArgsConstructor
 public class DeletedAccountsRequest {
     private List<DeletedAccount> deletionLogs;
+    private List<DeletedAccountSearch> deletionSearchLogs;
 }
