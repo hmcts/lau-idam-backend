@@ -14,7 +14,6 @@ import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.steps.Deleted
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.steps.DeletedAccountsPostApiSteps;
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants;
 
-import java.util.HashMap;
 import java.util.Map;
 
 
@@ -89,29 +88,28 @@ public class DeletedAccountsApiTest {
     }
 
     @Test
-    @Title("Assert response code of 201 for GET Request deletedAccounts")
-    public void assertHttpSuccessResponseCodeForGetRequestCaseViewApi()
-        throws JsonProcessingException, JSONException {
-
+    @Title("Assert response code of 200 for successfully getting deleted records")
+    public void assertHttpSuccessResponseCodeForGetRequestCaseViewApi(){
         String serviceToken = getApiSteps.givenAValidServiceTokenIsGenerated(
             TestConstants.USER_DISPOSER_SERVICE_NAME);
 
-        String authToken = getApiSteps.validAuthorizationTokenIsGenerated();
+        String authToken = getApiSteps.givenAValidServiceTokenIsGenerated(
+            TestConstants.USER_DISPOSER_SERVICE_NAME);
         Map<String, String> queryParams = getApiSteps.givenValidParamsAreSuppliedForGetLogonApi();
 
-        Response response = getApiSteps.whenTheGetServiceIsInvoked(
+        Response response = getApiSteps.performGetOperation(
             TestConstants.DELETED_ACCOUNTS_ENDPOINT,
+            null,
+            queryParams,
             serviceToken,
-            authToken,
-            queryParams
+            authToken
         );
-
 
         String successOrFailure = getApiSteps.thenASuccessResposeIsReturned(response);
         Assert.assertEquals(
             successOrFailure,
             TestConstants.SUCCESS,
-            "DeletedAccounts POST API response code 201 assertion is not successful"
+            "DeletedAccounts POST API response code 200 assertion is not successful"
         );
     }
 
@@ -137,19 +135,18 @@ public class DeletedAccountsApiTest {
     }
 
     @Test
-    @Title("Assert response code bad request without start timestamp")
+    @Title("Assert response code unauthorized request without authentication token")
     public void assertUnauthorizedRequest() throws JsonProcessingException, JSONException {
 
         String serviceToken = getApiSteps.givenAValidServiceTokenIsGenerated(
             TestConstants.USER_DISPOSER_SERVICE_NAME);
 
-        Map<String, String> header = new HashMap<>();
-
-        Response response = getApiSteps.whenTheGetServiceIsInvoked(
+        Response response = getApiSteps.performGetOperation(
             TestConstants.DELETED_ACCOUNTS_ENDPOINT,
+            null,
+            null,
             serviceToken,
-            "authToken",
-            null
+            "authToken"
         );
         String successOrFailure = getApiSteps.thenBadResponseIsReturned(response, 401);
         Assert.assertEquals(
@@ -165,11 +162,12 @@ public class DeletedAccountsApiTest {
         String serviceToken = getApiSteps.givenAValidServiceTokenIsGenerated(
             TestConstants.USER_DISPOSER_SERVICE_NAME);
 
-        Response response = getApiSteps.whenTheGetServiceIsInvoked(
+        Response response = getApiSteps.performGetOperation(
             TestConstants.DELETED_ACCOUNTS_ENDPOINT,
-            "Bearer something",
-            serviceToken,
-            null
+            null,
+            null,
+            "serviceToken",
+            "Bearer something"
         );
 
         String successOrFailure = getApiSteps.thenBadResponseIsReturned(response, 403);

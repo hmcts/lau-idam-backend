@@ -153,23 +153,4 @@ public class BaseSteps {
         );
         return TestConstants.SUCCESS;
     }
-
-    @Step("When the GET service is invoked")
-    public Response whenTheGetServiceIsInvoked(
-        String endpoint,
-        String serviceToken,
-        String authorizationToken,
-        Map<String, String> queryParams
-    ) throws JsonProcessingException {
-        return performGetOperation(endpoint, null, queryParams, serviceToken, authorizationToken);
-    }
-
-    @Step("Then unauthorised response is returned")
-    public String thenUnauthorizedResponseIsReturned(Response response, int expectedStatusCode) {
-        Assert.assertTrue(
-            "Response status code is not " + expectedStatusCode + ", but it is " + response.getStatusCode(),
-            response.statusCode() == expectedStatusCode
-        );
-        return TestConstants.SUCCESS;
-    }
 }
