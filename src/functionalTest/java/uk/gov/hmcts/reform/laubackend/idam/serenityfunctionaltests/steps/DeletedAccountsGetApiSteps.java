@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.steps;
 
 import net.thucydides.core.annotations.Step;
+import org.json.JSONException;
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.model.DeletedAccountsRequest;
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.model.DeletedAccountSearch;
 
@@ -37,5 +38,10 @@ public class DeletedAccountsGetApiSteps extends BaseSteps {
         queryParamMap.put("size", "10");
         queryParamMap.put("page", "1");
         return queryParamMap;
+    }
+
+    @Step("And valid Authorization token is generated")
+    public String validAuthorizationTokenIsGenerated() throws JSONException {
+        return authorizationHeaderHelper.getAuthorizationToken();
     }
 }
