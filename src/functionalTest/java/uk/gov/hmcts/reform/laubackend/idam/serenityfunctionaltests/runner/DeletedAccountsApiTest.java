@@ -89,7 +89,7 @@ public class DeletedAccountsApiTest {
 
     @Test
     @Title("Assert response code of 200 for successfully getting deleted records")
-    public void assertHttpSuccessResponseCodeForGetRequestCaseViewApi(){
+    public void assertHttpSuccessResponseCodeForGetRequestCaseViewApi() {
         String serviceToken = getApiSteps.givenAValidServiceTokenIsGenerated(
             TestConstants.USER_DISPOSER_SERVICE_NAME);
 
