@@ -43,8 +43,9 @@ public class IdamLogonAuditInsertRepository {
                 .setParameter("emailAddress", idamLogonAudit.getEmailAddress())
                 .setParameter("encryptionKey", securityDbBackendEncryptionKey);
 
-        Integer generatedId = (Integer) insertQuery.getSingleResult();
-        idamLogonAudit.setId(generatedId.longValue());
+        long generatedId = ((Number) insertQuery.getSingleResult()).longValue();
+        idamLogonAudit.setId(generatedId);
+
         return idamLogonAudit;
     }
 }

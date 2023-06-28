@@ -51,8 +51,9 @@ public class UserDeletionAuditInsertRepository {
             .setParameter("deletionTimestamp", userDeletionAudit.getTimestamp())
             .setParameter("encryptionKey", securityDbBackendEncryptionKey);
 
-        Integer generatedId = (Integer) insertQuery.getSingleResult();
-        userDeletionAudit.setId(generatedId.longValue());
+        long generatedId = ((Number) insertQuery.getSingleResult()).longValue();
+        userDeletionAudit.setId(generatedId);
+
         return userDeletionAudit;
     }
 
