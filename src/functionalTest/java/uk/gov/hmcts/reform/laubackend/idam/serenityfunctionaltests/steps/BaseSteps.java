@@ -10,6 +10,7 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.core.annotations.Step;
+import org.json.JSONException;
 import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -154,5 +155,8 @@ public class BaseSteps {
         return TestConstants.SUCCESS;
     }
 
-
+    @Step("And valid Authorization token is generated")
+    public String validAuthorizationTokenIsGenerated() throws JSONException {
+        return authorizationHeaderHelper.getAuthorizationToken();
+    }
 }
