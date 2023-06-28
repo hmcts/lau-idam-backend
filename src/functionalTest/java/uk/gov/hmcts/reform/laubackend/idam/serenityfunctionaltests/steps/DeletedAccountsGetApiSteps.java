@@ -28,7 +28,7 @@ public class DeletedAccountsGetApiSteps extends BaseSteps {
 
     @Step("When valid params are supplied for Get Logon API")
     public Map<String, String> givenValidParamsAreSuppliedForGetLogonApi() {
-        HashMap<String, String> queryParamMap = new HashMap<>();
+        Map<String, String> queryParamMap = new HashMap<>();
         queryParamMap.put("userId", "");
         queryParamMap.put("emailAddress", "email@example.net");
         queryParamMap.put("firstName", "");
@@ -38,10 +38,5 @@ public class DeletedAccountsGetApiSteps extends BaseSteps {
         queryParamMap.put("size", "10");
         queryParamMap.put("page", "1");
         return queryParamMap;
-    }
-
-    @Step("And valid Authorization token is generated")
-    public String validAuthorizationTokenIsGenerated() throws JSONException {
-        return authorizationHeaderHelper.getAuthorizationToken();
     }
 }

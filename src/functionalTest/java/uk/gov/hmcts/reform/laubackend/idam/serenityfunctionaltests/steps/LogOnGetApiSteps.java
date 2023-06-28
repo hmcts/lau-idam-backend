@@ -26,11 +26,6 @@ public class LogOnGetApiSteps extends BaseSteps {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LogOnGetApiSteps.class);
 
-    @Step("And valid Authorization token is generated")
-    public String validAuthorizationTokenIsGenerated() throws JSONException {
-        return authorizationHeaderHelper.getAuthorizationToken();
-    }
-
     @SuppressWarnings({"PMD.AvoidUsingHardCodedIP"})
     @Step("When valid params are supplied for Get Logon API")
     public Map<String, String> givenValidParamsAreSuppliedForGetLogonApi() {

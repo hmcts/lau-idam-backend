@@ -28,7 +28,7 @@ public class DeletedAccountsApiTest {
 
     @Test
     @Title("Assert response code of 201 for POST Request deletedAccounts")
-    public void assertHttpSuccessResponseCodeForPostRequestCaseViewApi()
+    public void assertHttpSuccessResponseCodeForPostRequestDeletedAccountsApi()
         throws JsonProcessingException {
 
         String authServiceToken = postApiSteps.givenAValidServiceTokenIsGenerated(
@@ -89,7 +89,7 @@ public class DeletedAccountsApiTest {
 
     @Test
     @Title("Assert response code of 200 for successfully getting deleted records")
-    public void assertHttpSuccessResponseCodeForGetRequestCaseViewApi() throws JSONException {
+    public void assertHttpSuccessResponseCodeForGetRequestDeletedAccountsApi() throws JSONException {
         String serviceToken = getApiSteps.givenAValidServiceTokenIsGenerated(
             TestConstants.USER_DISPOSER_SERVICE_NAME);
 
