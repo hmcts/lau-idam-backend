@@ -1,13 +1,12 @@
 package uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.steps;
 
 import net.thucydides.core.annotations.Step;
-import org.json.JSONException;
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.model.DeletedAccountsRequest;
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.model.DeletedAccountSearch;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DeletedAccountsGetApiSteps extends BaseSteps {
 
@@ -28,7 +27,7 @@ public class DeletedAccountsGetApiSteps extends BaseSteps {
 
     @Step("When valid params are supplied for Get Logon API")
     public Map<String, String> givenValidParamsAreSuppliedForGetLogonApi() {
-        Map<String, String> queryParamMap = new HashMap<>();
+        Map<String, String> queryParamMap = new ConcurrentHashMap<>();
         queryParamMap.put("userId", "");
         queryParamMap.put("emailAddress", "email@example.net");
         queryParamMap.put("firstName", "");
