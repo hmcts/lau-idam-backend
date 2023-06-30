@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils;
 
+@SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class TestConstants {
 
     public static final String FRONTEND_SERVICE_NAME = "lau_frontend";
