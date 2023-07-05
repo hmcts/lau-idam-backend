@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.laubackend.idam.bdd;
 
-import com.google.gson.Gson;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
@@ -25,7 +24,7 @@ public class LogonAuditDeleteSteps extends AbstractSteps {
 
     private int httpStatusResponseCode;
     private String logonLogResponseBody;
-    private final Gson jsonReader = new Gson();
+
     private String logonId;
 
     @Before
@@ -60,19 +59,6 @@ public class LogonAuditDeleteSteps extends AbstractSteps {
                                  START_TIME_PARAMETER, START_TIME, END_TIME_PARAMETER, END_TIME));
         logonLogResponseBody = response.getBody().asString();
     }
-
-    @And("I request DELETE {string} logon endpoint with missing s2s header")
-    public void deleteLogonLogWithMissingHeader(final String path) {
-        final Response response = restHelper.deleteResponseWithoutServiceAuthHeader(baseUrl() + path);
-        httpStatusResponseCode = response.getStatusCode();
-    }
-
-    @And("I request DELETE {string} logon endpoint with missing authorization header")
-    public void deleteLogonLogWithMissingAuthHeader(final String path) {
-        final Response response = restHelper.deleteResponseWithoutAuthHeader(baseUrl() + path);
-        httpStatusResponseCode = response.getStatusCode();
-    }
-
 
     @And("I request DELETE {string} logon endpoint with invalid logonId {string}")
     public void deleteLogonLogWithInvalidLogonLogId(final String path, final String logonId) {

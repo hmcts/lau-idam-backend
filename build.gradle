@@ -256,17 +256,17 @@ def versions = [
         junitPlatform     : '1.9.3',
         springBoot        : springBoot.class.package.implementationVersion,
         serenity          : '3.7.1',
-        gradlePitest      : '1.9.0',
+        gradlePitest      : '1.9.11',
         sonarPitest       : '0.5',
-        lombok            : '1.18.26',
-        testcontainers    : '1.17.6',
-        restAssured       : '5.3.0',
+        lombok            : '1.18.28',
+        testcontainers    : '1.18.3',
+        restAssured       : '5.3.1',
         serviceAuthVersion: '5.0.0',
-        commonsIo         : '2.11.0',
-        cucumber          : '7.12.0',
+        commonsIo         : '2.13.0',
+        cucumber          : '7.12.1',
         wiremock          : '2.35.0',
         log4j             : '2.20.0',
-        springCloud       : '4.0.2',
+        springCloud       : '4.0.3',
         reformLogging     : '6.0.1',
         idamClient        : '3.0.0'
 ]
@@ -295,8 +295,8 @@ dependencies {
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: versions.springCloud
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloud
     implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.1.0'
-    implementation group: 'com.microsoft.azure', name: 'applicationinsights-core', version: '3.4.12'
-    implementation group: 'com.microsoft.azure', name: 'applicationinsights-web', version: '3.4.12'
+    implementation group: 'com.microsoft.azure', name: 'applicationinsights-core', version: '3.4.14'
+    implementation group: 'com.microsoft.azure', name: 'applicationinsights-web', version: '3.4.14'
     implementation group: 'org.flywaydb', name: 'flyway-core', version: '9.19.1'
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.6.0'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version:versions.log4j
@@ -311,7 +311,7 @@ dependencies {
     implementation group: 'com.github.hmcts', name: 'idam-java-client', version: versions.idamClient
     implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.reformLogging
     implementation group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: '6.0.0'
-    implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '4.0.2'
+    implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '4.0.3'
 
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
     testImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
@@ -364,7 +364,7 @@ dependencies {
     testImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
     testImplementation group: 'io.rest-assured', name: 'json-path', version: versions.restAssured
     testImplementation group: 'io.rest-assured', name: 'xml-path', version: versions.restAssured
-    testImplementation group: 'com.google.code.gson', name: 'gson', version: '2.10'
+    testImplementation group: 'com.google.code.gson', name: 'gson', version: '2.10.1'
     testImplementation group: 'com.googlecode.junit-toolbox', name: 'junit-toolbox', version: '2.4'
     testImplementation group: 'org.testng', name: 'testng', version: '7.8.0'
 
