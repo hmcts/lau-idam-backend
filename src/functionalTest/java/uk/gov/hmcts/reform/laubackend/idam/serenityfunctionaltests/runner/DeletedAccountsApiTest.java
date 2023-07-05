@@ -16,6 +16,8 @@ import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestCon
 
 import java.util.Map;
 
+import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.helper.DatabaseCleaner.deleteDeletedAccountRecord;
+
 
 @RunWith(SerenityRunner.class)
 public class DeletedAccountsApiTest {
@@ -46,6 +48,9 @@ public class DeletedAccountsApiTest {
             TestConstants.SUCCESS,
             "DeletedAccounts POST API response code 201 assertion is not successful"
         );
+
+        // Cleanup DB
+        deleteDeletedAccountRecord(response);
     }
 
     @Test
@@ -135,7 +140,7 @@ public class DeletedAccountsApiTest {
 
     @Test
     @Title("Assert response code unauthorized request without authentication token")
-    public void assertUnauthorizedRequest() throws JsonProcessingException, JSONException {
+    public void assertUnauthorizedRequest() {
 
         String serviceToken = getApiSteps.givenAValidServiceTokenIsGenerated(
             TestConstants.USER_DISPOSER_SERVICE_NAME);
@@ -157,7 +162,7 @@ public class DeletedAccountsApiTest {
 
     @Test
     @Title("Assert response code forbidden without s2s authentication token")
-    public void assertGetHttpForbiddenWithInvalidS2SToken() throws JsonProcessingException {
+    public void assertGetHttpForbiddenWithInvalidS2SToken() {
 
         Response response = getApiSteps.performGetOperation(
             TestConstants.DELETED_ACCOUNTS_ENDPOINT,

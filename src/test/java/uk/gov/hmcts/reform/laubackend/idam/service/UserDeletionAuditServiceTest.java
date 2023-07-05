@@ -158,6 +158,12 @@ class UserDeletionAuditServiceTest {
         assertEquals(timestampStr, response.get(0).getDeletionTimestamp(), "Timestamps are not equal");
     }
 
+    @Test
+    void shouldDeleteUserDeletion() {
+        userDeletionAuditService.deleteUserDeletionByUserId("1");
+        verify(userDeletionAuditRepository, times(1)).deleteUserDeletionAuditByUserId("1");
+    }
+
     private UserDeletionAudit getUserDeletionAudit() {
         return UserDeletionAudit.builder()
             .userId("1")
