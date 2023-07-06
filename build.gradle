@@ -14,6 +14,7 @@ plugins {
     id 'uk.gov.hmcts.java' version '0.12.43'
     id "info.solidsoft.pitest" version '1.9.11'
     id "org.springdoc.openapi-gradle-plugin" version "1.6.0"
+    id 'au.com.dius.pact' version '4.4.0-beta.2'
 }
 
 group = 'uk.gov.hmcts.reform'
@@ -72,6 +73,14 @@ sourceSets {
         }
         resources.srcDir file('src/smokeTest/resources')
     }
+    contractTest {
+        java {
+            compileClasspath += main.output
+            runtimeClasspath += main.output
+            srcDir file('src/contractTest/java')
+        }
+        resources.srcDir file('src/contractTest/resources')
+    }
 }
 
 tasks.withType(JavaCompile) {
@@ -91,6 +100,8 @@ configurations {
     integrationTestRuntime.extendsFrom testRuntime
     functionalTestCompile.extendsFrom testCompile
     functionalTestRuntime.extendsFrom testRuntime
+    contractTestImplementation.extendsFrom(testImplementation)
+    contractTestRuntimeOnly.extendsFrom(testRuntimeOnly)
 }
 
 task unit(type: Test, description: 'Runs the unit tests.', group: 'Verification') {
@@ -133,6 +144,20 @@ task fortifyScan(type: JavaExec) {
     jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
 }
 
+task contract(type: Test, description: 'Runs the pact contract tests.', group: 'Verification') {
+  description = "Runs the consumer Pact tests"
+  useJUnitPlatform()
+  testClassesDirs = sourceSets.contractTest.output.classesDirs
+  classpath = sourceSets.contractTest.runtimeClasspath
+}
+
+task runAndPublishConsumerPactTests(type: Test){
+  logger.lifecycle("Runs pact Tests")
+  testClassesDirs = sourceSets.contractTest.output.classesDirs
+  classpath = sourceSets.contractTest.runtimeClasspath
+
+}
+
 checkstyle {
     maxWarnings = 0
     toolVersion = '10.10.0'
@@ -146,6 +171,30 @@ pmd {
     ruleSets = []
     ruleSetFiles = files("config/pmd/ruleset.xml")
 }
+
+runAndPublishConsumerPactTests.dependsOn contract
+
+runAndPublishConsumerPactTests.finalizedBy pactPublish
+
+project.ext {
+  pacticipantVersion = getCheckedOutGitCommitHash()
+}
+
+static def getCheckedOutGitCommitHash() {
+  'git rev-parse --verify --short HEAD'.execute().text.trim()
+}
+
+pact {
+  broker {
+    pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL") ?: 'http://localhost:80'
+  }
+  publish {
+    pactDirectory = 'pacts'
+    tags = [System.getenv("PACT_BRANCH_NAME") ?: 'Dev']
+    version = project.pacticipantVersion
+  }
+}
+
 
 project.tasks['jacocoTestReport'].dependsOn test, integration
 
@@ -311,6 +360,7 @@ dependencies {
     implementation group: 'com.github.hmcts', name: 'idam-java-client', version: versions.idamClient
     implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.reformLogging
     implementation group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: '6.0.0'
+    implementation group: 'org.apache.httpcomponents', name: 'fluent-hc', version: '4.5.14'
     implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '4.0.3'
 
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
@@ -382,6 +432,13 @@ dependencies {
     testCompileOnly group: 'org.projectlombok', name: 'lombok'
     testAnnotationProcessor group: 'org.projectlombok', name: 'lombok'
 
+    //pact contract testing
+    contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'junit5', version: '4.4.0-beta.2'
+    contractTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.7.12'
+
+    contractTestImplementation sourceSets.main.runtimeClasspath
+    contractTestImplementation sourceSets.test.runtimeClasspath
+
 }
 
 flyway {
@@ -436,8 +493,12 @@ rootProject.tasks.named("processFunctionalTestResources") {
     duplicatesStrategy = 'include'
 }
 
-rootProject.tasks.named("processTestResources") {
+rootProject.tasks.named("processContractTestResources") {
     duplicatesStrategy = 'include'
+}
+
+rootProject.tasks.named("processTestResources") {
+  duplicatesStrategy = 'include'
 }
 
 rootProject.tasks.named("processResources") {
