@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.helper;
 import com.google.gson.Gson;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONException;
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.model.LogonLogPostResponseVO;
 
@@ -15,29 +16,43 @@ import static uk.gov.hmcts.reform.laubackend.idam.constants.CommonConstants.SERV
 import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.LOGON_DELETE_ENDPOINT;
 import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.FRONTEND_SERVICE_NAME;
 
+@Slf4j
 public final class DatabaseCleaner {
 
     private DatabaseCleaner() {
     }
 
-    public static void deleteLogonRecord(final Response response) throws JSONException {
+    public static void deleteLogonRecord(final Response response) {
         final Gson jsonReader = new Gson();
-        final AuthorizationHeaderHelper authorizationHeaderHelper = new AuthorizationHeaderHelper();
-        final PropertyReader propertyReader = PropertyReader.getInstance();
         final LogonLogPostResponseVO logonLogPostResponse = jsonReader
                 .fromJson(response.getBody().asString(), LogonLogPostResponseVO.class);
 
+        try {
+            makeRequest(LOGON_DELETE_ENDPOINT, "logonId", logonLogPostResponse.getLogonLog().getId(), OK.value());
+        } catch (JSONException je) {
+            log.error(je.getMessage(), je);
+        }
+    }
+
+    private static void makeRequest(
+        String endpoint,
+        String paramName,
+        String paramValue,
+        int expectedStatusCode) throws JSONException {
+
+        final PropertyReader propertyReader = PropertyReader.getInstance();
+        final AuthorizationHeaderHelper authorizationHeaderHelper = new AuthorizationHeaderHelper();
         final Response deleteResponse = RestAssured
-                .given()
-                .relaxedHTTPSValidation()
-                .baseUri(propertyReader.getPropertyValue("api.url") + LOGON_DELETE_ENDPOINT)
-                .queryParam("logonId", logonLogPostResponse.getLogonLog().getId())
-                .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
-                .header(SERVICE_AUTHORISATION_HEADER, authorizationHeaderHelper.getServiceToken(FRONTEND_SERVICE_NAME))
-                .header(AUTHORISATION_HEADER, authorizationHeaderHelper.getAuthorizationToken())
-                .when()
-                .delete()
-                .andReturn();
-        assertThat(deleteResponse.getStatusCode()).isEqualTo(OK.value());
+            .given()
+            .relaxedHTTPSValidation()
+            .baseUri(propertyReader.getPropertyValue("api.url") + endpoint)
+            .queryParam(paramName, paramValue)
+            .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+            .header(SERVICE_AUTHORISATION_HEADER, authorizationHeaderHelper.getServiceToken(FRONTEND_SERVICE_NAME))
+            .header(AUTHORISATION_HEADER, authorizationHeaderHelper.getAuthorizationToken())
+            .when()
+            .delete()
+            .andReturn();
+        assertThat(deleteResponse.getStatusCode()).isEqualTo(expectedStatusCode);
     }
 }

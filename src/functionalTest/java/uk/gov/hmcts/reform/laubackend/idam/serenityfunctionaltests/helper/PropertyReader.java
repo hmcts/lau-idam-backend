@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.helper;
 
-
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -28,6 +27,7 @@ public final class PropertyReader {
             if (reader == null) {
                 reader = new PropertyReader();
             }
+
             return reader;
         }
     }

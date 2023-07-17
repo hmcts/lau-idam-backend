@@ -13,6 +13,7 @@ public final class TestConstants {
 
     /* deleted accounts endpoint */
     public static final String DELETED_ACCOUNTS_ENDPOINT = "/audit/deletedAccounts";
+    public static final String DELETED_ACCOUNTS_DELETE_ENDPOINT = "/audit/idamUser/deleteIdamUserRecord";
 
     // Authorization constants
     public static final String SCOPE = "openid profile roles";
