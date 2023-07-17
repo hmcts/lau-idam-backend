@@ -28,7 +28,41 @@ api-version-number: 1
 api-config-params:
   number_of_days_limit: 90
 
-db.allow.delete.record: ${DB_ALLOW_DELETE_RECORD:true}
+idam:
+  s2s-auth:
+    url: ${S2S_URL:http://localhost:4502}
+  api:
+    url: ${IDAM_API_URL:http://localhost:5000}
+  client:
+    id: ${IDAM_CLIENT_NAME:lau}
+    secret: ${IDAM_CLIENT_SECRET:12345678}
+    redirect_uri: ${IDAM_CLIENT_REDIRECT_URI:http://localhost:3451/oauth2redirect}
+
+
+  grant:
+    type:authorised.services: idam_api,lau_frontend,idam-user-disposer
+
+    type:authorised.roles: cft-audit-investigator
+
+
+    type:db.allow.delete.record: ${DB_ALLOW_DELETE_RECORD:true}
+
+    type:api.url: http://localhost:4550
+client.secret: ${IDAM_CLIENT_SECRET}
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${LAU_IDAM_DB_HOST:localhost}:${LAU_IDAM_DB_PORT:5054}/${LAU_IDAM_DB_NAME:lau_idam}${LAU_IDAM_DB_CONN_OPTIONS:}
+    password: ${LAU_IDAM_DB_PASSWORD:laupass}
+
+s2s.url: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal/testing-support
+logon.endpoint: /audit/logon
+idam.grant.type: password
+idam.username: lautest@test.com
+idam.password: Password12
+idam.redirect.url: https://lau-case.aat.platform.hmcts.net/oauth2/callback
+idam.token.url: https://idam-api.aat.platform.hmcts.net/o/token
+api.url: http://localhost:4550
 
 azure:
   application-insights:

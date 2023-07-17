@@ -14,16 +14,11 @@ import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.config.EnvConfig.IDAM_CLIENT_SECRET;
 import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.CLIENT_ID;
-import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.GRANT_TYPE;
-import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.PASSWORD;
-import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.REDIRECT_URI;
-import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.S2S_URL;
 import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.SCOPE;
-import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.TOKEN_URL;
-import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.USERNAME;
 
 public class AuthorizationHeaderHelper {
 
+    final PropertyReader propertyReader = PropertyReader.getInstance();
     private static final Logger LOGGER =
             LoggerFactory.getLogger(AuthorizationHeaderHelper.class);
 
@@ -31,15 +26,15 @@ public class AuthorizationHeaderHelper {
         Response response = RestAssured
                 .given()
                 .contentType("application/x-www-form-urlencoded; charset=utf-8")
-                .formParam("grant_type", GRANT_TYPE)
-                .formParam("username", USERNAME)
-                .formParam("password", PASSWORD)
-                .formParam("redirect_uri", REDIRECT_URI)
+                .formParam("grant_type", propertyReader.getPropertyValue("idam.grant.type"))
+                .formParam("username", propertyReader.getPropertyValue("idam.username"))
+                .formParam("password", propertyReader.getPropertyValue("idam.password"))
+                .formParam("redirect_uri", propertyReader.getPropertyValue("idam.redirect.url"))
                 .formParam("scope", SCOPE)
                 .formParam("client_id", CLIENT_ID)
                 .formParam("client_secret", IDAM_CLIENT_SECRET)
                 .when()
-                .post(TOKEN_URL);
+                .post(propertyReader.getPropertyValue("idam.token.url"));
 
         return "Bearer " + new JSONObject(response.getBody().asString())
                 .getString("access_token");
@@ -48,13 +43,13 @@ public class AuthorizationHeaderHelper {
 
     public String getServiceToken(final String serviceName) {
 
-        LOGGER.info("s2sUrl lease url: {}", S2S_URL + "/lease");
+        LOGGER.info("s2sUrl lease url: {}", propertyReader.getPropertyValue("s2s.url") + "/lease");
         final Map<String, Object> params = Map.of("microservice", serviceName);
 
         final Response response = RestAssured
                 .given()
                 .relaxedHTTPSValidation()
-                .baseUri(S2S_URL)
+                .baseUri(propertyReader.getPropertyValue("s2s.url"))
                 .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
                 .body(params)
                 .when()
