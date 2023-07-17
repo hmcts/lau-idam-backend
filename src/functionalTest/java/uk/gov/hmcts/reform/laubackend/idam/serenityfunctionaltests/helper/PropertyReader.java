@@ -1,14 +1,15 @@
 package uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.helper;
 
-import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
+
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.Properties;
 
-public class PropertyReader {
+@Slf4j
+public final class PropertyReader {
 
-    private static PropertyReader propertyReader;
+    private static PropertyReader reader;
 
     public Properties properties;
 
@@ -17,15 +18,18 @@ public class PropertyReader {
             properties = new Properties();
             properties.load(PropertyReader.class.getResourceAsStream("/application-functional.yaml"));
         } catch (final IOException ioException) {
-            throw new RuntimeException(ioException);
+            log.error(ioException.getMessage(), ioException);
         }
     }
 
     public static PropertyReader getInstance() {
-        if (propertyReader == null)
-            propertyReader = new PropertyReader();
 
-        return propertyReader;
+        synchronized (PropertyReader.class) {
+            if (reader == null) {
+                reader = new PropertyReader();
+            }
+            return reader;
+        }
     }
 
     public String getPropertyValue(String propertyKey) {

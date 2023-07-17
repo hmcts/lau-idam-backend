@@ -3,4 +3,8 @@ package uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.config;
 public final class EnvConfig {
 
     public static final String IDAM_CLIENT_SECRET = System.getenv("IDAM_CLIENT_SECRET");
+
+    private EnvConfig() {
+
+    }
 }
