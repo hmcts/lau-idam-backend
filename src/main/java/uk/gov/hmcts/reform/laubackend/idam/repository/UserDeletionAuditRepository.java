@@ -6,4 +6,8 @@ import uk.gov.hmcts.reform.laubackend.idam.domain.UserDeletionAudit;
 
 @Repository
 public interface UserDeletionAuditRepository extends JpaRepository<UserDeletionAudit, Long> {
+
+    boolean existsUserDeletionAuditByUserId(String userId);
+
+    void deleteUserDeletionAuditByUserId(String userId);
 }

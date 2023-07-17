@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.laubackend.idam.bdd;
 
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -16,12 +17,12 @@ import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.reform.laubackend.idam.helper.RestHelper.getResponseWithoutAuthorizationHeader;
 
-public class CommonSteps {
+public class CommonSteps extends AbstractSteps {
 
     @LocalServerPort
     private int port;
 
-    private int httpStatusResponseCode;
+    protected Response response;
 
     final RestHelper restHelper = new RestHelper();
 
@@ -45,34 +46,42 @@ public class CommonSteps {
 
     @When("And I GET {string} without service authorization header")
     public void searchIdamLogonWithoutAuthHeader(final String path) {
-        final Response response = RestHelper.getResponseWithoutHeader(getUrl(path));
-        httpStatusResponseCode = response.getStatusCode();
+        response = RestHelper.getResponseWithoutHeader(getUrl(path));
     }
 
     @When("I request GET {string} endpoint without mandatory params")
     public void requestWithoutMandatoryParams(final String path) {
-        final Response response = restHelper.getResponse(getUrl(path), Map.of("nonExistingParam", "nonExistingValue"));
-        httpStatusResponseCode = response.getStatusCode();
+        response = restHelper.getResponse(getUrl(path), Map.of("nonExistingParam", "nonExistingValue"));
     }
 
     @Then("HTTP {string} Forbidden response is returned")
     public void assertResponseCode(final String responseCode) {
-        assertThat(httpStatusResponseCode).isEqualTo(parseInt(responseCode));
+        assertThat(response.getStatusCode()).isEqualTo(parseInt(responseCode));
     }
 
     @When("And I GET {string} without authorization header")
     public void searchWithoutAuthorizationHeader(final String path) {
-        final Response response = getResponseWithoutAuthorizationHeader(getUrl(path));
-        httpStatusResponseCode = response.getStatusCode();
+        response = getResponseWithoutAuthorizationHeader(getUrl(path));
     }
 
     @Then("HTTP {string} Bad Request response is returned")
     public void assertErrorResponse(final String errorCode) {
-        assertThat(httpStatusResponseCode).isEqualTo(parseInt(errorCode));
+        assertThat(response.getStatusCode()).isEqualTo(parseInt(errorCode));
     }
 
     @Then("HTTP {string} Unauthorized response is returned")
     public void assertUnauthorizedResponse(final String responseCode) {
-        assertThat(httpStatusResponseCode).isEqualTo(parseInt(responseCode));
+        assertThat(response.getStatusCode()).isEqualTo(parseInt(responseCode));
     }
+
+    @And("I request DELETE {string} endpoint with missing s2s header")
+    public void deleteWithMissingHeader(final String endpoint) {
+        response = restHelper.deleteResponseWithoutServiceAuthHeader(getUrl(endpoint));
+    }
+
+    @And("I request DELETE {string} endpoint with missing authorization header")
+    public void deleteLogonLogWithMissingAuthHeader(final String endpoint) {
+        response = restHelper.deleteResponseWithoutAuthHeader(getUrl(endpoint));
+    }
+
 }

@@ -1,8 +1,10 @@
 package uk.gov.hmcts.reform.laubackend.idam.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -93,6 +95,17 @@ public class UserDeletionAuditService {
 
     private long calculateStartRecordNumber(final Page<UserDeletionAudit> users) {
         return users.getSize() * users.getNumber() + 1L;
+    }
+
+    @Transactional
+    public void deleteUserDeletionByUserId(final String userDeletionId) {
+        userDeletionAuditRepository.deleteUserDeletionAuditByUserId(userDeletionId);
+    }
+
+    public void verifyUserIdExists(String userId) {
+        if (!userDeletionAuditRepository.existsUserDeletionAuditByUserId(userId)) {
+            throw new EmptyResultDataAccessException(1);
+        }
     }
 
 
