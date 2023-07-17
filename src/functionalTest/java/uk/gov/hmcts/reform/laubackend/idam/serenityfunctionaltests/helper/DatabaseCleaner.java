@@ -19,7 +19,6 @@ import static uk.gov.hmcts.reform.laubackend.idam.constants.CommonConstants.SERV
 import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.LOGON_DELETE_ENDPOINT;
 import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.DELETED_ACCOUNTS_DELETE_ENDPOINT;
 import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.FRONTEND_SERVICE_NAME;
-import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.LOGON_DELETE_ENDPOINT;
 
 @Slf4j
 public final class DatabaseCleaner {
