@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 import java.util.Properties;
 
+@SuppressWarnings({"PMD"})
 @Slf4j
 public final class PropertyReader {
 
@@ -23,13 +24,11 @@ public final class PropertyReader {
 
     public static PropertyReader getInstance() {
 
-        synchronized (PropertyReader.class) {
-            if (reader == null) {
-                reader = new PropertyReader();
-            }
-
-            return reader;
+        if (reader == null) {
+            reader = new PropertyReader();
         }
+
+        return reader;
     }
 
     public String getPropertyValue(String propertyKey) {
