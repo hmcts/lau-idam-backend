@@ -29,12 +29,12 @@ public class AuthorizationHeaderHelper {
                 .formParam("grant_type", propertyReader.getPropertyValue("idam.grant.type"))
                 .formParam("username", propertyReader.getPropertyValue("idam.username"))
                 .formParam("password", propertyReader.getPropertyValue("idam.password"))
-                .formParam("redirect_uri", propertyReader.getPropertyValue("idam.redirect.url"))
+                .formParam("redirect_uri", propertyReader.getPropertyValueFromEnv("idam.redirect.url"))
                 .formParam("scope", SCOPE)
                 .formParam("client_id", CLIENT_ID)
                 .formParam("client_secret", IDAM_CLIENT_SECRET)
                 .when()
-                .post(propertyReader.getPropertyValue("idam.token.url"));
+                .post(propertyReader.getPropertyValueFromEnv("idam.token.url"));
 
         return "Bearer " + new JSONObject(response.getBody().asString())
                 .getString("access_token");
@@ -43,13 +43,13 @@ public class AuthorizationHeaderHelper {
 
     public String getServiceToken(final String serviceName) {
 
-        LOGGER.info("s2sUrl lease url: {}", propertyReader.getPropertyValue("s2s.url") + "/lease");
+        LOGGER.info("s2sUrl lease url: {}", propertyReader.getPropertyValueFromEnv("s2s.url") + "/lease");
         final Map<String, Object> params = Map.of("microservice", serviceName);
 
         final Response response = RestAssured
                 .given()
                 .relaxedHTTPSValidation()
-                .baseUri(propertyReader.getPropertyValue("s2s.url"))
+                .baseUri(propertyReader.getPropertyValueFromEnv("s2s.url"))
                 .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
                 .body(params)
                 .when()

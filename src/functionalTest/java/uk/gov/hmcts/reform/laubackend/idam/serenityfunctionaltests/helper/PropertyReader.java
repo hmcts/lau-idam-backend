@@ -35,4 +35,8 @@ public final class PropertyReader {
     public String getPropertyValue(String propertyKey) {
         return properties.getProperty(propertyKey);
     }
+
+    public String getPropertyValueFromEnv(String propertyKey) {
+        return System.getenv(getPropertyValue(propertyKey));
+    }
 }
