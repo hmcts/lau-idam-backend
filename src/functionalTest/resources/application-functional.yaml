@@ -43,6 +43,7 @@ idam.grant.type: password
 idam.username: lautest@test.com
 idam.password: Password12
 idam.client.id: lau
+idam.client.secret: IDAM_CLIENT_SECRET
 idam.redirect.url: https://lau-case.aat.platform.hmcts.net/oauth2/callback
 idam.token.url: https://idam-api.aat.platform.hmcts.net/o/token
 api.url: TEST_URL
