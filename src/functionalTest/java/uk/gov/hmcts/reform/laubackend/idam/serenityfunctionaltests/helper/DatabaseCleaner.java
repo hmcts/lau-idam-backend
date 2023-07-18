@@ -16,10 +16,9 @@ import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.CommonConstants.AUTHORISATION_HEADER;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.CommonConstants.SERVICE_AUTHORISATION_HEADER;
-import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.config.EnvConfig.API_URL;
+import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.LOGON_DELETE_ENDPOINT;
 import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.DELETED_ACCOUNTS_DELETE_ENDPOINT;
 import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.FRONTEND_SERVICE_NAME;
-import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.LOGON_DELETE_ENDPOINT;
 
 @Slf4j
 public final class DatabaseCleaner {
@@ -29,7 +28,6 @@ public final class DatabaseCleaner {
 
     public static void deleteLogonRecord(final Response response) {
         final Gson jsonReader = new Gson();
-
         final LogonLogPostResponseVO logonLogPostResponse = jsonReader
                 .fromJson(response.getBody().asString(), LogonLogPostResponseVO.class);
 
@@ -62,11 +60,12 @@ public final class DatabaseCleaner {
         String paramValue,
         int expectedStatusCode) throws JSONException {
 
+        final PropertyReader propertyReader = PropertyReader.getInstance();
         final AuthorizationHeaderHelper authorizationHeaderHelper = new AuthorizationHeaderHelper();
         final Response deleteResponse = RestAssured
             .given()
             .relaxedHTTPSValidation()
-            .baseUri(API_URL + endpoint)
+            .baseUri(propertyReader.getPropertyValueFromEnv("api.url") + endpoint)
             .queryParam(paramName, paramValue)
             .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
             .header(SERVICE_AUTHORISATION_HEADER, authorizationHeaderHelper.getServiceToken(FRONTEND_SERVICE_NAME))

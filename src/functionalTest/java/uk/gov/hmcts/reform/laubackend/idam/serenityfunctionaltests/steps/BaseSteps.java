@@ -14,8 +14,8 @@ import org.json.JSONException;
 import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.config.EnvConfig;
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.helper.AuthorizationHeaderHelper;
+import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.helper.PropertyReader;
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants;
 
 import java.nio.charset.StandardCharsets;
@@ -23,7 +23,7 @@ import java.util.Map;
 
 
 public class BaseSteps {
-
+    static final PropertyReader PROPERTY_READER = PropertyReader.getInstance();
     private static final RequestSpecification REQSPEC;
     private static final Logger LOGGER =
             LoggerFactory.getLogger(BaseSteps.class);
@@ -39,10 +39,10 @@ public class BaseSteps {
 
         final RequestSpecBuilder specBuilder = new RequestSpecBuilder()
                 .setConfig(config)
-                .setBaseUri(EnvConfig.API_URL)
+                .setBaseUri(PROPERTY_READER.getPropertyValueFromEnv("api.url"))
                 .setRelaxedHTTPSValidation();
 
-        LOGGER.info("Using base API URL: " + EnvConfig.API_URL);
+        LOGGER.info("Using base API URL: " + PROPERTY_READER.getPropertyValueFromEnv("api.url"));
         if (proxyHost != null) {
             specBuilder.setProxy(proxyHost, proxyPort);
         }
