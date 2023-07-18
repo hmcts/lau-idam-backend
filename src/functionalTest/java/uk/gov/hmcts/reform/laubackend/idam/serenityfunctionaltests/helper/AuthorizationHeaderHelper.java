@@ -12,6 +12,7 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.IDAM_CLIENT_SECRET;
 import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants.SCOPE;
 
 public class AuthorizationHeaderHelper {
@@ -30,7 +31,7 @@ public class AuthorizationHeaderHelper {
                 .formParam("redirect_uri", propertyReader.getPropertyValue("idam.redirect.url"))
                 .formParam("scope", SCOPE)
                 .formParam("client_id", propertyReader.getPropertyValue("idam.client.id"))
-                .formParam("client_secret", propertyReader.getPropertyValue("idam.client.secret"))
+                .formParam("client_secret", System.getenv(IDAM_CLIENT_SECRET))
                 .when()
                 .post(propertyReader.getPropertyValue("idam.token.url"));
 

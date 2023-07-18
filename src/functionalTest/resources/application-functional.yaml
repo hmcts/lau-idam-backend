@@ -42,7 +42,6 @@ s2s.url: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal/
 idam.grant.type: password
 idam.username: lautest@test.com
 idam.password: Password12
-idam.client.secret: gQ4pHYQ8TTYdQp8d
 idam.client.id: lau
 idam.redirect.url: https://lau-case.aat.platform.hmcts.net/oauth2/callback
 idam.token.url: https://idam-api.aat.platform.hmcts.net/o/token

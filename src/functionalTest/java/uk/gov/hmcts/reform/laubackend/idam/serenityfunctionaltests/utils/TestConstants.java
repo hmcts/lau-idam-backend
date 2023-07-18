@@ -18,6 +18,9 @@ public final class TestConstants {
     // Authorization constants
     public static final String SCOPE = "openid profile roles";
 
+    // ClientSecret
+    public static final String IDAM_CLIENT_SECRET = "IDAM_CLIENT_SECRET";
+
     private TestConstants() {
 
     }
