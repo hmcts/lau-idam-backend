@@ -61,7 +61,7 @@ idam.grant.type: password
 idam.username: lautest@test.com
 idam.password: Password12
 idam.redirect.url: IDAM_CLIENT_REDIRECT_URI
-idam.token.url: TOKEN_URL;
+idam.token.url: TOKEN_URL
 api.url: TEST_URL
 
 azure:

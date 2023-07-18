@@ -39,10 +39,10 @@ public class BaseSteps {
 
         final RequestSpecBuilder specBuilder = new RequestSpecBuilder()
                 .setConfig(config)
-                .setBaseUri(PROPERTY_READER.getPropertyValue("api.url"))
+                .setBaseUri(PROPERTY_READER.getPropertyValueFromEnv("api.url"))
                 .setRelaxedHTTPSValidation();
 
-        LOGGER.info("Using base API URL: " + PROPERTY_READER.getPropertyValue("api.url"));
+        LOGGER.info("Using base API URL: " + PROPERTY_READER.getPropertyValueFromEnv("api.url"));
         if (proxyHost != null) {
             specBuilder.setProxy(proxyHost, proxyPort);
         }
