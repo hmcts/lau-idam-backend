@@ -176,9 +176,7 @@ runAndPublishConsumerPactTests.dependsOn contract
 
 runAndPublishConsumerPactTests.finalizedBy pactPublish
 
-project.ext {
-  pacticipantVersion = getCheckedOutGitCommitHash()
-}
+project.ext.pacticipantVersion = getCheckedOutGitCommitHash()
 
 static def getCheckedOutGitCommitHash() {
   'git rev-parse --verify --short HEAD'.execute().text.trim()
@@ -434,7 +432,6 @@ dependencies {
 
     //pact contract testing
     contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'junit5', version: '4.4.0-beta.2'
-    contractTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.7.12'
 
     contractTestImplementation sourceSets.main.runtimeClasspath
     contractTestImplementation sourceSets.test.runtimeClasspath
@@ -457,7 +454,6 @@ flyway {
 }
 
 import org.flywaydb.gradle.task.FlywayMigrateTask
-
 task migratePostgresDatabase(type: FlywayMigrateTask) {
     baselineOnMigrate = true
     if (project.hasProperty("dburl")) {
