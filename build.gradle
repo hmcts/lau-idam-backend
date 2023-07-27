@@ -14,7 +14,7 @@ plugins {
     id 'uk.gov.hmcts.java' version '0.12.43'
     id "info.solidsoft.pitest" version '1.9.11'
     id "org.springdoc.openapi-gradle-plugin" version "1.6.0"
-    id 'au.com.dius.pact' version '4.4.0-beta.2'
+    id 'au.com.dius.pact' version '4.6.1'
 }
 
 group = 'uk.gov.hmcts.reform'
