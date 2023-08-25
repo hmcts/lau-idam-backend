@@ -155,8 +155,9 @@ task runAndPublishConsumerPactTests(type: Test){
   logger.lifecycle("Runs pact Tests")
   testClassesDirs = sourceSets.contractTest.output.classesDirs
   classpath = sourceSets.contractTest.runtimeClasspath
-
 }
+
+runAndPublishConsumerPactTests.finalizedBy pactPublish
 
 checkstyle {
     maxWarnings = 0
@@ -173,8 +174,6 @@ pmd {
 }
 
 runAndPublishConsumerPactTests.dependsOn contract
-
-runAndPublishConsumerPactTests.finalizedBy pactPublish
 
 project.ext.pacticipantVersion = getCheckedOutGitCommitHash()
 
