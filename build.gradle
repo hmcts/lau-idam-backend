@@ -431,7 +431,8 @@ dependencies {
     testAnnotationProcessor group: 'org.projectlombok', name: 'lombok'
 
     //pact contract testing
-    contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'junit5', version: '4.6.2'
+    contractTestImplementation group: 'au.com.dius.pact', name: 'consumer', version: versions.pact
+    contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact
 
     contractTestImplementation sourceSets.main.runtimeClasspath
     contractTestImplementation sourceSets.test.runtimeClasspath
