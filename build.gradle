@@ -151,6 +151,23 @@ task contract(type: Test, description: 'Runs the pact contract tests.', group: '
   classpath = sourceSets.contractTest.runtimeClasspath
 }
 
+project.ext.pacticipantVersion = getCheckedOutGitCommitHash()
+
+static def getCheckedOutGitCommitHash() {
+  'git rev-parse --verify --short HEAD'.execute().text.trim()
+}
+
+pact {
+  broker {
+    pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL") ?: 'http://localhost:80'
+  }
+  publish {
+    pactDirectory = 'pacts'
+    tags = [System.getenv("PACT_BRANCH_NAME") ?: 'Dev']
+    version = project.pacticipantVersion
+  }
+}
+
 task runAndPublishConsumerPactTests(type: Test){
   dependsOn(contract)
   logger.lifecycle("Runs pact Tests")
@@ -174,24 +191,6 @@ pmd {
 }
 
 runAndPublishConsumerPactTests.dependsOn contract
-
-project.ext.pacticipantVersion = getCheckedOutGitCommitHash()
-
-static def getCheckedOutGitCommitHash() {
-  'git rev-parse --verify --short HEAD'.execute().text.trim()
-}
-
-pact {
-  broker {
-    pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL") ?: 'http://localhost:80'
-  }
-  publish {
-    pactDirectory = 'pacts'
-    tags = [System.getenv("PACT_BRANCH_NAME") ?: 'Dev']
-    version = project.pacticipantVersion
-  }
-}
-
 
 project.tasks['jacocoTestReport'].dependsOn test, integration
 
