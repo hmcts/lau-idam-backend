@@ -51,5 +51,9 @@
   "10049_Non-Storable Content_http://lau-idam-backend-aat.service.core-compute-aat.internal/audit/deletedAccounts?requestParams=_GET": "ignore",
   "10049_Non-Storable Content_http://lau-idam-backend-aat.service.core-compute-aat.internal/audit/logon?User%20ID=3748238&Email%20Address=firstname.lastname@company.com&Start%20Timestamp=2021-06-23%2022:20:05&End%20Timestamp=2021-08-23%2022:20:05&Size=500&Page=1_GET": "ignore",
   "10049_Storable and Cacheable Content_http://lau-idam-backend-aat.service.core-compute-aat.internal/_GET": "ignore",
-  "10049_Storable and Cacheable Content_http://lau-idam-backend-aat.service.core-compute-aat.internal/v2/api-docs_GET": "ignore"
+  "10049_Storable and Cacheable Content_http://lau-idam-backend-aat.service.core-compute-aat.internal/v2/api-docs_GET": "ignore",
+  "10112_Session Management Response Identified_http://lau-idam-backend-aat.service.core-compute-aat.internal/_GET": "ignore",
+  "10112_Session Management Response Identified_http://lau-idam-backend-aat.service.core-compute-aat.internal/audit/deletedAccounts?requestParams=_GET": "ignore",
+  "10112_Session Management Response Identified_http://lau-idam-backend-aat.service.core-compute-aat.internal/audit/logon?User%20ID=3748238&Email%20Address=firstname.lastname@company.com&Start%20Timestamp=2021-06-23%2022:20:05&End%20Timestamp=2021-08-23%2022:20:05&Size=500&Page=1_GET": "ignore",
+  "10112_Session Management Response Identified_http://lau-idam-backend-aat.service.core-compute-aat.internal/v2/api-docs_GET": "ignore"
 }
