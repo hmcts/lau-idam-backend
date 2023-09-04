@@ -330,7 +330,13 @@ configurations.all {
 dependencies {
 
     implementation group: 'commons-io', name: 'commons-io', version: versions.commonsIo
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', {
+        // CVE-2023-41080
+        exclude group: 'org.apache.tomcat.embed', module: 'tomcat-embed-websocket'
+        exclude group: 'org.apache.tomcat.embed', module: 'tomcat-embed-core'
+    }
+    implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '10.1.13'
+    implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '10.1.13'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-json'
