@@ -309,7 +309,7 @@ def versions = [
         serviceAuthVersion: '5.0.0',
         commonsIo         : '2.13.0',
         cucumber          : '7.12.1',
-        wiremock          : '2.35.0',
+        wiremock          : '2.35.1',
         log4j             : '2.20.0',
         springCloud       : '4.0.3',
         reformLogging     : '6.0.1',
