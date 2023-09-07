@@ -58,6 +58,7 @@ public class UserDeletionAuditService {
             .deletionLogs(deletionLogList)
             .moreRecords(deletionAudits.hasNext())
             .startRecordNumber(calculateStartRecordNumber(deletionAudits))
+            .totalNumberOfRecords(deletionAudits.getTotalElements())
             .build();
     }
 

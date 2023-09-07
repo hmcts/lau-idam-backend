@@ -73,6 +73,7 @@ class UserDeletionAuditServiceTest {
         var returned = response.getDeletionLogs().get(0);
         assertEquals("1", returned.getUserId(), "UserId mismatch");
         assertEquals("email", returned.getEmailAddress(), "email mismatch");
+        assertEquals(1, response.getTotalNumberOfRecords(), "Expected total responses mismatch");
     }
 
     @Test
