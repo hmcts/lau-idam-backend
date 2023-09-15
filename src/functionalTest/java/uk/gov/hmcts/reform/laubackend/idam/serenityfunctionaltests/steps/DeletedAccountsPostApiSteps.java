@@ -1,6 +1,6 @@
 package uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.steps;
 
-import net.thucydides.core.annotations.Step;
+import net.serenitybdd.annotations.Step;
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.model.DeletedAccount;
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.model.DeletedAccountsRequest;
 

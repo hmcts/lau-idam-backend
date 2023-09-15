@@ -9,7 +9,7 @@ import io.restassured.http.Header;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import net.serenitybdd.rest.SerenityRest;
-import net.thucydides.core.annotations.Step;
+import net.serenitybdd.annotations.Step;
 import org.json.JSONException;
 import org.junit.Assert;
 import org.slf4j.Logger;

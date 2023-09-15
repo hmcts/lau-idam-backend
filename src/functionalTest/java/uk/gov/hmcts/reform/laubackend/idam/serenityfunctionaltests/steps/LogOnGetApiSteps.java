@@ -1,7 +1,7 @@
 package uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.steps;
 
 import io.restassured.response.Response;
-import net.thucydides.core.annotations.Step;
+import net.serenitybdd.annotations.Step;
 import org.hamcrest.Matchers;
 import org.json.JSONException;
 import org.junit.Assert;
