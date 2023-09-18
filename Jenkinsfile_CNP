@@ -1,5 +1,4 @@
 #!groovy
-import uk.gov.hmcts.contino.GithubAPI
 
 @Library("Infrastructure")
 
@@ -40,10 +39,6 @@ GradleBuilder builder = new GradleBuilder(this, product)
 
 withPipeline(type, product, component) {
   onPR {
-    def githubApi = new GithubAPI(this)
-    if (!githubApi.getLabelsbyPattern(env.BRANCH_NAME, "keep-helm")) {
-        enableCleanupOfHelmReleaseOnSuccess()
-    }
     enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
   }
 
