@@ -20,9 +20,9 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://${LAU_IDAM_DB_FLEXIBLE_HOST:localhost}:${LAU_IDAM_DB_FLEXIBLE_PORT:5432}/${LAU_IDAM_DB_NAME:lau_idam}${LAU_IDAM_DB_CONN_OPTIONS:}
-    username: ${LAU_IDAM_DB_FLEXIBLE_ADMIN_USERNAME:lauuser}
-    password: ${LAU_IDAM_DB_FLEXIBLE_ADMIN_PASSWORD:}
+    url: jdbc:postgresql://${LAU_IDAM_DB_HOST:localhost}:${LAU_IDAM_DB_PORT:5432}/${LAU_IDAM_DB_NAME:lau_idam}${LAU_IDAM_DB_CONN_OPTIONS:}
+    username: ${LAU_IDAM_DB_USERNAME:lauuser}
+    password: ${LAU_IDAM_DB_PASSWORD:}
     properties:
       charSet: UTF-8
     hikari:
@@ -58,10 +58,10 @@ spring:
             non_contextual_creation: true
   flyway:
     enabled: ${LAU_FLYWAY_MIGRATE_DB:false}
-    user: ${LAU_IDAM_DB_FLEXIBLE_ADMIN_USERNAME:}
-    password: ${LAU_IDAM_DB_FLEXIBLE_ADMIN_PASSWORD:}
+    user: ${LAU_IDAM_DB_ADMIN_USERNAME:}
+    password: ${LAU_IDAM_DB_ADMIN_PASSWORD:}
     placeholders:
-      LAU_IDAM_DB_PASSWORD: ${LAU_IDAM_DB_FLEXIBLE_ADMIN_PASSWORD:}
+      LAU_IDAM_DB_PASSWORD: ${LAU_IDAM_DB_PASSWORD:}
 
 security:
   db:
