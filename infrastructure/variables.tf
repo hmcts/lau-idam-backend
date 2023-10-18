@@ -45,3 +45,5 @@ variable "appinsights_instrumentation_key" {
 variable "postgresql_flexible_server_port" {
   default = "5432"
 }
+
+variable "aks_subscription_id" {}
