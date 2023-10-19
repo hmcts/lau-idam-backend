@@ -313,7 +313,7 @@ def versions = [
         log4j             : '2.21.0',
         springCloud       : '4.0.4',
         reformLogging     : '6.0.1',
-        idamClient        : '3.0.1',
+        idamClient        : '3.0.2',
         pact              : '4.6.3'
 ]
 
