@@ -25,7 +25,7 @@ module "lau-idam-db-flexible" {
   source = "git@github.com:hmcts/terraform-module-postgresql-flexible?ref=master"
   env = var.env
 
-  product = "${var.product}-${var.component}"
+  product = var.product
   component = var.component
   business_area = "cft"
   name = "${var.product}-${var.component}-flexible"
