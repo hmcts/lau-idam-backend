@@ -8,7 +8,7 @@ import uk.gov.hmcts.contino.GradleBuilder
 def type = "java"
 def product = "lau"
 def component = "idam-backend"
-def branchesToSync = ['perftest','ithc']
+def branchesToSync = ['perftest','ithc','demo']
 
 
 def flywaySecrets = [
