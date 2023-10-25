@@ -310,7 +310,7 @@ def versions = [
         commonsIo         : '2.14.0',
         cucumber          : '7.14.0',
         wiremock          : '3.0.1',
-        log4j             : '2.21.0',
+        log4j             : '2.21.1',
         springCloud       : '4.0.4',
         reformLogging     : '6.0.1',
         idamClient        : '3.0.2',
