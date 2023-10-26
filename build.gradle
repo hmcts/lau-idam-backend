@@ -307,7 +307,7 @@ def versions = [
         testcontainers    : '1.19.1',
         restAssured       : '5.3.2',
         serviceAuthVersion: '5.1.1',
-        commonsIo         : '2.14.0',
+        commonsIo         : '2.15.0',
         cucumber          : '7.14.0',
         wiremock          : '3.0.1',
         log4j             : '2.21.1',
