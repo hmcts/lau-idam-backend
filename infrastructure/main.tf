@@ -32,6 +32,8 @@ module "lau-idam-db-flexible" {
 
   common_tags = var.common_tags
 
+  pgsql_storage_mb = var.pgsql_storage_mb
+
   pgsql_admin_username = "lauadmin"
   pgsql_version   = "15"
 
