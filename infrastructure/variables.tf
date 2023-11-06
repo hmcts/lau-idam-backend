@@ -47,3 +47,9 @@ variable "postgresql_flexible_server_port" {
 }
 
 variable "aks_subscription_id" {}
+
+variable "pgsql_storage_mb" {
+  type = number
+  description = "Flexible Postgres DB size in mb"
+  default = 65536
+}
