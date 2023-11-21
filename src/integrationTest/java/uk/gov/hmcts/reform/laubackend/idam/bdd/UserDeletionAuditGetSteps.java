@@ -74,5 +74,27 @@ public class UserDeletionAuditGetSteps extends AbstractSteps {
 
     }
 
+    @Then("multiple deleted account entries are returned with size {int}")
+    public void multipleAccountEntriesReturnedWithCount(Integer count) {
+        final UserDeletionGetResponse response = jsonReader
+            .fromJson(responseBodyString, UserDeletionGetResponse.class);
+        int size = response.getDeletionLogs().size();
+        assertEquals(count, size, "Size does not match");
+
+    }
+
+    @Then("first deleted account entry is returned with params {string} {string}")
+    public void firstDeletedAccountEntryIsReturned(String name, String value)
+        throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+        final UserDeletionGetResponse response = jsonReader
+            .fromJson(responseBodyString, UserDeletionGetResponse.class);
+        final BeanUtilsBean bub = new BeanUtilsBean();
+        assertThat(response.getDeletionLogs()).hasSize(4);
+        String val = bub.getProperty(response.getDeletionLogs().get(0), name);
+        assertEquals(value, val, "Properties do not match");
+    }
+
+
+
 
 }

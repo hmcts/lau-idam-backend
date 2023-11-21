@@ -34,7 +34,7 @@ public class DeletedAccountsApiTest {
         throws JsonProcessingException {
 
         String authServiceToken = postApiSteps.givenAValidServiceTokenIsGenerated(
-            TestConstants.USER_DISPOSER_SERVICE_NAME);
+            TestConstants.DISPOSER_USER_SERVICE_NAME);
         DeletedAccountsRequest request = postApiSteps.generateDeletedAccountsRequest();
 
         Response response = postApiSteps.whenThePostServiceIsInvoked(
@@ -59,7 +59,7 @@ public class DeletedAccountsApiTest {
         throws JsonProcessingException {
 
         String authServiceToken = postApiSteps.givenAValidServiceTokenIsGenerated(
-            TestConstants.USER_DISPOSER_SERVICE_NAME);
+            TestConstants.DISPOSER_USER_SERVICE_NAME);
         DeletedAccountsRequest request = postApiSteps.generateInvalidDeletedAccountsRequest();
         Response response = postApiSteps.whenThePostServiceIsInvoked(
             TestConstants.DELETED_ACCOUNTS_ENDPOINT,
@@ -96,7 +96,7 @@ public class DeletedAccountsApiTest {
     @Title("Assert response code of 200 for successfully getting deleted records")
     public void assertHttpSuccessResponseCodeForGetRequestDeletedAccountsApi() throws JSONException {
         String serviceToken = getApiSteps.givenAValidServiceTokenIsGenerated(
-            TestConstants.USER_DISPOSER_SERVICE_NAME);
+            TestConstants.DISPOSER_USER_SERVICE_NAME);
 
         String authToken = getApiSteps.validAuthorizationTokenIsGenerated();
         Map<String, String> queryParams = getApiSteps.givenValidParamsAreSuppliedForGetLogonApi();
@@ -122,7 +122,7 @@ public class DeletedAccountsApiTest {
     public void assertHttpBadRequestWithoutStartTimestamp() throws JsonProcessingException {
 
         String serviceToken = getApiSteps.givenAValidServiceTokenIsGenerated(
-            TestConstants.USER_DISPOSER_SERVICE_NAME);
+            TestConstants.DISPOSER_USER_SERVICE_NAME);
         DeletedAccountsRequest request = getApiSteps.generateInvalidDeletedAccountsSearchRequest();
 
         Response response = getApiSteps.whenThePostServiceIsInvoked(
@@ -143,7 +143,7 @@ public class DeletedAccountsApiTest {
     public void assertUnauthorizedRequest() {
 
         String serviceToken = getApiSteps.givenAValidServiceTokenIsGenerated(
-            TestConstants.USER_DISPOSER_SERVICE_NAME);
+            TestConstants.DISPOSER_USER_SERVICE_NAME);
 
         Response response = getApiSteps.performGetOperation(
             TestConstants.DELETED_ACCOUNTS_ENDPOINT,
@@ -179,4 +179,5 @@ public class DeletedAccountsApiTest {
             "DeletedAccountsSearch GET API response code 403 assertion is not successful"
         );
     }
+
 }

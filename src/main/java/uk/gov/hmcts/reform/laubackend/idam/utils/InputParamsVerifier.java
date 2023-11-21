@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.laubackend.idam.utils;
 
 import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLog;
 import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLogGetRequestParams;
+import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLogAllUsersRequestParams;
 import uk.gov.hmcts.reform.laubackend.idam.dto.LogonInputParamsHolder;
 import uk.gov.hmcts.reform.laubackend.idam.dto.LogonLog;
 import uk.gov.hmcts.reform.laubackend.idam.exceptions.InvalidRequestException;
@@ -19,6 +20,7 @@ import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageCons
 import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.PAGE_EXCEPTION_MESSAGE;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.PAGE_SIZE_EXCEPTION_MESSAGE;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.SERVICE_POST_EXCEPTION_MESSAGE;
+import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.SORT_EXCEPTION_MESSAGE;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.TIMESTAMP_GET_EXCEPTION_MESSAGE;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.TIMESTAMP_POST_EXCEPTION_MESSAGE;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.USERID_GET_EXCEPTION_MESSAGE;
@@ -30,10 +32,13 @@ import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifierHelpe
 import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifierHelper.verifyLength;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifierHelper.verifyLoginState;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifierHelper.verifyPositiveNumeric;
+import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifierHelper.verifyPositiveNumericAndNotNull;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifierHelper.verifyService;
+import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifierHelper.verifySort;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifierHelper.verifyTimestamp;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifierHelper.verifyUserId;
 
+@SuppressWarnings({"PMD.ExcessiveImports"})
 public final class InputParamsVerifier {
 
     private static final int MAX_NAME_POST_LENGTH = 64;
@@ -83,5 +88,12 @@ public final class InputParamsVerifier {
         verifyTimestamp(params.endTimestamp(), TIMESTAMP_GET_EXCEPTION_MESSAGE, TIMESTAMP_GET_REGEX);
         verifyPositiveNumeric(params.size(), PAGE_SIZE_EXCEPTION_MESSAGE);
         verifyPositiveNumeric(params.page(), PAGE_EXCEPTION_MESSAGE);
+    }
+
+    public static void verifyAllUserDeletionGetRequestParams(
+        final DeletionLogAllUsersRequestParams params
+    ) throws InvalidRequestException {
+        verifyPositiveNumericAndNotNull(params.size(), PAGE_SIZE_EXCEPTION_MESSAGE);
+        verifySort(params.sort(), SORT_EXCEPTION_MESSAGE);
     }
 }

@@ -7,12 +7,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.reform.laubackend.idam.domain.UserDeletionAudit;
 import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLog;
+import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLogAllUsersRequestParams;
 import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLogGetRequestParams;
 import uk.gov.hmcts.reform.laubackend.idam.repository.UserDeletionAuditFindRepository;
 import uk.gov.hmcts.reform.laubackend.idam.repository.UserDeletionAuditInsertRepository;
@@ -22,6 +24,7 @@ import uk.gov.hmcts.reform.laubackend.idam.utils.TimestampUtil;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,8 +40,9 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
+@SuppressWarnings({"PMD.ExcessiveImports"})
 class UserDeletionAuditServiceTest {
-
+    private static final String DEFAULT_SIZE = "10000";
     private static final String TIMESTAMP_STR = "2023-05-23T05:32:32.345T";
     @Mock
     private UserDeletionAuditRepository userDeletionAuditRepository;
@@ -62,11 +66,11 @@ class UserDeletionAuditServiceTest {
         when(userDeletionAuditFindRepository.findUserDeletion(any(), any(), any()))
             .thenReturn(results);
         final DeletionLogGetRequestParams params = new DeletionLogGetRequestParams(
-            "", "", "", "", "", "", "10000", "1");
+            "", "", "", "", "", "", DEFAULT_SIZE, "1");
 
         final UserDeletionGetResponse response = userDeletionAuditService.getUserDeletions(params);
 
-        var pageable = PageRequest.of(0, parseInt("10000"), Sort.by(Sort.Direction.DESC, "deletion_timestamp"));
+        var pageable = PageRequest.of(0, parseInt(DEFAULT_SIZE), Sort.by(Sort.Direction.DESC, "deletion_timestamp"));
         verify(userDeletionAuditFindRepository, times(1))
             .findUserDeletion(params, null, pageable);
         assertThat(response.getDeletionLogs()).hasSize(1);
@@ -173,5 +177,79 @@ class UserDeletionAuditServiceTest {
             .lastName("Smith")
             .timestamp(Timestamp.from(Instant.now()))
             .build();
+    }
+
+    private List<UserDeletionAudit> getAllUserDeletionAudit() {
+        UserDeletionAudit firstUser = UserDeletionAudit.builder()
+            .userId("1")
+            .emailAddress("email1")
+            .firstName("John")
+            .lastName("Smith")
+            .timestamp(Timestamp.from(Instant.now()))
+            .build();
+        UserDeletionAudit secondUser = UserDeletionAudit.builder()
+            .userId("2")
+            .emailAddress("email2")
+            .firstName("Matt")
+            .lastName("Scott")
+            .timestamp(Timestamp.from(Instant.now()))
+            .build();
+        List<UserDeletionAudit> allUsers = new ArrayList<>();
+        allUsers.add(firstUser);
+        allUsers.add(secondUser);
+        return allUsers;
+    }
+
+    @Test
+    void shouldGetAllUsersDeletionAuditRepositoryResponse() {
+        final List<UserDeletionAudit> allUsers = getAllUserDeletionAudit();
+        final Page<UserDeletionAudit> results = new PageImpl<>(allUsers);
+        when(userDeletionAuditFindRepository.findAllDeletedUsers(any(),any(),any()))
+            .thenReturn(results);
+        final DeletionLogAllUsersRequestParams params = new DeletionLogAllUsersRequestParams(DEFAULT_SIZE,  "");
+        final UserDeletionGetResponse response = userDeletionAuditService.getAllDeletedUsers(params);
+
+        var pageable = userDeletionAuditService.getPageSorted(DEFAULT_SIZE, "desc");
+        verify(userDeletionAuditFindRepository, times(1))
+            .findAllDeletedUsers(params,null, pageable);
+        assertThat(response.getDeletionLogs()).hasSize(2);
+        var returned = response.getDeletionLogs().get(0);
+        assertEquals("1", returned.getUserId(), "UserId mismatch");
+        assertEquals("email1", returned.getEmailAddress(), "email mismatch");
+        assertEquals("John", returned.getFirstName(), "firstName mismatch");
+        assertEquals("Smith", returned.getLastName(), "lastName mismatch");
+        returned = response.getDeletionLogs().get(1);
+        assertEquals("2", returned.getUserId(), "UserId mismatch");
+        assertEquals("email2", returned.getEmailAddress(), "email mismatch");
+        assertEquals("Matt", returned.getFirstName(), "firstName mismatch");
+        assertEquals("Scott", returned.getLastName(), "lastName mismatch");
+        assertEquals(2, response.getTotalNumberOfRecords(), "Expected total responses mismatch");
+    }
+
+    @Test
+    void shouldSortInDescIfSortIsNull() {
+        Pageable pageable = userDeletionAuditService.getPageSorted(DEFAULT_SIZE, null);
+        Sort sort = pageable.getSort();
+        for (Sort.Order order : sort) {
+            assertEquals(Sort.Direction.DESC,order.getDirection(),"Sort should be DESC");
+        }
+    }
+
+    @Test
+    void shouldSortInDesc() {
+        Pageable pageable = userDeletionAuditService.getPageSorted(DEFAULT_SIZE, "DESC");
+        Sort sort = pageable.getSort();
+        for (Sort.Order order : sort) {
+            assertEquals(Sort.Direction.DESC,order.getDirection(),"Sort should be DESC");
+        }
+    }
+
+    @Test
+    void shouldSortInAsc() {
+        Pageable pageable = userDeletionAuditService.getPageSorted(DEFAULT_SIZE, "asc");
+        Sort sort = pageable.getSort();
+        for (Sort.Order order : sort) {
+            assertEquals(Sort.Direction.ASC,order.getDirection(),"Sort should be Asc");
+        }
     }
 }
