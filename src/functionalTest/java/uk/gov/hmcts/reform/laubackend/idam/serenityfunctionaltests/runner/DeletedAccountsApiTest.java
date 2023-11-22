@@ -6,7 +6,6 @@ import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.annotations.Steps;
 import net.serenitybdd.annotations.Title;
 import org.json.JSONException;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.testng.Assert;
@@ -21,7 +20,6 @@ import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.helper
 
 
 @RunWith(SerenityRunner.class)
-@Ignore
 public class DeletedAccountsApiTest {
 
     @Steps
