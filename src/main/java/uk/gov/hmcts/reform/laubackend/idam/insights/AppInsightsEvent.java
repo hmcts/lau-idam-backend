@@ -5,6 +5,8 @@ public enum AppInsightsEvent {
     GET_LOGON_REQUEST_INVALID_REQUEST_EXCEPTION("Audit GET IdAM Logon Request InvalidRequestException: "),
     GET_DELETED_ACCOUNTS_INVALID_REQUEST_EXCEPTION(
         "Audit GET IdAM Deleted Accounts InvalidRequestException"),
+    GET_ALL_DELETED_ACCOUNTS_INVALID_REQUEST_EXCEPTION(
+        "Audit GET All IdAM Deleted Accounts InvalidRequestException"),
 
     POST_LOGON_REQUEST_EXCEPTION("Audit POST IdAM Logon Request Exception: "),
     POST_LOGON_REQUEST_INVALID_REQUEST_EXCEPTION("Audit POST IdAM Logon Request InvalidRequestException: "),

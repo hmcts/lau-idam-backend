@@ -13,6 +13,7 @@ public final class ExceptionMessageConstants {
     public static final String LASTNAME_GET_EXCEPTION_MESSAGE = "Unable to verify last name parameter pattern";
     public static final String PAGE_SIZE_EXCEPTION_MESSAGE = "Page size has to be a positive whole number";
     public static final String PAGE_EXCEPTION_MESSAGE = "Page number has to be a positive whole number";
+    public static final String SORT_EXCEPTION_MESSAGE = "Sort should be either asc/ASC or desc/DESC";
 
     //POST exception messages
     public static final String USERID_POST_EXCEPTION_MESSAGE = "Unable to verify userId pattern: ";

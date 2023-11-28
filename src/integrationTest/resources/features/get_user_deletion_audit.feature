@@ -59,3 +59,47 @@ Feature: The applications's GET audit user deletions endpoint
   Scenario: The backend is unable to process logon GET requests due to missing s2s
     When And I GET "/audit/deletedAccounts" without service authorization header
     Then HTTP "403" Forbidden response is returned
+
+
+  Scenario: The backend is able to find all deleted user entry based on params
+    When I GET "/audit/getAllDeletedAccounts" passing params:
+      | size         | 100    |
+      | sort         | asc    |
+    Then multiple deleted account entries are returned with size 4
+
+
+  Scenario: The backend is able to find all deleted user entry based on params without sort
+    When I GET "/audit/getAllDeletedAccounts" passing params:
+      | size         | 100    |
+    Then multiple deleted account entries are returned with size 4
+
+
+  Scenario: The backend is able to find all deleted user entry by asc
+    When I GET "/audit/getAllDeletedAccounts" passing params:
+      | size         | 100    |
+      | sort         | asc    |
+    Then multiple deleted account entries are returned with size 4
+    And first deleted account entry is returned with params "userId" "1"
+    And first deleted account entry is returned with params "emailAddress" "john.smith@example.net"
+    And first deleted account entry is returned with params "firstName" "John"
+    And first deleted account entry is returned with params "lastName" "Smith"
+
+
+  Scenario: The backend is able to find all deleted user entry by desc
+    When I GET "/audit/getAllDeletedAccounts" passing params:
+      | size         | 100    |
+      | sort         | desc    |
+    Then multiple deleted account entries are returned with size 4
+    And first deleted account entry is returned with params "userId" "4"
+    And first deleted account entry is returned with params "emailAddress" "jack.allen@example.net"
+    And first deleted account entry is returned with params "firstName" "Jack"
+    And first deleted account entry is returned with params "lastName" "Allen"
+
+  Scenario: The backend is unable to process get All deleted requests due to missing params
+    When I GET "/audit/getAllDeletedAccounts" passing params:
+      | sort         | asc    |
+    Then 400 "Bad Request" response is returned
+
+  Scenario: The backend is unable to process get All deleted request due to missing s2s
+    When And I GET "/audit/getAllDeletedAccounts" without service authorization header
+    Then HTTP "403" Forbidden response is returned

@@ -4,7 +4,7 @@ package uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils;
 public final class TestConstants {
 
     public static final String FRONTEND_SERVICE_NAME = "lau_frontend";
-    public static final String USER_DISPOSER_SERVICE_NAME = "idam-user-disposer";
+    public static final String DISPOSER_USER_SERVICE_NAME = "disposer-idam-user";
 
     /*Logon endPoint*/
     public static final String LOGON_ENDPOINT = "/audit/logon";
@@ -13,6 +13,7 @@ public final class TestConstants {
 
     /* deleted accounts endpoint */
     public static final String DELETED_ACCOUNTS_ENDPOINT = "/audit/deletedAccounts";
+    public static final String ALL_DELETED_ACCOUNTS_ENDPOINT = "/audit/getAllDeletedAccounts";
     public static final String DELETED_ACCOUNTS_DELETE_ENDPOINT = "/audit/idamUser/deleteIdamUserRecord";
 
     // Authorization constants

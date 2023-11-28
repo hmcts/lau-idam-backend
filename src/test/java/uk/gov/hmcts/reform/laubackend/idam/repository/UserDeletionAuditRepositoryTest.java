@@ -12,9 +12,11 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.reform.laubackend.idam.domain.UserDeletionAudit;
+import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLogAllUsersRequestParams;
 import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLogGetRequestParams;
 import uk.gov.hmcts.reform.laubackend.idam.utils.TimestampUtil;
 
@@ -36,7 +38,7 @@ import static org.assertj.core.api.Assertions.assertThat;
     "spring.flyway.enabled=true"
 })
 @Import({TimestampUtil.class})
-@SuppressWarnings("PMD.TooManyMethods")
+@SuppressWarnings({"PMD.TooManyMethods","PMD.LawOfDemeter"})
 class UserDeletionAuditRepositoryTest {
     private static final int RECORD_NUMBER = 20;
 
@@ -265,4 +267,56 @@ class UserDeletionAuditRepositoryTest {
     static Pageable getPage() {
         return PageRequest.of(0, 100);
     }
+
+    @Test
+    void shouldFindPageableResultsForAllUsers() {
+        final DeletionLogAllUsersRequestParams params = new DeletionLogAllUsersRequestParams(
+            "10",
+            "asc"
+        );
+        final Page<UserDeletionAudit> userDeletion = userDeletionAuditFindRepository.findAllDeletedUsers(
+            params,
+            ENCRYPTION_KEY,
+            PageRequest.of(0,10, Sort.Direction.ASC,"deletion_timestamp")
+        );
+
+        assertThat(userDeletion.getTotalElements()).isEqualTo(20);
+        assertThat(userDeletion.getContent()).hasSize(10);
+        assertResults(userDeletion.getContent(), 1);
+    }
+
+    @Test
+    void shouldFindResultsForAllUsers() {
+        final DeletionLogAllUsersRequestParams params = new DeletionLogAllUsersRequestParams(
+            "10000",
+            "desc"
+        );
+        final Page<UserDeletionAudit> userDeletion = userDeletionAuditFindRepository.findAllDeletedUsers(
+            params,
+            ENCRYPTION_KEY,
+            PageRequest.of(0,10_000,Sort.Direction.DESC,"deletion_timestamp")
+        );
+
+        assertThat(userDeletion.getTotalElements()).isEqualTo(20);
+        assertThat(userDeletion.getContent()).hasSize(20);
+        assertResults(userDeletion.getContent(), 20);
+    }
+
+    @Test
+    void shouldFindResultsForAllUsersWithoutSort() {
+        final DeletionLogAllUsersRequestParams params = new DeletionLogAllUsersRequestParams(
+            "10000",
+            null
+        );
+        final Page<UserDeletionAudit> userDeletion = userDeletionAuditFindRepository.findAllDeletedUsers(
+            params,
+            ENCRYPTION_KEY,
+            PageRequest.of(0,10_000,Sort.Direction.DESC,"deletion_timestamp")
+        );
+
+        assertThat(userDeletion.getTotalElements()).isEqualTo(20);
+        assertThat(userDeletion.getContent()).hasSize(20);
+        assertResults(userDeletion.getContent(), 20);
+    }
+
 }

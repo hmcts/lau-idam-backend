@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLog;
+import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLogAllUsersRequestParams;
 import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLogGetRequestParams;
 import uk.gov.hmcts.reform.laubackend.idam.exceptions.InvalidRequestException;
 import uk.gov.hmcts.reform.laubackend.idam.insights.AppInsights;
@@ -32,10 +33,12 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.CommonConstants.AUTHORISATION_HEADER;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.CommonConstants.SERVICE_AUTHORISATION_HEADER;
 import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.GET_DELETED_ACCOUNTS_INVALID_REQUEST_EXCEPTION;
+import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.GET_ALL_DELETED_ACCOUNTS_INVALID_REQUEST_EXCEPTION;
 import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.POST_DELETION_INVALID_REQUEST_EXCEPTION;
 import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.POST_DELETION_REQUEST_EXCEPTION;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifier.verifyUserDeletionGetRequestParams;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifier.verifyUserDeletionPostRequestParams;
+import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifier.verifyAllUserDeletionGetRequestParams;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.NotEmptyInputParamsVerifier.verifyUserDeletionGetRequestParamsPresence;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.NotEmptyInputParamsVerifier.verifyUserDeletionPostRequestParamsPresence;
 
@@ -47,6 +50,8 @@ import static uk.gov.hmcts.reform.laubackend.idam.utils.NotEmptyInputParamsVerif
     + "The API will be invoked by IdAM service.")
 @SuppressWarnings({"PMD.ExcessiveImports","PMD.UnnecessaryAnnotationValueElement"})
 public class UserDeletionAuditController {
+
+    private static final String EXCEPTION = "exception";
 
     private final AppInsights appInsights;
     private final UserDeletionAuditService userDeletionAuditService;
@@ -101,7 +106,7 @@ public class UserDeletionAuditController {
                       ire);
             appInsights.trackEvent(
                 POST_DELETION_INVALID_REQUEST_EXCEPTION.toString(),
-                appInsights.trackingMap("exception", ire.getMessage())
+                appInsights.trackingMap(EXCEPTION, ire.getMessage())
             );
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 
@@ -111,7 +116,7 @@ public class UserDeletionAuditController {
                       exception);
             appInsights.trackEvent(
                 POST_DELETION_REQUEST_EXCEPTION.toString(),
-                appInsights.trackingMap("exception", exception.getMessage())
+                appInsights.trackingMap(EXCEPTION, exception.getMessage())
             );
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -168,7 +173,63 @@ public class UserDeletionAuditController {
             );
             appInsights.trackEvent(
                 GET_DELETED_ACCOUNTS_INVALID_REQUEST_EXCEPTION.toString(),
-                appInsights.trackingMap("exception", ire.getMessage())
+                appInsights.trackingMap(EXCEPTION, ire.getMessage())
+            );
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @Operation(
+        tags = "User Accounts endpoints",
+        summary = "Retrieve all deleted user accounts",
+        description = "Query all deleted user accounts based on size and sort"
+    )
+    @ApiResponses({
+        @ApiResponse(
+            responseCode = "200",
+            description = "Request executed successfully. Response will contain list of deleted users",
+            content = { @Content(schema = @Schema(implementation = UserDeletionGetResponse.class))}),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Missing required parameter(s). size is required ",
+            content = { @Content(schema = @Schema(implementation = UserDeletionGetResponse.class))}),
+        @ApiResponse(
+            responseCode = "403",
+            description = "Forbidden",
+            content = { @Content(schema = @Schema(implementation = UserDeletionGetResponse.class))}),
+        @ApiResponse(
+            responseCode = "500",
+            description = "Internal Server Error",
+            content = { @Content(schema = @Schema(implementation = UserDeletionGetResponse.class))})
+    })
+    @GetMapping(
+        path = "/audit/getAllDeletedAccounts",
+        produces = APPLICATION_JSON_VALUE
+    )
+    @ResponseBody
+    public ResponseEntity<UserDeletionGetResponse> getAllDeletedUsers(
+        @Parameter(name = "Authorization", example = "Bearer eyJ0eXYiOiJK.........")
+        @RequestHeader(value = AUTHORISATION_HEADER) String authToken,
+        @Parameter(name = "Service Authorization", example = "Bearer eyJ0eXYiOiJK.........")
+        @RequestHeader(value = SERVICE_AUTHORISATION_HEADER) String serviceAuthToken,
+        DeletionLogAllUsersRequestParams requestParams
+    ) {
+        try {
+            verifyAllUserDeletionGetRequestParams(requestParams);
+
+            final UserDeletionGetResponse response = userDeletionAuditService.getAllDeletedUsers(requestParams);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+
+        } catch (final InvalidRequestException ire) {
+            log.error("getAllDeletedAccounts API call failed due to error - {}",
+                      ire.getMessage(),
+                      ire
+            );
+            appInsights.trackEvent(
+                GET_ALL_DELETED_ACCOUNTS_INVALID_REQUEST_EXCEPTION.toString(),
+                appInsights.trackingMap(EXCEPTION, ire.getMessage())
             );
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }

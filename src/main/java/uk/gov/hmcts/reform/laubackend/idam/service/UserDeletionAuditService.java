@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.laubackend.idam.domain.UserDeletionAudit;
 import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLog;
+import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLogAllUsersRequestParams;
 import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLogGetRequestParams;
 import uk.gov.hmcts.reform.laubackend.idam.repository.UserDeletionAuditFindRepository;
 import uk.gov.hmcts.reform.laubackend.idam.repository.UserDeletionAuditInsertRepository;
@@ -27,6 +28,7 @@ import static org.springframework.data.domain.PageRequest.of;
 
 @Service
 @RequiredArgsConstructor
+@SuppressWarnings("PMD.LawOfDemeter")
 public class UserDeletionAuditService {
 
     private final TimestampUtil timestampUtil;
@@ -94,6 +96,13 @@ public class UserDeletionAuditService {
         return of(parseInt(pageNumber) - 1, parseInt(pageSize), Sort.by(Sort.Direction.DESC, "deletion_timestamp"));
     }
 
+    public Pageable getPageSorted(final String size, final String sort) {
+        final String pageSize = isEmpty(size) ? defaultPageSize : size.trim();
+
+        return of(0, parseInt(pageSize), Sort.by(
+            isEmpty(sort) ? Sort.Direction.DESC : Sort.Direction.fromString(sort), "deletion_timestamp"));
+    }
+
     private long calculateStartRecordNumber(final Page<UserDeletionAudit> users) {
         return users.getSize() * users.getNumber() + 1L;
     }
@@ -107,6 +116,25 @@ public class UserDeletionAuditService {
         if (!userDeletionAuditRepository.existsUserDeletionAuditByUserId(userId)) {
             throw new EmptyResultDataAccessException(1);
         }
+    }
+
+    public UserDeletionGetResponse getAllDeletedUsers(DeletionLogAllUsersRequestParams requestParams) {
+        final Page<UserDeletionAudit> deletionAudits = userDeletionAuditFindRepository.findAllDeletedUsers(
+            requestParams,
+            securityDbBackendEncryptionKey,
+            getPageSorted(requestParams.size(),requestParams.sort())
+        );
+
+        final List<DeletionLog> deletionLogList = deletionAudits.getContent().stream()
+            .map(DeletionLog::toDto)
+            .toList();
+
+        return UserDeletionGetResponse.builder()
+            .deletionLogs(deletionLogList)
+            .moreRecords(deletionAudits.hasNext())
+            .startRecordNumber(calculateStartRecordNumber(deletionAudits))
+            .totalNumberOfRecords(deletionAudits.getTotalElements())
+            .build();
     }
 
 

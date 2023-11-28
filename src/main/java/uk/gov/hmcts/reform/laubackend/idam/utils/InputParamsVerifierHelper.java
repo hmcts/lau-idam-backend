@@ -10,6 +10,7 @@ import static org.apache.commons.lang3.StringUtils.isNumeric;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.ExceptionMessageConstants.appendExceptionParameter;
 
+@SuppressWarnings({"PMD.TooManyMethods"})
 public final class InputParamsVerifierHelper {
 
     private static final long MIN_POSITIVE_NUMBER = 1L;
@@ -84,6 +85,19 @@ public final class InputParamsVerifierHelper {
             if (number < MIN_POSITIVE_NUMBER) {
                 throw new InvalidRequestException(message, BAD_REQUEST);
             }
+        }
+    }
+
+    public static void verifyPositiveNumericAndNotNull(String value, String message) throws InvalidRequestException {
+        if (isEmpty(value) || !isNumeric(value) || Long.parseLong(value) < MIN_POSITIVE_NUMBER) {
+            throw new InvalidRequestException(message, BAD_REQUEST);
+        }
+    }
+
+    public static void verifySort(final String sort,
+                                    final String exceptionMessage) throws InvalidRequestException {
+        if (!isEmpty(sort) && !("asc".equalsIgnoreCase(sort) || "desc".equalsIgnoreCase(sort))) {
+            throw new InvalidRequestException(appendExceptionParameter(exceptionMessage, sort), BAD_REQUEST);
         }
     }
 }

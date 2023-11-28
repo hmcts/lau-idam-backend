@@ -38,4 +38,19 @@ public class DeletedAccountsGetApiSteps extends BaseSteps {
         queryParamMap.put("page", "1");
         return queryParamMap;
     }
+
+    @Step("When valid params are supplied for Get All deleted Users API")
+    public Map<String, String> givenValidParamsAreSuppliedForGetAllDeletedUsersApi() {
+        Map<String, String> queryParamMap = new ConcurrentHashMap<>();
+        queryParamMap.put("size", "10");
+        queryParamMap.put("sort", "asc");
+        return queryParamMap;
+    }
+
+    @Step("When invalid params are supplied for Get All deleted Users API")
+    public Map<String, String> givenInvalidParamsAreSuppliedForGetAllDeletedUsersApi() {
+        Map<String, String> queryParamMap = new ConcurrentHashMap<>();
+        queryParamMap.put("sort", "asc");
+        return queryParamMap;
+    }
 }

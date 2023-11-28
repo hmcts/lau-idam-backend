@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.reform.laubackend.idam.domain.UserDeletionAudit;
+import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLogAllUsersRequestParams;
 import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLogGetRequestParams;
 import uk.gov.hmcts.reform.laubackend.idam.utils.TimestampUtil;
 
@@ -38,7 +39,9 @@ public class UserDeletionAuditFindRepository {
             decrypt_value(first_name, :encryptionKey) as first_name,
             decrypt_value(last_name, :encryptionKey) as last_name,
             deletion_timestamp FROM user_deletion_audit
-        WHERE""";
+        """;
+
+    private static final String WHERE = "WHERE";
     private static final String TIME_RANGE_CRITERIA =
         "deletion_timestamp >= :startTime AND deletion_timestamp <= :endTime";
 
@@ -46,7 +49,8 @@ public class UserDeletionAuditFindRepository {
     private static final String EMAIL_CRITERIA = "AND email_address_hmac = hash_value(:emailAddress, :encryptionKey)";
     private static final String FIRST_NAME_CRITERIA = "AND first_name_hmac = hash_value(:firstName, :encryptionKey)";
     private static final String LAST_NAME_CRITERIA = "AND last_name_hmac = hash_value(:lastName, :encryptionKey)";
-    private static final String ORDER = "ORDER by deletion_timestamp DESC";
+    private static final String ORDER = "ORDER by deletion_timestamp";
+    private static final String DESC = "DESC";
 
     @PersistenceContext
     private final EntityManager entityManager;
@@ -60,11 +64,13 @@ public class UserDeletionAuditFindRepository {
 
         final List<String> queryParts = new LinkedList<>();
         queryParts.add(SELECT);
+        queryParts.add(WHERE);
         queryParts.add(TIME_RANGE_CRITERIA);
 
         Map<String, String> usedParams = addSearchCriteria(queryParts, params);
         queryParts.add(ORDER);
-        
+        queryParts.add(DESC);
+
         final String queryString = String.join(" ", queryParts);
         final Query query = entityManager.createNativeQuery(queryString, UserDeletionAudit.class);
         final Timestamp startTime = timestampUtil.getTimestampValue(params.startTimestamp());
@@ -144,5 +150,42 @@ public class UserDeletionAuditFindRepository {
         }
         return usedParams;
     }
+
+    @Transactional(readOnly = true)
+    public Page<UserDeletionAudit> findAllDeletedUsers(
+        final DeletionLogAllUsersRequestParams params,
+        final String encryptionKey,
+        final Pageable pageable
+    ) {
+
+        final List<String> queryParts = new LinkedList<>();
+        queryParts.add(SELECT);
+        queryParts.add(ORDER);
+        queryParts.add(getSort(params));
+
+        final String queryString = String.join(" ", queryParts);
+        final Query query = entityManager.createNativeQuery(queryString, UserDeletionAudit.class);
+        query.setParameter("encryptionKey", encryptionKey);
+        query.setFirstResult((int) pageable.getOffset());
+        query.setMaxResults(pageable.getPageSize());
+
+        final List<UserDeletionAudit> results = query.getResultList();
+
+        long totalCount = countTotalDeletedUsers();
+
+        return new PageImpl<>(results, pageable, totalCount);
+    }
+
+    private long countTotalDeletedUsers() {
+        String fullQuery = "SELECT count(*) FROM user_deletion_audit";
+        final Query query = entityManager.createNativeQuery(fullQuery);
+
+        return ((Number) query.getSingleResult()).intValue();
+    }
+
+    String getSort(DeletionLogAllUsersRequestParams params) {
+        return params.sort() == null || params.sort().length() == 0  ? DESC : params.sort();
+    }
+
 
 }
