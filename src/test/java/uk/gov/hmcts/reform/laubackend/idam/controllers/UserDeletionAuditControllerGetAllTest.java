@@ -42,7 +42,8 @@ class UserDeletionAuditControllerGetAllTest {
         final UserDeletionGetResponse response = mock(UserDeletionGetResponse.class);
         when(userDeletionAuditService.getAllDeletedUsers(any())).thenReturn(response);
         DeletionLogAllUsersRequestParams params = new DeletionLogAllUsersRequestParams(
-            "10000",
+            "1",
+            "10",
             ""
         );
         final ResponseEntity<UserDeletionGetResponse> responseEntity = controller
@@ -54,6 +55,7 @@ class UserDeletionAuditControllerGetAllTest {
     @Test
     void shouldReturnBadRequestOnMissingRequiredArg() {
         DeletionLogAllUsersRequestParams params = new DeletionLogAllUsersRequestParams(
+            null,
             null,
             null
         );
@@ -67,6 +69,7 @@ class UserDeletionAuditControllerGetAllTest {
     @Test
     void shouldReturnBadRequestOnIncorrectSort() {
         DeletionLogAllUsersRequestParams params = new DeletionLogAllUsersRequestParams(
+            "10",
             "10",
             "abc"
         );

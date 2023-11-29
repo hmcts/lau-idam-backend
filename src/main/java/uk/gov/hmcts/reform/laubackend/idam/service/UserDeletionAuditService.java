@@ -96,11 +96,15 @@ public class UserDeletionAuditService {
         return of(parseInt(pageNumber) - 1, parseInt(pageSize), Sort.by(Sort.Direction.DESC, "deletion_timestamp"));
     }
 
-    public Pageable getPageSorted(final String size, final String sort) {
+    public Pageable getPageSorted(final String page, final String size, final String sort) {
         final String pageSize = isEmpty(size) ? defaultPageSize : size.trim();
+        final int pageNumber = isEmpty(page) ? 0 : parseInt(page.trim()) - 1;
 
-        return of(0, parseInt(pageSize), Sort.by(
-            isEmpty(sort) ? Sort.Direction.DESC : Sort.Direction.fromString(sort), "deletion_timestamp"));
+        return of(pageNumber, parseInt(pageSize), Sort.by(getSort(sort), "deletion_timestamp"));
+    }
+
+    private Sort.Direction getSort(String sort) {
+        return isEmpty(sort) ? Sort.Direction.DESC : Sort.Direction.fromString(sort);
     }
 
     private long calculateStartRecordNumber(final Page<UserDeletionAudit> users) {
@@ -120,9 +124,9 @@ public class UserDeletionAuditService {
 
     public UserDeletionGetResponse getAllDeletedUsers(DeletionLogAllUsersRequestParams requestParams) {
         final Page<UserDeletionAudit> deletionAudits = userDeletionAuditFindRepository.findAllDeletedUsers(
-            requestParams,
+            getSort(requestParams.sort()).toString(),
             securityDbBackendEncryptionKey,
-            getPageSorted(requestParams.size(),requestParams.sort())
+            getPageSorted(requestParams.page(), requestParams.size(), requestParams.sort())
         );
 
         final List<DeletionLog> deletionLogList = deletionAudits.getContent().stream()
