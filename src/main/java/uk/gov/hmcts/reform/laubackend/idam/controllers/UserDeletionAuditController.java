@@ -32,13 +32,13 @@ import java.util.List;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.CommonConstants.AUTHORISATION_HEADER;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.CommonConstants.SERVICE_AUTHORISATION_HEADER;
-import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.GET_DELETED_ACCOUNTS_INVALID_REQUEST_EXCEPTION;
 import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.GET_ALL_DELETED_ACCOUNTS_INVALID_REQUEST_EXCEPTION;
+import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.GET_DELETED_ACCOUNTS_INVALID_REQUEST_EXCEPTION;
 import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.POST_DELETION_INVALID_REQUEST_EXCEPTION;
 import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.POST_DELETION_REQUEST_EXCEPTION;
+import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifier.verifyAllUserDeletionGetRequestParams;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifier.verifyUserDeletionGetRequestParams;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifier.verifyUserDeletionPostRequestParams;
-import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifier.verifyAllUserDeletionGetRequestParams;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.NotEmptyInputParamsVerifier.verifyUserDeletionGetRequestParamsPresence;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.NotEmptyInputParamsVerifier.verifyUserDeletionPostRequestParamsPresence;
 

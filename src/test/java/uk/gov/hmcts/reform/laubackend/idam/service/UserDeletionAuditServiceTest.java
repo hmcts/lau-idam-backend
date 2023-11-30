@@ -7,9 +7,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.reform.laubackend.idam.domain.UserDeletionAudit;
@@ -206,12 +206,12 @@ class UserDeletionAuditServiceTest {
         final Page<UserDeletionAudit> results = new PageImpl<>(allUsers);
         when(userDeletionAuditFindRepository.findAllDeletedUsers(any(),any(),any()))
             .thenReturn(results);
-        final DeletionLogAllUsersRequestParams params = new DeletionLogAllUsersRequestParams(DEFAULT_SIZE,  "");
+        final DeletionLogAllUsersRequestParams params = new DeletionLogAllUsersRequestParams("1", DEFAULT_SIZE,  "");
         final UserDeletionGetResponse response = userDeletionAuditService.getAllDeletedUsers(params);
 
-        var pageable = userDeletionAuditService.getPageSorted(DEFAULT_SIZE, "desc");
+        var pageable = userDeletionAuditService.getPageSorted("1", DEFAULT_SIZE, "desc");
         verify(userDeletionAuditFindRepository, times(1))
-            .findAllDeletedUsers(params,null, pageable);
+            .findAllDeletedUsers("DESC",null, pageable);
         assertThat(response.getDeletionLogs()).hasSize(2);
         var returned = response.getDeletionLogs().get(0);
         assertEquals("1", returned.getUserId(), "UserId mismatch");
@@ -228,7 +228,7 @@ class UserDeletionAuditServiceTest {
 
     @Test
     void shouldSortInDescIfSortIsNull() {
-        Pageable pageable = userDeletionAuditService.getPageSorted(DEFAULT_SIZE, null);
+        Pageable pageable = userDeletionAuditService.getPageSorted("1", DEFAULT_SIZE, null);
         Sort sort = pageable.getSort();
         for (Sort.Order order : sort) {
             assertEquals(Sort.Direction.DESC,order.getDirection(),"Sort should be DESC");
@@ -237,7 +237,7 @@ class UserDeletionAuditServiceTest {
 
     @Test
     void shouldSortInDesc() {
-        Pageable pageable = userDeletionAuditService.getPageSorted(DEFAULT_SIZE, "DESC");
+        Pageable pageable = userDeletionAuditService.getPageSorted("1", DEFAULT_SIZE, "DESC");
         Sort sort = pageable.getSort();
         for (Sort.Order order : sort) {
             assertEquals(Sort.Direction.DESC,order.getDirection(),"Sort should be DESC");
@@ -246,7 +246,7 @@ class UserDeletionAuditServiceTest {
 
     @Test
     void shouldSortInAsc() {
-        Pageable pageable = userDeletionAuditService.getPageSorted(DEFAULT_SIZE, "asc");
+        Pageable pageable = userDeletionAuditService.getPageSorted("1", DEFAULT_SIZE, "asc");
         Sort sort = pageable.getSort();
         for (Sort.Order order : sort) {
             assertEquals(Sort.Direction.ASC,order.getDirection(),"Sort should be Asc");

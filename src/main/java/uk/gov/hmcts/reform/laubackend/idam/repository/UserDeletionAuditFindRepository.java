@@ -41,6 +41,8 @@ public class UserDeletionAuditFindRepository {
             deletion_timestamp FROM user_deletion_audit
         """;
 
+    private static final String SELECT_USERID = "SELECT user_id FROM user_deletion_audit";
+
     private static final String WHERE = "WHERE";
     private static final String TIME_RANGE_CRITERIA =
         "deletion_timestamp >= :startTime AND deletion_timestamp <= :endTime";
@@ -153,21 +155,31 @@ public class UserDeletionAuditFindRepository {
 
     @Transactional(readOnly = true)
     public Page<UserDeletionAudit> findAllDeletedUsers(
-        final DeletionLogAllUsersRequestParams params,
+        final String sortOrder,
         final String encryptionKey,
         final Pageable pageable
     ) {
 
         final List<String> queryParts = new LinkedList<>();
         queryParts.add(SELECT);
+        queryParts.add(WHERE);
+
+        List<String> subQueryParts = new LinkedList<>();
+        subQueryParts.add(SELECT_USERID);
+        subQueryParts.add(ORDER);
+        subQueryParts.add(sortOrder);
+        subQueryParts.add(String.format("LIMIT %d", pageable.getPageSize()));
+        subQueryParts.add(String.format("OFFSET %d", pageable.getOffset()));
+        String subQuery = String.join(" ", subQueryParts);
+        queryParts.add(String.format("user_id IN (%s)", subQuery));
+
         queryParts.add(ORDER);
-        queryParts.add(getSort(params));
+        queryParts.add(sortOrder);
 
         final String queryString = String.join(" ", queryParts);
+
         final Query query = entityManager.createNativeQuery(queryString, UserDeletionAudit.class);
         query.setParameter("encryptionKey", encryptionKey);
-        query.setFirstResult((int) pageable.getOffset());
-        query.setMaxResults(pageable.getPageSize());
 
         final List<UserDeletionAudit> results = query.getResultList();
 

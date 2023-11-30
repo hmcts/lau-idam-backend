@@ -63,6 +63,7 @@ Feature: The applications's GET audit user deletions endpoint
 
   Scenario: The backend is able to find all deleted user entry based on params
     When I GET "/audit/getAllDeletedAccounts" passing params:
+      | page         | 1      |
       | size         | 100    |
       | sort         | asc    |
     Then multiple deleted account entries are returned with size 4
@@ -70,12 +71,14 @@ Feature: The applications's GET audit user deletions endpoint
 
   Scenario: The backend is able to find all deleted user entry based on params without sort
     When I GET "/audit/getAllDeletedAccounts" passing params:
+      | page         | 1      |
       | size         | 100    |
     Then multiple deleted account entries are returned with size 4
 
 
   Scenario: The backend is able to find all deleted user entry by asc
     When I GET "/audit/getAllDeletedAccounts" passing params:
+      | page         | 1      |
       | size         | 100    |
       | sort         | asc    |
     Then multiple deleted account entries are returned with size 4
@@ -87,13 +90,30 @@ Feature: The applications's GET audit user deletions endpoint
 
   Scenario: The backend is able to find all deleted user entry by desc
     When I GET "/audit/getAllDeletedAccounts" passing params:
+      | page         | 1      |
       | size         | 100    |
-      | sort         | desc    |
+      | sort         | desc   |
     Then multiple deleted account entries are returned with size 4
     And first deleted account entry is returned with params "userId" "4"
     And first deleted account entry is returned with params "emailAddress" "jack.allen@example.net"
     And first deleted account entry is returned with params "firstName" "Jack"
     And first deleted account entry is returned with params "lastName" "Allen"
+
+  Scenario: The backend returns paged results sorted by default deletion timestamp desc
+    When I GET "/audit/getAllDeletedAccounts" passing params:
+      | page    | 1 |
+      | size    | 2 |
+    Then two results are returned on the page 1:
+      |user id|email address           |first name|last name|deletion timestamp       |
+      |4      |jack.allen@example.net  |Jack      |Allen    |2023-05-23T23:48:16.591Z |
+      |3      |will.jones@example.net  |Will      |Jones    |2023-05-15T16:09:28.671Z |
+    When I GET "/audit/getAllDeletedAccounts" passing params:
+      | page    | 2 |
+      | size    | 2 |
+    Then two results are returned on the page 2:
+      |user id|email address           |first name|last name|deletion timestamp       |
+      |9      |will.smith@example.net  |Will      |Smith    |2023-05-10T07:19:59.346Z |
+      |1      |john.smith@example.net  |John      |Smith    |2023-05-04T11:32:43.125Z |
 
   Scenario: The backend is unable to process get All deleted requests due to missing params
     When I GET "/audit/getAllDeletedAccounts" passing params:

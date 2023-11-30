@@ -94,6 +94,22 @@ public class UserDeletionAuditGetSteps extends AbstractSteps {
         assertEquals(value, val, "Properties do not match");
     }
 
+    @Then("two results are returned on the page {int}:")
+    public void pagedResultsAreReturned(int page, List<DeletionLog> data) {
+        final UserDeletionGetResponse response = jsonReader
+            .fromJson(responseBodyString, UserDeletionGetResponse.class);
+        assertThat(response.getDeletionLogs()).hasSize(2);
+        assertThat(response.getTotalNumberOfRecords()).isEqualTo(4);
+        assertThat(response.getMoreRecords()).isEqualTo(page == 1);
+        assertThat(response.getStartRecordNumber()).isEqualTo((page - 1) * 2L + 1);
+        var expected1 = data.get(0);
+        var returned1 = response.getDeletionLogs().get(0);
+        var expected2 = data.get(1);
+        var returned2 = response.getDeletionLogs().get(1);
+
+        assertThat(returned1.getUserId()).isEqualTo(expected1.getUserId());
+        assertThat(returned2.getUserId()).isEqualTo(expected2.getUserId());
+    }
 
 
 

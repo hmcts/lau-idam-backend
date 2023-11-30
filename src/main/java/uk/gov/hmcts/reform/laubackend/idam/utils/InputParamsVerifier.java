@@ -93,6 +93,7 @@ public final class InputParamsVerifier {
     public static void verifyAllUserDeletionGetRequestParams(
         final DeletionLogAllUsersRequestParams params
     ) throws InvalidRequestException {
+        verifyPositiveNumericAndNotNull(params.page(), PAGE_EXCEPTION_MESSAGE);
         verifyPositiveNumericAndNotNull(params.size(), PAGE_SIZE_EXCEPTION_MESSAGE);
         verifySort(params.sort(), SORT_EXCEPTION_MESSAGE);
     }
