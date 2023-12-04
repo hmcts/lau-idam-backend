@@ -9,5 +9,5 @@ $do$
   END
 $do$;
 --
-GRANT USAGE, SELECT ON SEQUENCE idam_logon_audit_id_seq TO lauuser;
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE idam_logon_audit, flyway_schema_history TO lauuser;
+GRANT USAGE, SELECT ON SEQUENCE idam_logon_audit_id_seq, user_deletion_audit_id_seq TO lauuser;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE idam_logon_audit, user_deletion_audit, flyway_schema_history TO lauuser;
