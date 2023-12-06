@@ -83,25 +83,25 @@ data "azurerm_key_vault" "key_vault" {
 resource "azurerm_key_vault_secret" "POSTGRES-USER" {
   key_vault_id = data.azurerm_key_vault.key_vault.id
   name         = "${var.component}-POSTGRES-USER"
-  value        = module.lau-idam-db.user_name
+  value        = module.lau-idam-db-flexible.username
 }
 
 resource "azurerm_key_vault_secret" "POSTGRES-PASS" {
   key_vault_id = data.azurerm_key_vault.key_vault.id
   name         = "${var.component}-POSTGRES-PASS"
-  value        = module.lau-idam-db.postgresql_password
+  value        = module.lau-idam-db-flexible.password
 }
 
 resource "azurerm_key_vault_secret" "POSTGRES_HOST" {
   key_vault_id = data.azurerm_key_vault.key_vault.id
   name         = "${var.component}-POSTGRES-HOST"
-  value        = module.lau-idam-db.host_name
+  value        = module.lau-idam-db-flexible.fqdn
 }
 
 resource "azurerm_key_vault_secret" "POSTGRES_PORT" {
   key_vault_id = data.azurerm_key_vault.key_vault.id
   name         = "${var.component}-POSTGRES-PORT"
-  value        = module.lau-idam-db.postgresql_listen_port
+  value        = var.postgresql_flexible_server_port
 }
 
 resource "azurerm_key_vault_secret" "POSTGRES_DATABASE" {
