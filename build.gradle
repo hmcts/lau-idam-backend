@@ -274,7 +274,7 @@ dependencyCheck {
 dependencyManagement {
   dependencies {
     dependency group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.70'
-    dependencySet(group: 'org.springframework.cloud', version: '4.0.4') {
+    dependencySet(group: 'org.springframework.cloud', version: '4.1.0') {
       entry 'spring-cloud-starter-openfeign'
       entry 'spring-cloud-openfeign-core'
     }
@@ -315,7 +315,7 @@ def versions = [
         cucumber          : '7.14.1',
         wiremock          : '3.0.1',
         log4j             : '2.22.0',
-        springCloud       : '4.0.4',
+        springCloud       : '4.1.0',
         reformLogging     : '6.0.1',
         idamClient        : '3.0.2',
         pact              : '4.6.3'
