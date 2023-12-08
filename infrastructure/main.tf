@@ -119,7 +119,7 @@ resource "azurerm_key_vault_secret" "flyway_password" {
 
 resource "azurerm_key_vault_secret" "lau_idam_db_user" {
   key_vault_id = data.azurerm_key_vault.key_vault.id
-  name  = "idam-backend-app-db-user"
+  name  = "idam-backend-app-db-user-flexible"
   value = "lauuser"
 }
 
