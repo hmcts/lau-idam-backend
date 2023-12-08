@@ -42,7 +42,7 @@ module "lau-idam-db-flexible" {
 
   pgsql_databases = [
     {
-      name: "lau_idam"
+      name: var.lau_idam_db_name
     }
   ]
 
@@ -107,14 +107,20 @@ resource "azurerm_key_vault_secret" "POSTGRES_PORT" {
 resource "azurerm_key_vault_secret" "POSTGRES_DATABASE" {
   key_vault_id = data.azurerm_key_vault.key_vault.id
   name         = "${var.component}-POSTGRES-DATABASE"
-  value        = module.lau-idam-db.postgresql_database
+  value        = var.lau_idam_db_name
 }
 
-# Copy postgres password for flyway migration
+# Copy lauadmin password for flyway migration
 resource "azurerm_key_vault_secret" "flyway_password" {
   key_vault_id = data.azurerm_key_vault.key_vault.id
   name         = "idam-flyway-password"
-  value        = module.lau-idam-db.postgresql_password
+  value        = module.lau-idam-db-flexible.password
+}
+
+resource "azurerm_key_vault_secret" "lau_idam_db_user" {
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+  name  = "idam-backend-app-db-user"
+  value = "lauuser"
 }
 
 

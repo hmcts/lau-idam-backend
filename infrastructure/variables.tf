@@ -46,6 +46,11 @@ variable "postgresql_flexible_server_port" {
   default = "5432"
 }
 
+variable "lau_idam_db_name" {
+  description = "Name of database to use"
+  default = "lau_idam"
+}
+
 variable "aks_subscription_id" {}
 
 variable "pgsql_storage_mb" {
