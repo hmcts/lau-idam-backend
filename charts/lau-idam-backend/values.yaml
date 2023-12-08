@@ -30,7 +30,7 @@ java:
           alias: LAU_IDAM_DB_ADMIN_USERNAME
         - name: idam-backend-POSTGRES-PASS
           alias: LAU_IDAM_DB_ADMIN_PASSWORD
-        - name: idam-backend-app-db-user
+        - name: idam-backend-app-db-user-flexible
           alias: LAU_IDAM_DB_USERNAME
         - name: idam-backend-app-db-password
           alias: LAU_IDAM_DB_PASSWORD
