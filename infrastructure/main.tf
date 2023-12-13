@@ -56,21 +56,6 @@ module "lau-idam-db-flexible" {
   admin_user_object_id = var.jenkins_AAD_objectId
 }
 
-module "lau-idam-db" {
-  source                 = "git@github.com:hmcts/cnp-module-postgres?ref=master"
-  product                = "${var.product}-${var.component}"
-  location               = var.location_db
-  env                    = var.env
-  database_name          = "lau_idam"
-  postgresql_user        = "lauadmin"
-  postgresql_version     = "11"
-  postgresql_listen_port = "5432"
-  sku_name               = "GP_Gen5_2"
-  sku_tier               = "GeneralPurpose"
-  common_tags            = var.common_tags
-  subscription           = var.subscription
-}
-
 data "azurerm_key_vault" "key_vault" {
   name                = local.vault_name
   resource_group_name = local.vault_name
@@ -121,33 +106,4 @@ resource "azurerm_key_vault_secret" "lau_idam_db_user" {
   key_vault_id = data.azurerm_key_vault.key_vault.id
   name  = "idam-backend-app-db-user-flexible"
   value = "lauuser"
-}
-
-
-///////////////////////////////////////
-// Populate Vault with Flexible DB info
-//////////////////////////////////////
-
-resource "azurerm_key_vault_secret" "POSTGRES-USER-FLEXIBLE" {
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-  name         = "${var.component}-POSTGRES-USER-FLEXIBLE"
-  value        = module.lau-idam-db-flexible.username
-}
-
-resource "azurerm_key_vault_secret" "POSTGRES-PASS-FLEXIBLE" {
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-  name         = "${var.component}-POSTGRES-PASS-FLEXIBLE"
-  value        = module.lau-idam-db-flexible.password
-}
-
-resource "azurerm_key_vault_secret" "POSTGRES_HOST_FLEXIBLE" {
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-  name         = "${var.component}-POSTGRES-HOST-FLEXIBLE"
-  value        = module.lau-idam-db-flexible.fqdn
-}
-
-resource "azurerm_key_vault_secret" "POSTGRES_PORT_FLEXIBLE" {
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-  name      = "${var.component}-POSTGRES-PORT-FLEXIBLE"
-  value     =  var.postgresql_flexible_server_port
 }
