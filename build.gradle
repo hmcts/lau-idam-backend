@@ -278,7 +278,7 @@ dependencyManagement {
       entry 'spring-cloud-starter-openfeign'
       entry 'spring-cloud-openfeign-core'
     }
-    dependencySet(group: 'org.apache.tomcat.embed', version: '10.1.16') {
+    dependencySet(group: 'org.apache.tomcat.embed', version: '10.1.17') {
       entry 'tomcat-embed-core'
       entry 'tomcat-embed-websocket'
     }
