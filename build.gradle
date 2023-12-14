@@ -204,7 +204,7 @@ jacocoTestReport {
 }
 
 pitest {
-    junit5PluginVersion.set('1.0.0')
+    junit5PluginVersion.set('1.2.1')
     targetClasses = ['uk.gov.hmcts.reform.laubackend.*']
     excludedClasses = [
             'uk.gov.hmcts.reform.laubackend.idam.madeup.*'
