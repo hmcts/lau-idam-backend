@@ -278,13 +278,6 @@ dependencyManagement {
       entry 'spring-cloud-starter-openfeign'
       entry 'spring-cloud-openfeign-core'
     }
-    dependencySet(group: 'com.google.guava', version: '32.0.1-jre') {
-      entry 'guava'
-    }
-    dependencySet(group: 'org.apache.tomcat.embed', version: '10.1.17') {
-      entry 'tomcat-embed-core'
-      entry 'tomcat-embed-websocket'
-    }
     dependencySet(group: 'ch.qos.logback', version: '1.4.14') {
       entry 'logback-core'
       entry 'logback-classic'
@@ -335,15 +328,14 @@ configurations.all {
 }
 
 dependencies {
+    modules {
+        module("com.google.collections:google-collections") {
+            replacedBy("com.google.guava:guava", "google-collections is part of guava")
+        }
+    }
 
     implementation group: 'commons-io', name: 'commons-io', version: versions.commonsIo
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', {
-        // CVE-2023-41080
-        exclude group: 'org.apache.tomcat.embed', module: 'tomcat-embed-websocket'
-        exclude group: 'org.apache.tomcat.embed', module: 'tomcat-embed-core'
-    }
-    implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '10.1.17'
-    implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '10.1.17'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-json'
@@ -392,7 +384,7 @@ dependencies {
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
     testCompile group: 'info.solidsoft.gradle.pitest', name: 'gradle-pitest-plugin', version: versions.gradlePitest
-    testCompile 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
+    testCompile group: 'org.codehaus.sonar-plugins', name: 'sonar-pitest-plugin', version: versions.sonarPitest
     testCompile group: 'org.testcontainers', name: 'testcontainers', version: versions.testcontainers
     testCompile group: 'org.testcontainers', name: 'postgresql', version: versions.testcontainers
 
