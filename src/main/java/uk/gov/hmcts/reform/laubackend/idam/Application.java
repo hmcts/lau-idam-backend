@@ -2,13 +2,8 @@ package uk.gov.hmcts.reform.laubackend.idam;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
-@EnableFeignClients(basePackages = {
-    "uk.gov.hmcts.reform.laubackend",
-    "uk.gov.hmcts.reform.idam"
-})
 @SuppressWarnings("HideUtilityClassConstructor") // Spring needs a constructor, its not a utility class
 public class Application {
 
