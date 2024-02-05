@@ -320,7 +320,7 @@ def versions = [
         wiremock          : '3.0.1',
         log4j             : '2.22.1',
         springCloud       : '4.1.1',
-        reformLogging     : '6.1.3',
+        reformLogging     : '6.1.4',
         idamClient        : '3.0.3',
         pact              : '4.6.6'
 ]
