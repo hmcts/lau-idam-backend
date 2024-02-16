@@ -322,7 +322,7 @@ def versions = [
         springCloud       : '4.1.1',
         reformLogging     : '6.1.4',
         idamClient        : '3.0.3',
-        pact              : '4.6.6'
+        pact              : '4.6.7'
 ]
 
 configurations.all {
