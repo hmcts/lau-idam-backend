@@ -303,7 +303,7 @@ repositories {
 }
 
 def versions = [
-        appinsights       : '3.4.19',
+        appinsights       : '3.5.0',
         flywaydb          : '10.8.1',
         junit             : '5.9.3',
         junitPlatform     : '1.9.3',
