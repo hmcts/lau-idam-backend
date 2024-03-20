@@ -311,7 +311,7 @@ def versions = [
         serenity          : '4.1.4',
         gradlePitest      : '1.15.0',
         sonarPitest       : '0.5',
-        lombok            : '1.18.30',
+        lombok            : '1.18.32',
         testcontainers    : '1.19.7',
         restAssured       : '5.4.0',
         serviceAuthVersion: '5.1.2',
