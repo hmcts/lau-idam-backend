@@ -280,7 +280,7 @@ dependencyCheck {
 dependencyManagement {
   dependencies {
     dependency group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.70'
-    dependencySet(group: 'org.springframework.cloud', version: '4.1.0') {
+    dependencySet(group: 'org.springframework.cloud', version: '4.1.1') {
       entry 'spring-cloud-starter-openfeign'
       entry 'spring-cloud-openfeign-core'
     }
@@ -290,7 +290,7 @@ dependencyManagement {
     }
   }
   imports {
-    mavenBom 'org.springframework.cloud:spring-cloud-dependencies:2023.0.0'
+    mavenBom 'org.springframework.cloud:spring-cloud-dependencies:2023.0.1'
   }
 }
 
@@ -319,7 +319,7 @@ def versions = [
         cucumber          : '7.16.1',
         wiremock          : '3.0.1',
         log4j             : '2.23.1',
-        springCloud       : '4.1.1',
+        springCloud       : '4.1.2',
         reformLogging     : '6.1.4',
         idamClient        : '3.0.3',
         pact              : '4.6.8'
@@ -352,7 +352,7 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: versions.springCloud
-    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: "4.1.0"
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: "4.1.1"
     implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.4.0'
     implementation group: 'com.microsoft.azure', name: 'applicationinsights-core', version: versions.appinsights
     implementation group: 'com.microsoft.azure', name: 'applicationinsights-web', version: versions.appinsights
