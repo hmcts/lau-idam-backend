@@ -48,9 +48,15 @@ public class UserDeletionAuditFindRepository {
         "deletion_timestamp >= :startTime AND deletion_timestamp <= :endTime";
 
     private static final String USER_CRITERIA = "AND user_id = :userId";
-    private static final String EMAIL_CRITERIA = "AND email_address_hmac = hash_value(:emailAddress, :encryptionKey)";
-    private static final String FIRST_NAME_CRITERIA = "AND first_name_hmac = hash_value(:firstName, :encryptionKey)";
-    private static final String LAST_NAME_CRITERIA = "AND last_name_hmac = hash_value(:lastName, :encryptionKey)";
+
+    @SuppressWarnings("checkstyle:linelength")
+    private static final String EMAIL_CRITERIA = "AND email_address_hmac = hash_value(TRIM(LOWER(:emailAddress)), :encryptionKey)";
+
+    @SuppressWarnings("checkstyle:linelength")
+    private static final String FIRST_NAME_CRITERIA = "AND first_name_hmac = hash_value(TRIM(LOWER(:firstName)), :encryptionKey)";
+
+    @SuppressWarnings("checkstyle:linelength")
+    private static final String LAST_NAME_CRITERIA = "AND last_name_hmac = hash_value(TRIM(LOWER(:lastName)), :encryptionKey)";
     private static final String ORDER = "ORDER by deletion_timestamp";
     private static final String DESC = "DESC";
 

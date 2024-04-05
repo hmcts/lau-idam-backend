@@ -51,9 +51,9 @@ class UserDeletionRepositoryStartEndTimeTest {
             userDeletionAuditInsertRepository
                 .saveUserDeleteAuditWithEncryption(getUserDeletionAudit(
                     String.valueOf(i),
-                    String.valueOf(i),
-                    "first name " + i,
-                    "last name " + i,
+                    "Email" + String.valueOf(i) + "@Example.ORG  ",
+                    "   First " + i + " Name ",
+                    "  Last " + i + " Name  ",
                     Timestamp.valueOf(now().plusDays(i))
                 ), ENCRYPTION_KEY);
         }

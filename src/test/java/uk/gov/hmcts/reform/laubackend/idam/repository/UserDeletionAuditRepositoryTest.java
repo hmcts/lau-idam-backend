@@ -58,9 +58,9 @@ class UserDeletionAuditRepositoryTest {
             userDeletionAuditInsertRepository
                 .saveUserDeleteAuditWithEncryption(getUserDeletionAudit(
                     String.valueOf(i),
-                    String.valueOf(i),
-                    "first name " + i,
-                    "last name " + i,
+                    "Email" + String.valueOf(i) + "@Example.ORG  ",
+                    "   First " + i + " Name ",
+                    "  Last " + i + " Name  ",
                     valueOf(now().plusDays(i))
                 ), ENCRYPTION_KEY);
         }
@@ -106,9 +106,10 @@ class UserDeletionAuditRepositoryTest {
 
     @Test
     void shouldSearchByEmail() {
+        String email = "  EMAIL1@EXAMPLE.ORG  ";
         final Page<UserDeletionAudit> userDeletion = userDeletionAuditFindRepository
             .findUserDeletion(
-                getRequestParams(null, "1", null, null, now().toString(), now().plusDays(20).toString()),
+                getRequestParams(null, email, null, null, now().toString(), now().plusDays(20).toString()),
                 ENCRYPTION_KEY,
                 getPage());
 
@@ -120,7 +121,7 @@ class UserDeletionAuditRepositoryTest {
     void shouldSearchByFirstName() {
         final Page<UserDeletionAudit> userDeletion = userDeletionAuditFindRepository
             .findUserDeletion(
-                getRequestParams(null, null, "first name 3", null, now().toString(), now().plusDays(20).toString()),
+                getRequestParams(null, null, " first 3 name ", null, now().toString(), now().plusDays(20).toString()),
                 ENCRYPTION_KEY,
                 getPage());
 
@@ -132,7 +133,7 @@ class UserDeletionAuditRepositoryTest {
     void shouldSearchByLastName() {
         final Page<UserDeletionAudit> userDeletion = userDeletionAuditFindRepository
             .findUserDeletion(
-                getRequestParams(null, null, null, "last name 5", now().toString(), now().plusDays(20).toString()),
+                getRequestParams(null, null, null, "LAST 5 NAME", now().toString(), now().plusDays(20).toString()),
                 ENCRYPTION_KEY,
                 getPage());
 
@@ -147,8 +148,8 @@ class UserDeletionAuditRepositoryTest {
                 getRequestParams(
                     null,
                     null,
-                    "first name 2",
-                    "last name 2",
+                    "First 2 Name",
+                    "  Last 2 Name",
                     now().toString(),
                     now().plusDays(20).toString()
                 ),
@@ -185,7 +186,7 @@ class UserDeletionAuditRepositoryTest {
     void shouldDeleteUserDeletionRecord() {
         final var userDeletionAuditInsertRepository = new UserDeletionAuditInsertRepository(entityManager);
         UserDeletionAudit user = getUserDeletionAudit("userId",
-                                                      "email@example.net",
+                                                      "EMAIL@EXAMPLE.NET",
                                                       "First",
                                                       "Last",
                                                       valueOf(now()));
@@ -205,9 +206,9 @@ class UserDeletionAuditRepositoryTest {
         );
 
         assertThat(userDeletion.getContent()).hasSize(1);
-        assertThat(userDeletion.getContent().get(0).getUserId()).isEqualTo(user.getUserId());
+        assertThat(userDeletion.getContent().getFirst().getUserId()).isEqualTo(user.getUserId());
 
-        userDeletionAuditRepository.deleteById(userDeletion.getContent().get(0).getId());
+        userDeletionAuditRepository.deleteById(userDeletion.getContent().getFirst().getId());
 
         userDeletion = userDeletionAuditFindRepository.findUserDeletion(
             getRequestParams(user.getUserId(), null, null, null, now().toString(), now().plusDays(10).toString()),
@@ -220,10 +221,10 @@ class UserDeletionAuditRepositoryTest {
 
     static void assertResults(final List<UserDeletionAudit> content, final int value) {
         final String stringValue = String.valueOf(value);
-        assertThat(content.get(0).getUserId()).isEqualTo(stringValue);
-        assertThat(content.get(0).getEmailAddress()).isEqualTo(stringValue);
-        assertThat(content.get(0).getFirstName()).isEqualTo("first name " + value);
-        assertThat(content.get(0).getLastName()).isEqualTo("last name " + value);
+        assertThat(content.getFirst().getUserId()).isEqualTo(stringValue);
+        assertThat(content.getFirst().getEmailAddress()).isEqualTo("Email" + stringValue + "@Example.ORG");
+        assertThat(content.getFirst().getFirstName()).isEqualTo("First " + value + " Name");
+        assertThat(content.getFirst().getLastName()).isEqualTo("Last " + value + " Name");
     }
 
     static UserDeletionAudit getUserDeletionAudit(
