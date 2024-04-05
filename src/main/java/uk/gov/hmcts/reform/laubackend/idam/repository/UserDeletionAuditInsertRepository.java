@@ -25,12 +25,12 @@ public class UserDeletionAuditInsertRepository {
         )
         VALUES (
             :userId,
-            encrypt_value(:emailAddress, :encryptionKey),
-            hash_value(:emailAddress, :encryptionKey),
-            encrypt_value(:firstName, :encryptionKey),
-            hash_value(:firstName, :encryptionKey),
-            encrypt_value(:lastName, :encryptionKey),
-            hash_value(:lastName, :encryptionKey),
+            encrypt_value(TRIM(:emailAddress), :encryptionKey),
+            hash_value(TRIM(LOWER(:emailAddress)), :encryptionKey),
+            encrypt_value(TRIM(:firstName), :encryptionKey),
+            hash_value(TRIM(LOWER(:firstName)), :encryptionKey),
+            encrypt_value(TRIM(:lastName), :encryptionKey),
+            hash_value(TRIM(LOWER(:lastName)), :encryptionKey),
             :deletionTimestamp
         ) RETURNING id
         """;
