@@ -316,7 +316,7 @@ def versions = [
         restAssured       : '5.4.0',
         serviceAuthVersion: '5.1.2',
         commonsIo         : '2.16.1',
-        cucumber          : '7.16.1',
+        cucumber          : '7.17.0',
         wiremock          : '3.0.1',
         log4j             : '2.23.1',
         springCloud       : '4.1.2',
