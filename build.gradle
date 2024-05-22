@@ -302,6 +302,8 @@ repositories {
     }
 }
 
+ext['selenium.version'] = '4.21.0'
+
 def versions = [
         appinsights       : '3.5.2',
         flywaydb          : '10.13.0',
