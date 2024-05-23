@@ -302,30 +302,34 @@ repositories {
     }
 }
 
-ext['selenium.version'] = '4.21.0'
-
 def versions = [
-        appinsights       : '3.5.2',
-        flywaydb          : '10.13.0',
-        junit             : '5.9.3',
-        junitPlatform     : '1.9.3',
-        springBoot        : springBoot.class.package.implementationVersion,
-        serenity          : '4.1.14',
-        gradlePitest      : '1.15.0',
-        sonarPitest       : '0.5',
-        lombok            : '1.18.32',
-        testcontainers    : '1.19.8',
-        restAssured       : '5.4.0',
-        serviceAuthVersion: '5.1.2',
-        commonsIo         : '2.16.1',
-        cucumber          : '7.17.0',
-        wiremock          : '3.0.1',
-        log4j             : '2.23.1',
-        springCloud       : '4.1.2',
-        reformLogging     : '6.1.4',
-        idamClient        : '3.0.3',
-        pact              : '4.6.9'
+  appinsights       : '3.5.2',
+  commonsIo         : '2.16.1',
+  cucumber          : '7.17.0',
+  flywaydb          : '10.13.0',
+  gradlePitest      : '1.15.0',
+  jackson           : '2.17.1',
+  idamClient        : '3.0.3',
+  junit             : '5.9.3',
+  junitPlatform     : '1.9.3',
+  log4j             : '2.23.1',
+  lombok            : '1.18.32',
+  pact              : '4.6.9',
+  reformLogging     : '6.1.4',
+  restAssured       : '5.4.0',
+  selenium          : '4.21.0',
+  serenity          : '4.1.14',
+  serviceAuthVersion: '5.1.2',
+  sonarPitest       : '0.5',
+  springBoot        : springBoot.class.package.implementationVersion,
+  springCloud       : '4.1.2',
+  testcontainers    : '1.19.8',
+  wiremock          : '3.0.1',
 ]
+
+ext['jackson-bom.version'] = versions.jackson
+ext['selenium.version'] = versions.selenium
+
 
 configurations.all {
     resolutionStrategy {
