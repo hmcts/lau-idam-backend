@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -18,32 +18,19 @@ import java.security.Security;
 public class SecurityConfiguration {
 
     @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring().requestMatchers(
-            "/swagger-ui.html",
-            "/webjars/springfox-swagger-ui/**",
-            "/swagger-resources/**",
-            "/health",
-            "/health/liveness",
-            "/health/readiness",
-            "/v2/api-docs/**",
-            "/info",
-            "/favicon.ico",
-            "/"
-        );
-    }
-
-    @Bean
     @SuppressWarnings("PMD.SignatureDeclareThrowsException")
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf(csrf -> csrf.disable())
+        httpSecurity
+            .csrf(AbstractHttpConfigurer::disable)
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .exceptionHandling(exc -> exc.authenticationEntryPoint(
                 (req, rsp, e) -> rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED))
             )
-            .authorizeRequests()
-            .requestMatchers("/audit/logon/s**")
-            .authenticated();
+            .authorizeHttpRequests(
+                authz -> authz.requestMatchers("/**").permitAll()
+                    .requestMatchers("/audit/**")
+                    .authenticated()
+            );
 
         Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
         return httpSecurity.build();
