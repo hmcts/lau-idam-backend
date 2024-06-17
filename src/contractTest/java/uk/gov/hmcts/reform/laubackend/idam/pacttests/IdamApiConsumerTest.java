@@ -1,73 +1,146 @@
 package uk.gov.hmcts.reform.laubackend.idam.pacttests;
 
-import au.com.dius.pact.consumer.dsl.PactBuilder;
 import au.com.dius.pact.consumer.dsl.PactDslJsonBody;
 import au.com.dius.pact.consumer.dsl.PactDslJsonRootValue;
+import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
+import au.com.dius.pact.consumer.junit.MockServerConfig;
+import au.com.dius.pact.consumer.junit5.PactConsumerTestExt;
 import au.com.dius.pact.consumer.junit5.PactTestFor;
-import au.com.dius.pact.core.model.V4Pact;
+import au.com.dius.pact.core.model.PactSpecVersion;
+import au.com.dius.pact.core.model.RequestResponsePact;
 import au.com.dius.pact.core.model.annotations.Pact;
-import com.google.common.collect.ImmutableMap;
+import au.com.dius.pact.core.model.annotations.PactDirectory;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.web.util.UriComponentsBuilder;
+import uk.gov.hmcts.reform.idam.client.IdamApi;
 import uk.gov.hmcts.reform.idam.client.models.TokenRequest;
 import uk.gov.hmcts.reform.idam.client.models.TokenResponse;
+import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
 
-@SuppressWarnings({"unchecked", "PMD.AvoidDuplicateLiterals"})
-public class IdamApiConsumerTest extends IdamConsumerTestBase {
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ExtendWith(PactConsumerTestExt.class)
+@PactTestFor(providerName = "idamApi_oidc", pactVersion = PactSpecVersion.V3)
+@ActiveProfiles("pact")
+@PactDirectory("pacts")
+@MockServerConfig(port = "8891")
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
+public class IdamApiConsumerTest {
+
+    private final IdamApi idamApi;
+
+    @Value("${pact.idam.grant_type}")
+    private String grantType = "password";
+
+    @Value("${pact.idam.client_id}")
+    private String clientId;
+
+    @Value("${pact.idam.client_secret}")
+    private String clientSecret;
+
+    @Value("${pact.idam.redirect_uri}")
+    private String redirectUri;
+
+    @Value("${pact.idam.username}")
+    private String username;
+
+    @Value("${pact.idam.password}")
+    private String password;
+
+    @Value("${pact.idam.scope}")
+    private String scope;
+
+    public IdamApiConsumerTest(@Autowired IdamApi idamApi) {
+        this.idamApi = idamApi;
+    }
 
     @Pact(provider = "idamApi_oidc", consumer = "lauApi")
-    public V4Pact generatePactForToken(PactBuilder builder) {
+    public RequestResponsePact expectedPactForGenerateOpenIdToken(PactDslWithProvider builder) {
 
-        Map<String, String> responseheaders = ImmutableMap.<String, String>builder()
-            .put("Content-Type", "application/json")
-            .build();
+        String query = UriComponentsBuilder.newInstance()
+            .queryParam(
+                "redirect_uri",
+                URLEncoder.encode(redirectUri, StandardCharsets.UTF_8))
+            .queryParam("client_id", clientId)
+            .queryParam("grant_type", grantType)
+            .queryParam("username", username)
+            .queryParam("password", password)
+            .queryParam("scope", scope)
+            .queryParam("client_secret", clientSecret)
+            .build()
+            .getQuery();
 
+        assert query != null;
         return builder
-            .usingLegacyDsl()
             .given("a token is requested")
-            .uponReceiving("Provider receives a POST /o/token request from LAU API")
+            .uponReceiving("a token request from LAU_IDAM_API")
             .path("/o/token")
-            .method(HttpMethod.POST.toString())
-            .body(
-                "redirect_uri=http%3A%2F%2Fwww.dummy-pact-service.com%2Fcallback"
-                    + "&client_id=lau"
-                    + "&grant_type=password"
-                    + "&username=" + lauUsername
-                    + "&password=" + lauPassword
-                    + "&client_secret=" + clientSecret
-                    + "&scope=openid profile roles",
-                APPLICATION_FORM_URLENCODED_VALUE
-            )
+            .method("POST")
+            .body(query, APPLICATION_FORM_URLENCODED_VALUE)
             .willRespondWith()
-            .status(HttpStatus.OK.value())
-            .headers(responseheaders)
+            .status(200)
+            .headers(Map.of("Content-Type", "application/json"))
             .body(createAuthResponse())
-            .toPact(V4Pact.class);
+            .toPact();
+    }
+
+    @Pact(provider = "idamApi_oidc", consumer = "lauApi")
+    public RequestResponsePact expectedPactForUserInfo(PactDslWithProvider builder) {
+        return builder
+            .given("userinfo is requested")
+            .uponReceiving("a user details request from LAU_IDAM_API")
+            .path("/o/userinfo")
+            .method("GET")
+            .headers(Map.of("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJraWQiOiJiL082T3ZWdjEre"))
+            .willRespondWith()
+            .status(200)
+            .headers(Map.of("Content-Type", "application/json"))
+            .body(createUserDetailsResponse())
+            .toPact();
     }
 
     @Test
-    @PactTestFor(pactMethod = "generatePactForToken")
-    public void verifyIdamUserDetailsRolesPactToken() {
-
+    @PactTestFor(pactMethod = "expectedPactForGenerateOpenIdToken")
+    public void verifyIdamTokenRequest() {
         TokenResponse token = idamApi.generateOpenIdToken(buildTokenRequestMap());
-        assertNotNull("Token is expected", token.accessToken);
+        assertThat(token.accessToken).startsWith("eyJ0eXAiOiJKV1QiLCJraWQiOiJiL082T3ZWdjEre");
+    }
+
+    @Test
+    @PactTestFor(pactMethod = "expectedPactForUserInfo")
+    public void verifyIdamUserInfoRequest() {
+        UserInfo userInfo = idamApi.retrieveUserInfo("Bearer eyJ0eXAiOiJKV1QiLCJraWQiOiJiL082T3ZWdjEre");
+
+        assertThat(userInfo).isNotNull();
+        assertThat(userInfo).hasNoNullFieldsOrProperties();
+        assertThat(userInfo.getUid()).isEqualTo(username);
+        assertThat(userInfo.getGivenName()).isNotBlank();
+        assertThat(userInfo.getFamilyName()).isNotBlank();
+        assertThat(userInfo.getRoles()).isNotEmpty();
+        assertThat(userInfo.getRoles().getFirst()).isEqualTo("user");
     }
 
     private TokenRequest buildTokenRequestMap() {
         return new TokenRequest(
-            "lau",
+            clientId,
             clientSecret,
-            "password",
-            "http://www.dummy-pact-service.com/callback",
-            lauUsername,
-            lauPassword,
-            "openid profile roles",
+            grantType,
+            redirectUri,
+            username,
+            password,
+            scope,
             null, null
         );
     }
@@ -76,7 +149,8 @@ public class IdamApiConsumerTest extends IdamConsumerTestBase {
 
         return new PactDslJsonBody()
             .stringType("sub", "61")
-            .stringType("uid", "lautest@hmcts.net")
+            .stringType("uid", username)
+            .stringType("name", username)
             .stringType("givenName", "Test")
             .stringType("familyName", "Lau")
             .minArrayLike("roles", 1, PactDslJsonRootValue.stringType("user"), 1);
