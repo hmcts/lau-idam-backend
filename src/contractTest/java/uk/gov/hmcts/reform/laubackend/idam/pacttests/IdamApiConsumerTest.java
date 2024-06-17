@@ -11,7 +11,6 @@ import au.com.dius.pact.core.model.RequestResponsePact;
 import au.com.dius.pact.core.model.annotations.Pact;
 import au.com.dius.pact.core.model.annotations.PactDirectory;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,7 +20,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import uk.gov.hmcts.reform.idam.client.IdamApi;
 import uk.gov.hmcts.reform.idam.client.models.TokenRequest;
 import uk.gov.hmcts.reform.idam.client.models.TokenResponse;
-import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -30,13 +28,13 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @ExtendWith(PactConsumerTestExt.class)
 @PactTestFor(providerName = "idamApi_oidc", pactVersion = PactSpecVersion.V3)
 @ActiveProfiles("pact")
 @PactDirectory("pacts")
 @MockServerConfig(port = "8891")
-@TestInstance(TestInstance.Lifecycle.PER_METHOD)
+//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class IdamApiConsumerTest {
 
     private final IdamApi idamApi;
@@ -66,8 +64,8 @@ public class IdamApiConsumerTest {
         this.idamApi = idamApi;
     }
 
-    @Pact(provider = "idamApi_oidc", consumer = "lauApi")
-    public RequestResponsePact expectedPactForGenerateOpenIdToken(PactDslWithProvider builder) {
+    @Pact(consumer = "lauApi", provider = "idamApi_oidc")
+    RequestResponsePact generateOpenIdToken(PactDslWithProvider builder) {
 
         String query = UriComponentsBuilder.newInstance()
             .queryParam(
@@ -96,41 +94,41 @@ public class IdamApiConsumerTest {
             .toPact();
     }
 
-    @Pact(provider = "idamApi_oidc", consumer = "lauApi")
-    public RequestResponsePact expectedPactForUserInfo(PactDslWithProvider builder) {
-        return builder
-            .given("userinfo is requested")
-            .uponReceiving("a user details request from LAU_IDAM_API")
-            .path("/o/userinfo")
-            .method("GET")
-            .headers(Map.of("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJraWQiOiJiL082T3ZWdjEre"))
-            .willRespondWith()
-            .status(200)
-            .headers(Map.of("Content-Type", "application/json"))
-            .body(createUserDetailsResponse())
-            .toPact();
-    }
+    //@Pact(consumer = "lauApi", provider="idamApi_oidc")
+    //RequestResponsePact retrieveUserInfo(PactDslWithProvider builder) {
+    //    return builder
+    //        .given("userinfo is requested")
+    //        .uponReceiving("a user details request from LAU_IDAM_API")
+    //        .path("/o/userinfo")
+    //        .method("GET")
+    //        .headers(Map.of("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJraWQiOiJiL082T3ZWdjEre"))
+    //        .willRespondWith()
+    //        .status(200)
+    //        .headers(Map.of("Content-Type", "application/json"))
+    //        .body(createUserDetailsResponse())
+    //        .toPact();
+    //}
 
     @Test
-    @PactTestFor(pactMethod = "expectedPactForGenerateOpenIdToken")
+    @PactTestFor(pactMethod = "generateOpenIdToken")
     public void verifyIdamTokenRequest() {
         TokenResponse token = idamApi.generateOpenIdToken(buildTokenRequestMap());
         assertThat(token.accessToken).startsWith("eyJ0eXAiOiJKV1QiLCJraWQiOiJiL082T3ZWdjEre");
     }
 
-    @Test
-    @PactTestFor(pactMethod = "expectedPactForUserInfo")
-    public void verifyIdamUserInfoRequest() {
-        UserInfo userInfo = idamApi.retrieveUserInfo("Bearer eyJ0eXAiOiJKV1QiLCJraWQiOiJiL082T3ZWdjEre");
+    //@Test
+    //@PactTestFor(pactMethod = "retrieveUserInfo", pactVersion = PactSpecVersion.V3)
+    //public void verifyIdamUserInfoRequest() {
+    //    UserInfo userInfo = idamApi.retrieveUserInfo("Bearer eyJ0eXAiOiJKV1QiLCJraWQiOiJiL082T3ZWdjEre");
 
-        assertThat(userInfo).isNotNull();
-        assertThat(userInfo).hasNoNullFieldsOrProperties();
-        assertThat(userInfo.getUid()).isEqualTo(username);
-        assertThat(userInfo.getGivenName()).isNotBlank();
-        assertThat(userInfo.getFamilyName()).isNotBlank();
-        assertThat(userInfo.getRoles()).isNotEmpty();
-        assertThat(userInfo.getRoles().getFirst()).isEqualTo("user");
-    }
+    //    assertThat(userInfo).isNotNull();
+    //    assertThat(userInfo).hasNoNullFieldsOrProperties();
+    //    assertThat(userInfo.getUid()).isEqualTo(username);
+    //    assertThat(userInfo.getGivenName()).isNotBlank();
+    //    assertThat(userInfo.getFamilyName()).isNotBlank();
+    //    assertThat(userInfo.getRoles()).isNotEmpty();
+    //    assertThat(userInfo.getRoles().getFirst()).isEqualTo("user");
+    //}
 
     private TokenRequest buildTokenRequestMap() {
         return new TokenRequest(

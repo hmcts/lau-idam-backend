@@ -17,8 +17,6 @@ spring:
     init:
       mode: never
 
-
-
 idam:
   api:
     url: ${IDAM_API_URL:http://localhost:8891}
