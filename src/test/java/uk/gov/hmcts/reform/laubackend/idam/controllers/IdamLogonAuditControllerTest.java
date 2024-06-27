@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.laubackend.idam.controllers;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -34,7 +33,6 @@ import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.POST
 import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.POST_LOGON_REQUEST_INVALID_REQUEST_EXCEPTION;
 
 @ExtendWith(MockitoExtension.class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SuppressWarnings("PMD.LawOfDemeter")
 class IdamLogonAuditControllerTest {
 

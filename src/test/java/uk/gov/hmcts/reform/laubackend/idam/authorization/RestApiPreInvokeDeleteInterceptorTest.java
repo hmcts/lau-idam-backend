@@ -26,7 +26,7 @@ class RestApiPreInvokeDeleteInterceptorTest {
                         mock(HttpServletResponse.class),
                         mock(Object.class));
 
-        assertThat(isRecordDeleteAllowed).isEqualTo(true);
+        assertThat(isRecordDeleteAllowed).isTrue();
     }
 
     @Test
@@ -38,6 +38,6 @@ class RestApiPreInvokeDeleteInterceptorTest {
                         mock(HttpServletResponse.class),
                         mock(Object.class));
 
-        assertThat(isRecordDeleteAllowed).isEqualTo(false);
+        assertThat(isRecordDeleteAllowed).isFalse();
     }
 }

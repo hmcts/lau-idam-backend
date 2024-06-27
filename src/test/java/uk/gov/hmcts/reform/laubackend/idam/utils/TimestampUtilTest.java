@@ -27,7 +27,7 @@ class TimestampUtilTest {
         final String stringTimestamp = "2000-08-23T22:20:05.200";
         final Timestamp convertedTimestamp = timestampUtil.getTimestampValue(stringTimestamp);
 
-        assertThat(convertedTimestamp.toString()).isEqualTo("2000-08-23 22:20:05.2");
+        assertThat(convertedTimestamp).hasToString("2000-08-23 22:20:05.2");
     }
 
     @Test
@@ -36,6 +36,6 @@ class TimestampUtilTest {
         final String stringTimestamp = "2000-08-23T22:20:05.200Z";
         final Timestamp convertedTimestamp = timestampUtil.getUtcTimestampValue(stringTimestamp);
 
-        assertThat(convertedTimestamp.toString()).isEqualTo("2000-08-23 22:20:05.2");
+        assertThat(convertedTimestamp).hasToString("2000-08-23 22:20:05.2");
     }
 }
