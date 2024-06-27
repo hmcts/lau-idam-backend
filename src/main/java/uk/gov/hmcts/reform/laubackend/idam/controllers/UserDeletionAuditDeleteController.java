@@ -3,7 +3,6 @@ package uk.gov.hmcts.reform.laubackend.idam.controllers;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.laubackend.idam.exceptions.InvalidRequestException;
 import uk.gov.hmcts.reform.laubackend.idam.service.UserDeletionAuditService;
@@ -40,28 +38,23 @@ public class UserDeletionAuditDeleteController {
         description = "This API will delete a record from the lau-idam database for the given entry id. "
         + "It is only intended to be called from the test API for testing purposes"
     )
-    @ApiResponses({
-        @ApiResponse(
-            responseCode = "204",
-            description = "UserDeletionAudit record has been deleted"),
-        @ApiResponse(responseCode = "401", description = "Unauthorized"),
-        @ApiResponse(responseCode = "403", description = "Forbidden"),
-        @ApiResponse(responseCode = "404", description = "IdAM user deletion audit id not found in the database"),
-        @ApiResponse(responseCode = "400", description = "Missing IdAM user deletion audit id from the API request"),
-        @ApiResponse(responseCode = "500", description = "Internal Server Error")
-    })
+    @ApiResponse(responseCode = "204", description = "UserDeletionAudit record has been deleted")
+    @ApiResponse(responseCode = "401", description = "Unauthorized")
+    @ApiResponse(responseCode = "403", description = "Forbidden")
+    @ApiResponse(responseCode = "404", description = "IdAM user deletion audit id not found in the database")
+    @ApiResponse(responseCode = "400", description = "Missing IdAM user deletion audit id from the API request")
+    @ApiResponse(responseCode = "500", description = "Internal Server Error")
     @DeleteMapping(
         path = UserDeletionAuditDeleteController.DELETE_ENDPOINT,
         produces = APPLICATION_JSON_VALUE,
         consumes = APPLICATION_JSON_VALUE
     )
-    @ResponseBody
     public ResponseEntity<Object> deleteUserDeletionAudit(@RequestParam("userId") String userId) {
         try {
             verifyIdNotEmpty(userId);
             service.verifyUserIdExists(userId);
             service.deleteUserDeletionByUserId(userId);
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (InvalidRequestException ire) {
             return getExceptionResponseEntity(ire, HttpStatus.BAD_REQUEST);
         } catch (EmptyResultDataAccessException erdae) {
@@ -77,6 +70,6 @@ public class UserDeletionAuditDeleteController {
             exception.getMessage(),
             exception
         );
-        return new ResponseEntity<>(null, httpStatus);
+        return new ResponseEntity<>(httpStatus);
     }
 }

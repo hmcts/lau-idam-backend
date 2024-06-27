@@ -29,6 +29,8 @@ public class UserDeletionAuditFindRepository {
 
     private final TimestampUtil timestampUtil;
 
+    private static final String ENCRYPTION_KEY_PARAMETER_NAME = "encryptionKey";
+
     private static final int MAX_RESULT_COUNT = 10_000;
 
     private static final String SELECT = """
@@ -38,7 +40,8 @@ public class UserDeletionAuditFindRepository {
             decrypt_value(email_address, :encryptionKey) as email_address,
             decrypt_value(first_name, :encryptionKey) as first_name,
             decrypt_value(last_name, :encryptionKey) as last_name,
-            deletion_timestamp FROM user_deletion_audit
+            deletion_timestamp
+        FROM user_deletion_audit
         """;
 
     private static final String SELECT_USERID = "SELECT user_id FROM user_deletion_audit";
@@ -84,7 +87,7 @@ public class UserDeletionAuditFindRepository {
         final Timestamp startTime = timestampUtil.getTimestampValue(params.startTimestamp());
         final Timestamp endTime = timestampUtil.getTimestampValue(params.endTimestamp());
         setQueryParams(query, usedParams, startTime, endTime);
-        query.setParameter("encryptionKey", encryptionKey);
+        query.setParameter(ENCRYPTION_KEY_PARAMETER_NAME, encryptionKey);
         query.setFirstResult((int) pageable.getOffset());
         query.setMaxResults(pageable.getPageSize());
 
@@ -116,7 +119,7 @@ public class UserDeletionAuditFindRepository {
         boolean requireEncryptionKey = fieldsWithEncryption.stream().anyMatch(usedParams::containsKey);
 
         if (requireEncryptionKey) {
-            query.setParameter("encryptionKey", encryptionKey);
+            query.setParameter(ENCRYPTION_KEY_PARAMETER_NAME, encryptionKey);
         }
 
         return ((Number) query.getSingleResult()).intValue();
@@ -185,7 +188,7 @@ public class UserDeletionAuditFindRepository {
         final String queryString = String.join(" ", queryParts);
 
         final Query query = entityManager.createNativeQuery(queryString, UserDeletionAudit.class);
-        query.setParameter("encryptionKey", encryptionKey);
+        query.setParameter(ENCRYPTION_KEY_PARAMETER_NAME, encryptionKey);
 
         final List<UserDeletionAudit> results = query.getResultList();
 

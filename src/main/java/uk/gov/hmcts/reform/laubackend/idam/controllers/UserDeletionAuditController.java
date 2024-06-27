@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLog;
 import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLogAllUsersRequestParams;
@@ -59,30 +57,27 @@ public class UserDeletionAuditController {
     @Operation(tags = "User Accounts endpoints", summary = "Save IdAM user deletion audit",
         description = "This operation will persist IdAM user deletion entries which are posted in the request. "
         + "Single IdAM UserDeletionAudit per request will be stored in the database.")
-    @ApiResponses({
-        @ApiResponse(
-            responseCode = "201",
-            description = "Created userDeletionAudit response - includes id from DB.",
-            content = { @Content(schema = @Schema(implementation = UserDeletionPostResponse.class))}),
-        @ApiResponse(
-            responseCode = "400",
-            description = "Invalid userDeletion audit",
-            content = { @Content(schema = @Schema(implementation = UserDeletionPostResponse.class))}),
-        @ApiResponse(
-            responseCode = "403",
-            description = "Forbidden",
-            content = { @Content(schema = @Schema(implementation = UserDeletionPostResponse.class))}),
-        @ApiResponse(
-            responseCode = "500",
-            description = "Internal Server Error",
-            content = { @Content(schema = @Schema(implementation = UserDeletionPostResponse.class))})
-    })
+    @ApiResponse(
+        responseCode = "201",
+        description = "Created userDeletionAudit response - includes id from DB.",
+        content = { @Content(schema = @Schema(implementation = UserDeletionPostResponse.class))})
+    @ApiResponse(
+        responseCode = "400",
+        description = "Invalid userDeletion audit",
+        content = { @Content(schema = @Schema(implementation = UserDeletionPostResponse.class))})
+    @ApiResponse(
+        responseCode = "403",
+        description = "Forbidden",
+        content = { @Content(schema = @Schema(implementation = UserDeletionPostResponse.class))})
+    @ApiResponse(
+        responseCode = "500",
+        description = "Internal Server Error",
+        content = { @Content(schema = @Schema(implementation = UserDeletionPostResponse.class))})
     @PostMapping(
         path = "/audit/deletedAccounts",
         produces = APPLICATION_JSON_VALUE,
         consumes = APPLICATION_JSON_VALUE
     )
-    @ResponseBody
     public ResponseEntity<UserDeletionPostResponse> saveUserDeletion(
         @Parameter(name = "Service Authorization", example = "Bearer eyJ0eXAiOiJK...")
         @RequestHeader(SERVICE_AUTHORISATION_HEADER) String serviceAuthToken,
@@ -127,30 +122,27 @@ public class UserDeletionAuditController {
         summary = "Retrieve deleted user accounts",
         description = "Query deleted user accounts based on search conditions provided via URL params"
     )
-    @ApiResponses({
-        @ApiResponse(
-            responseCode = "200",
-            description = "Request executed successfully. Response will contain list of deletion logs",
-            content = { @Content(schema = @Schema(implementation = UserDeletionGetResponse.class))}),
-        @ApiResponse(
-            responseCode = "400",
-            description = "Missing required parameter(s). startTimestamp and endStamp are both "
-                + "required and at least one of userId, emailAddress, firstName or lastName",
-            content = { @Content(schema = @Schema(implementation = UserDeletionGetResponse.class))}),
-        @ApiResponse(
-            responseCode = "403",
-            description = "Forbidden",
-            content = { @Content(schema = @Schema(implementation = UserDeletionGetResponse.class))}),
-        @ApiResponse(
-            responseCode = "500",
-            description = "Internal Server Error",
-            content = { @Content(schema = @Schema(implementation = UserDeletionGetResponse.class))})
-    })
+    @ApiResponse(
+        responseCode = "200",
+        description = "Request executed successfully. Response will contain list of deletion logs",
+        content = { @Content(schema = @Schema(implementation = UserDeletionGetResponse.class))})
+    @ApiResponse(
+        responseCode = "400",
+        description = "Missing required parameter(s). startTimestamp and endStamp are both "
+            + "required and at least one of userId, emailAddress, firstName or lastName",
+        content = { @Content(schema = @Schema(implementation = UserDeletionGetResponse.class))})
+    @ApiResponse(
+        responseCode = "403",
+        description = "Forbidden",
+        content = { @Content(schema = @Schema(implementation = UserDeletionGetResponse.class))})
+    @ApiResponse(
+        responseCode = "500",
+        description = "Internal Server Error",
+        content = { @Content(schema = @Schema(implementation = UserDeletionGetResponse.class))})
     @GetMapping(
         path = "/audit/deletedAccounts",
         produces = APPLICATION_JSON_VALUE
     )
-    @ResponseBody
     public ResponseEntity<UserDeletionGetResponse> getUserDeletions(
         @Parameter(name = "Authorization", example = "Bearer eyJ0eXAiOiJK.........")
         @RequestHeader(value = AUTHORISATION_HEADER) String authToken,
@@ -185,29 +177,26 @@ public class UserDeletionAuditController {
         summary = "Retrieve all deleted user accounts",
         description = "Query all deleted user accounts based on size and sort"
     )
-    @ApiResponses({
-        @ApiResponse(
-            responseCode = "200",
-            description = "Request executed successfully. Response will contain list of deleted users",
-            content = { @Content(schema = @Schema(implementation = UserDeletionGetResponse.class))}),
-        @ApiResponse(
-            responseCode = "400",
-            description = "Missing required parameter(s). size is required ",
-            content = { @Content(schema = @Schema(implementation = UserDeletionGetResponse.class))}),
-        @ApiResponse(
-            responseCode = "403",
-            description = "Forbidden",
-            content = { @Content(schema = @Schema(implementation = UserDeletionGetResponse.class))}),
-        @ApiResponse(
-            responseCode = "500",
-            description = "Internal Server Error",
-            content = { @Content(schema = @Schema(implementation = UserDeletionGetResponse.class))})
-    })
+    @ApiResponse(
+        responseCode = "200",
+        description = "Request executed successfully. Response will contain list of deleted users",
+        content = { @Content(schema = @Schema(implementation = UserDeletionGetResponse.class))})
+    @ApiResponse(
+        responseCode = "400",
+        description = "Missing required parameter(s). size is required ",
+        content = { @Content(schema = @Schema(implementation = UserDeletionGetResponse.class))})
+    @ApiResponse(
+        responseCode = "403",
+        description = "Forbidden",
+        content = { @Content(schema = @Schema(implementation = UserDeletionGetResponse.class))})
+    @ApiResponse(
+        responseCode = "500",
+        description = "Internal Server Error",
+        content = { @Content(schema = @Schema(implementation = UserDeletionGetResponse.class))})
     @GetMapping(
         path = "/audit/getAllDeletedAccounts",
         produces = APPLICATION_JSON_VALUE
     )
-    @ResponseBody
     public ResponseEntity<UserDeletionGetResponse> getAllDeletedUsers(
         @Parameter(name = "Authorization", example = "Bearer eyJ0eXYiOiJK.........")
         @RequestHeader(value = AUTHORISATION_HEADER) String authToken,
@@ -233,6 +222,5 @@ public class UserDeletionAuditController {
             );
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
-
     }
 }

@@ -1,7 +1,7 @@
 package uk.gov.hmcts.reform.laubackend.idam.service;
 
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.BooleanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -28,18 +28,16 @@ import static org.springframework.data.domain.PageRequest.of;
 import static uk.gov.hmcts.reform.laubackend.idam.response.LogonLogGetResponse.logonLogResponse;
 
 @Service
+@RequiredArgsConstructor
 public class LogonLogService {
 
-    @Autowired
-    private IdamLogonAuditRepository idamLogonAuditRepository;
-    @Autowired
-    private IdamLogonAuditFindLogonRepository idamLogonAuditFindLogonRepository;
+    private final IdamLogonAuditRepository idamLogonAuditRepository;
 
-    @Autowired
-    private IdamLogonAuditInsertRepository idamLogonAuditInsertRepository;
+    private final IdamLogonAuditFindLogonRepository idamLogonAuditFindLogonRepository;
 
-    @Autowired
-    private TimestampUtil timestampUtil;
+    private final IdamLogonAuditInsertRepository idamLogonAuditInsertRepository;
+
+    private final TimestampUtil timestampUtil;
 
     @Value("${default.page.size}")
     private String defaultPageSize;

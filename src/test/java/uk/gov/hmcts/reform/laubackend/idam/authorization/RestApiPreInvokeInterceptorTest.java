@@ -50,13 +50,13 @@ class RestApiPreInvokeInterceptorTest {
         final boolean isValidRequest = restApiPreInvokeInterceptor
                 .preHandle(httpServletRequest, httpServletResponse, object);
 
-        assertThat(isValidRequest).isEqualTo(true);
+        assertThat(isValidRequest).isTrue();
     }
 
     @Test
     void shouldThrowInvalidServiceAuthorizationExceptionWhenServiceNameInvalid() throws IOException {
         final HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
-        final HttpServletResponse httpServletResponse = new MockHttpServletResponse();
+        final MockHttpServletResponse httpServletResponse = new MockHttpServletResponse();
         final Object object = mock(Object.class);
 
         doThrow(new InvalidServiceAuthorizationException("Yabba Dabba Doo"))
@@ -66,17 +66,17 @@ class RestApiPreInvokeInterceptorTest {
         final boolean isValidRequest = restApiPreInvokeInterceptor
                 .preHandle(httpServletRequest, httpServletResponse, object);
 
-        assertThat(((MockHttpServletResponse) httpServletResponse).getErrorMessage())
+        assertThat(httpServletResponse.getErrorMessage())
                 .isEqualTo("Yabba Dabba Doo");
-        assertThat(((MockHttpServletResponse) httpServletResponse).getStatus())
+        assertThat(httpServletResponse.getStatus())
                 .isEqualTo(SC_FORBIDDEN);
-        assertThat(isValidRequest).isEqualTo(false);
+        assertThat(isValidRequest).isFalse();
     }
 
     @Test
     void shouldThrowInvalidAuthorizationExceptionWhenMissingAuthHeader() throws IOException {
         final HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
-        final HttpServletResponse httpServletResponse = new MockHttpServletResponse();
+        final MockHttpServletResponse httpServletResponse = new MockHttpServletResponse();
         final Object object = mock(Object.class);
 
         doNothing().when(serviceAuthorizationAuthenticator).authorizeServiceToken(httpServletRequest);
@@ -85,15 +85,14 @@ class RestApiPreInvokeInterceptorTest {
                 .when(authorizationAuthenticator)
                 .authorizeAuthorizationToken(httpServletRequest);
 
-
         final boolean isValidRequest = restApiPreInvokeInterceptor
                 .preHandle(httpServletRequest, httpServletResponse, object);
 
-        assertThat(((MockHttpServletResponse) httpServletResponse).getErrorMessage())
+        assertThat(httpServletResponse.getErrorMessage())
                 .isEqualTo("Scooby Doo");
-        assertThat(((MockHttpServletResponse) httpServletResponse).getStatus())
+        assertThat(httpServletResponse.getStatus())
                 .isEqualTo(SC_UNAUTHORIZED);
-        assertThat(isValidRequest).isEqualTo(false);
+        assertThat(isValidRequest).isFalse();
     }
 
 }
