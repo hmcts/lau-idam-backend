@@ -6,15 +6,15 @@ provider "azurerm" {
   subscription_id            = var.aks_subscription_id
   skip_provider_registration = "true"
   features {}
-  alias                      = "postgres_network"
+  alias = "postgres_network"
 
 }
 
 locals {
-  db_connection_options  = "?sslmode=require"
-  vault_name             = "${var.product}-${var.env}"
-  asp_name               = "${var.product}-${var.env}"
-  env                    = var.env
+  db_connection_options = "?sslmode=require"
+  vault_name            = "${var.product}-${var.env}"
+  asp_name              = "${var.product}-${var.env}"
+  env                   = var.env
 }
 
 module "lau-idam-db-flexible" {
@@ -23,33 +23,33 @@ module "lau-idam-db-flexible" {
   }
 
   source = "git@github.com:hmcts/terraform-module-postgresql-flexible?ref=master"
-  env = var.env
+  env    = var.env
 
-  product = var.product
-  component = var.component
+  product       = var.product
+  component     = var.component
   business_area = "cft"
-  name = "${var.product}-${var.component}-flexible"
+  name          = "${var.product}-${var.component}-flexible"
 
   common_tags = var.common_tags
 
-  pgsql_storage_mb = var.pgsql_storage_mb
+  pgsql_storage_mb  = var.pgsql_storage_mb
   auto_grow_enabled = true
 
   pgsql_admin_username = "lauadmin"
-  pgsql_version   = "15"
+  pgsql_version        = "15"
 
   # Setup Access Reader db user
   force_user_permissions_trigger = "1"
 
   pgsql_databases = [
     {
-      name: var.lau_idam_db_name
+      name : var.lau_idam_db_name
     }
   ]
 
   pgsql_server_configuration = [
     {
-      name = "azure.extensions"
+      name  = "azure.extensions"
       value = "plpgsql,pg_stat_statements,pg_buffercache,pgcrypto"
     }
   ]
@@ -105,6 +105,6 @@ resource "azurerm_key_vault_secret" "flyway_password" {
 
 resource "azurerm_key_vault_secret" "lau_idam_db_user" {
   key_vault_id = data.azurerm_key_vault.key_vault.id
-  name  = "idam-backend-app-db-user-flexible"
-  value = "lauuser"
+  name         = "idam-backend-app-db-user-flexible"
+  value        = "lauuser"
 }
