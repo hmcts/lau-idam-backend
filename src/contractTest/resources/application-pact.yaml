@@ -4,7 +4,7 @@ spring:
       client:
         config:
           default:
-            loggerLevel: full
+            loggerLevel: none
   jpa:
     hibernate:
       ddl-auto: none
@@ -23,6 +23,8 @@ idam:
 
 logging:
   level:
+    root: info
+    au.com.dius: info
     uk.gov.hmcts.reform: DEBUG
 
 pact:
