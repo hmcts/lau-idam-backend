@@ -312,7 +312,7 @@ def versions = [
   junitPlatform     : '1.9.3',
   log4j             : '2.23.1',
   lombok            : '1.18.34',
-  pact              : '4.6.11',
+  pact              : '4.6.12',
   reformLogging     : '6.1.5',
   restAssured       : '5.5.0',
   serenity          : '4.1.20',
