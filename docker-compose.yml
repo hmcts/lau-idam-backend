@@ -27,7 +27,7 @@ services:
 
   lau-idam-database:
     container_name: lau-idam-database
-    image: postgres:11-alpine
+    image: postgres:17-alpine
     environment:
       POSTGRES_USER: ${LAU_IDAM_DB_ADMIN_USERNAME}
       POSTGRES_PASSWORD: ${LAU_IDAM_DB_ADMIN_PASSWORD}
