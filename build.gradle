@@ -302,7 +302,7 @@ repositories {
 }
 
 def versions = [
-  appinsights       : '3.5.4',
+  appinsights       : '3.6.0',
   commonsIo         : '2.17.0',
   cucumber          : '7.19.0',
   flywaydb          : '10.19.0',
