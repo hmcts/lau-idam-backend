@@ -315,7 +315,7 @@ def versions = [
   pact              : '4.6.14',
   reformLogging     : '6.1.7',
   restAssured       : '5.5.0',
-  serenity          : '4.2.3',
+  serenity          : '4.2.6',
   serviceAuthVersion: '5.2.0',
   sonarPitest       : '0.5',
   springBoot        : springBoot.class.package.implementationVersion,
