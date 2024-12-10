@@ -154,8 +154,8 @@ public class IdamApiConsumerTest {
             .stringType("sub", "61")
             .stringType("uid", username)
             .stringType("name", username)
-            .stringType("givenName", "Test")
-            .stringType("familyName", "Lau")
+            .stringType("given_name", "Test")
+            .stringType("family_name", "Lau")
             .minArrayLike("roles", 1, PactDslJsonRootValue.stringType("user"), 1);
     }
 
