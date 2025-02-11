@@ -313,7 +313,7 @@ def versions = [
   log4j             : '2.24.3',
   lombok            : '1.18.36',
   pact              : '4.6.16',
-  reformLogging     : '6.1.7',
+  reformLogging     : '6.1.8',
   restAssured       : '5.5.0',
   serenity          : '4.2.16',
   serviceAuthVersion: '5.3.0',
