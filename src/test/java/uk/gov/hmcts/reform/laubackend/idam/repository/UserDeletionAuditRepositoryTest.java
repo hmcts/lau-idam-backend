@@ -37,7 +37,7 @@ import static org.assertj.core.api.Assertions.assertThat;
     "spring.flyway.enabled=true"
 })
 @Import({TimestampUtil.class})
-@SuppressWarnings({"PMD.TooManyMethods","PMD.LawOfDemeter"})
+@SuppressWarnings({"PMD.TooManyMethods"})
 class UserDeletionAuditRepositoryTest {
     private static final int RECORD_NUMBER = 20;
 
@@ -52,13 +52,14 @@ class UserDeletionAuditRepositoryTest {
 
     @BeforeEach
     public void setUp() {
-        final var userDeletionAuditInsertRepository = new UserDeletionAuditInsertRepository(entityManager);
+        final UserDeletionAuditInsertRepository userDeletionAuditInsertRepository =
+            new UserDeletionAuditInsertRepository(entityManager);
         //Insert ${RECORD_NUMBER} records
         for (int i = 1; i < RECORD_NUMBER + 1; i++) {
             userDeletionAuditInsertRepository
                 .saveUserDeleteAuditWithEncryption(getUserDeletionAudit(
                     String.valueOf(i),
-                    "Email" + String.valueOf(i) + "@Example.ORG  ",
+                    "Email" + i + "@Example.ORG  ",
                     "   First " + i + " Name ",
                     "  Last " + i + " Name  ",
                     valueOf(now().plusDays(i))
@@ -184,7 +185,8 @@ class UserDeletionAuditRepositoryTest {
 
     @Test
     void shouldDeleteUserDeletionRecord() {
-        final var userDeletionAuditInsertRepository = new UserDeletionAuditInsertRepository(entityManager);
+        final UserDeletionAuditInsertRepository userDeletionAuditInsertRepository =
+            new UserDeletionAuditInsertRepository(entityManager);
         UserDeletionAudit user = getUserDeletionAudit("userId",
                                                       "EMAIL@EXAMPLE.NET",
                                                       "First",

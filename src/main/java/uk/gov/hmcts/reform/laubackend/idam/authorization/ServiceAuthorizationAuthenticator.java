@@ -11,7 +11,7 @@ import static uk.gov.hmcts.reform.laubackend.idam.constants.CommonConstants.SERV
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@SuppressWarnings({"PMD.PreserveStackTrace"})
+@SuppressWarnings({"PMD.PreserveStackTrace", "PMD.ExceptionAsFlowControl"})
 public class ServiceAuthorizationAuthenticator {
 
     private final AuthService authService;

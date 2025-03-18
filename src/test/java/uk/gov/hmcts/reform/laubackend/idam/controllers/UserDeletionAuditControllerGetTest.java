@@ -72,7 +72,7 @@ class UserDeletionAuditControllerGetTest {
             null,
             null
         );
-        var response = controller.getUserDeletions(null, null, params);
+        ResponseEntity<UserDeletionGetResponse> response = controller.getUserDeletions(null, null, params);
         assertResponseIsBadRequest(response, "Http status code mismatch");
         verify(appInsights, times(1))
             .trackEvent(eq(GET_DELETED_ACCOUNTS_INVALID_REQUEST_EXCEPTION.toString()), anyMap());
@@ -90,7 +90,7 @@ class UserDeletionAuditControllerGetTest {
             null,
             null
         );
-        var response = controller.getUserDeletions(null, null, params);
+        ResponseEntity<UserDeletionGetResponse> response = controller.getUserDeletions(null, null, params);
         assertResponseIsBadRequest(response, "Http status code mismatch");
         verify(appInsights, times(1))
             .trackEvent(eq(GET_DELETED_ACCOUNTS_INVALID_REQUEST_EXCEPTION.toString()), anyMap());

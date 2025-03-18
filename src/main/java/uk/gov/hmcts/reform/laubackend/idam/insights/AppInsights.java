@@ -4,8 +4,8 @@ import com.microsoft.applicationinsights.TelemetryClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class AppInsights implements EventRepository {
@@ -24,7 +24,7 @@ public class AppInsights implements EventRepository {
     }
 
     public Map<String, String> trackingMap(String propertyName, String propertyToTrack) {
-        HashMap<String, String> trackMap = new HashMap<>();
+        Map<String, String> trackMap = new ConcurrentHashMap<>();
         trackMap.put(propertyName, propertyToTrack);
         return trackMap;
     }

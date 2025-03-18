@@ -9,6 +9,7 @@ plugins {
     id 'checkstyle'
     id 'pmd'
     id 'jacoco'
+    id 'idea'
     id 'com.github.ben-manes.versions' version '0.52.0'
     id 'com.gorylenko.gradle-git-properties' version '2.5.0'
     id 'io.spring.dependency-management' version '1.1.7'
@@ -91,6 +92,17 @@ sourceSets {
 
 tasks.withType(JavaCompile) {
     options.compilerArgs << "-Xlint:unchecked" << "-Werror"
+}
+
+idea {
+  module {
+    testSources.from(project.sourceSets.integrationTest.java.srcDirs)
+    testSources.from(project.sourceSets.functionalTest.java.srcDirs)
+    testSources.from(project.sourceSets.smokeTest.java.srcDirs)
+    testResources.from(project.sourceSets.integrationTest.resources.srcDirs)
+    testResources.from(project.sourceSets.functionalTest.resources.srcDirs)
+    testResources.from(project.sourceSets.smokeTest.resources.srcDirs)
+  }
 }
 
 test {
@@ -189,6 +201,7 @@ checkstyle {
 }
 
 pmd {
+    toolVersion = "7.11.0"
     sourceSets = [sourceSets.main, sourceSets.test, sourceSets.functionalTest, sourceSets.integrationTest, sourceSets.smokeTest]
     reportsDir = file("$project.buildDir/reports/pmd")
     // https://github.com/pmd/pmd/issues/876
@@ -248,6 +261,8 @@ sonarqube {
         property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
         property "sonar.pitest.mode", "reuseReport"
         property "sonar.pitest.reportsDirectory", "build/reports/pitest"
+        property "sonar.sources", "src/main/java"
+        property "sonar.tests", "src/test/java,src/smokeTest/java,src/functionalTest/java,src/integrationTest/java"
     }
 }
 

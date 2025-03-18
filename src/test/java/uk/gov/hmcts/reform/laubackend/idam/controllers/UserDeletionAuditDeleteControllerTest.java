@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.laubackend.idam.service.UserDeletionAuditService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,7 +30,7 @@ class UserDeletionAuditDeleteControllerTest {
     @Test
     void shouldReturnResponseEntityForDeleteUserDeletionRequest() {
         doNothing().when(userDeletionAuditService).deleteUserDeletionByUserId("1");
-        var response = controller.deleteUserDeletionAudit("1");
+        ResponseEntity<Object> response = controller.deleteUserDeletionAudit("1");
         verify(userDeletionAuditService, times(1)).deleteUserDeletionByUserId("1");
         assertEquals(
             HttpStatus.NO_CONTENT,
@@ -39,7 +40,7 @@ class UserDeletionAuditDeleteControllerTest {
 
     @Test
     void shouldReturnBadRequest() {
-        var response = controller.deleteUserDeletionAudit(null);
+        ResponseEntity<Object> response = controller.deleteUserDeletionAudit(null);
         assertEquals(
             HttpStatus.BAD_REQUEST,
             response.getStatusCode(),
@@ -52,7 +53,7 @@ class UserDeletionAuditDeleteControllerTest {
         doThrow(new EmptyResultDataAccessException(1))
             .when(userDeletionAuditService)
             .deleteUserDeletionByUserId("1");
-        var response = controller.deleteUserDeletionAudit("1");
+        ResponseEntity<Object> response = controller.deleteUserDeletionAudit("1");
         verify(userDeletionAuditService, times(1)).deleteUserDeletionByUserId("1");
         assertEquals(
             HttpStatus.NOT_FOUND,
@@ -67,7 +68,7 @@ class UserDeletionAuditDeleteControllerTest {
             .when(userDeletionAuditService)
             .deleteUserDeletionByUserId("1");
 
-        var response = controller.deleteUserDeletionAudit("1");
+        ResponseEntity<Object> response = controller.deleteUserDeletionAudit("1");
         verify(userDeletionAuditService, times(1)).deleteUserDeletionByUserId("1");
         assertEquals(
             HttpStatus.INTERNAL_SERVER_ERROR,
