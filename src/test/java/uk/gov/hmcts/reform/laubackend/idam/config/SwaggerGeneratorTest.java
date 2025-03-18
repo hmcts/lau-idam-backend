@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
  */
 @SpringBootTest
 @TestPropertySource(properties = {"idam.api.url = localhost:5000", "idam.s2s-auth.url = localhost:4502"})
-@SuppressWarnings({"PMD.UnusedPrivateField"})
+@SuppressWarnings({"PMD.UnusedPrivateField", "PMD.UnitTestShouldIncludeAssert"})
 class SwaggerGeneratorTest {
 
     private MockMvc mvc;

@@ -59,7 +59,7 @@ class UserDeletionAuditControllerGetAllTest {
             null,
             null
         );
-        var response = controller.getAllDeletedUsers(null, null, params);
+        ResponseEntity<UserDeletionGetResponse> response = controller.getAllDeletedUsers(null, null, params);
         HttpStatusCode statusCode = response.getStatusCode();
         assertEquals(HttpStatus.BAD_REQUEST, statusCode, "Http status code mismatch");
         verify(appInsights, times(1))
@@ -73,7 +73,7 @@ class UserDeletionAuditControllerGetAllTest {
             "10",
             "abc"
         );
-        var response = controller.getAllDeletedUsers(null, null, params);
+        ResponseEntity<UserDeletionGetResponse> response = controller.getAllDeletedUsers(null, null, params);
         HttpStatusCode statusCode = response.getStatusCode();
         assertEquals(HttpStatus.BAD_REQUEST, statusCode, "Http status code mismatch");
         verify(appInsights, times(1))

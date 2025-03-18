@@ -14,7 +14,7 @@ public enum AppInsightsEvent {
     POST_DELETION_REQUEST_EXCEPTION("Audit POST IdAM Deletion Request Exception: "),
     POST_DELETION_INVALID_REQUEST_EXCEPTION("Audit POST IdAM Deletion Request InvalidRequestException: ");
 
-    private String displayName;
+    private final String displayName;
 
     AppInsightsEvent(String displayName) {
         this.displayName = displayName;

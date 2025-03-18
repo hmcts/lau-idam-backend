@@ -29,7 +29,8 @@ public class UserDeletionAuditDeleteSteps extends AbstractSteps {
     public void anEmptyGetResponseReturned(String endpoint, Map<String, String> params) {
         final Response getResponse = restHelper.getResponse(baseUrl() + endpoint, params);
         assertThat(getResponse.getStatusCode()).isEqualTo(200);
-        var responseBody = jsonReader.fromJson(getResponse.getBody().asString(), UserDeletionGetResponse.class);
+        UserDeletionGetResponse responseBody =
+            jsonReader.fromJson(getResponse.getBody().asString(), UserDeletionGetResponse.class);
         assertThat(responseBody.getDeletionLogs()).isEmpty();
     }
 
