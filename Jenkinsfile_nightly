@@ -41,7 +41,7 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 
 withNightlyPipeline(type, product, component) {
 
-    env.TEST_URL = "http://lau-idam-backend-aat.service.core-compute-aat.internal"
+    env.TEST_URL = params.URL_TO_TEST
     env.TEST_S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
     env.TEST_IDAM_API_URL = 'https://idam-api.aat.platform.hmcts.net'
     env.TEST_IDAM_CLIENT_REDIRECT_URI = 'https://lau-idam-backend-aat.service.core-compute-aat.internal/oauth2/callback'
