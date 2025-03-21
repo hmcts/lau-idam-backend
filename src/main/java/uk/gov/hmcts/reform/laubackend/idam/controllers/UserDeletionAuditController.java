@@ -46,7 +46,7 @@ import static uk.gov.hmcts.reform.laubackend.idam.utils.NotEmptyInputParamsVerif
 @Tag(name = "User deletion operations", description = ""
     + "This is the Log and Audit Back-End API that will audit user account deletions. "
     + "The API will be invoked by IdAM service.")
-@SuppressWarnings({"PMD.ExcessiveImports","PMD.UnnecessaryAnnotationValueElement"})
+@SuppressWarnings({"PMD.ExcessiveImports","PMD.UnnecessaryAnnotationValueElement", "PMD.ExceptionAsFlowControl"})
 public class UserDeletionAuditController {
 
     private static final String EXCEPTION = "exception";

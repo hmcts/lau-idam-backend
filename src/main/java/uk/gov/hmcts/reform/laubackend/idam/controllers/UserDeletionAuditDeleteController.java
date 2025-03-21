@@ -45,7 +45,7 @@ public class UserDeletionAuditDeleteController {
     @ApiResponse(responseCode = "400", description = "Missing IdAM user deletion audit id from the API request")
     @ApiResponse(responseCode = "500", description = "Internal Server Error")
     @DeleteMapping(
-        path = UserDeletionAuditDeleteController.DELETE_ENDPOINT,
+        path = DELETE_ENDPOINT,
         produces = APPLICATION_JSON_VALUE,
         consumes = APPLICATION_JSON_VALUE
     )

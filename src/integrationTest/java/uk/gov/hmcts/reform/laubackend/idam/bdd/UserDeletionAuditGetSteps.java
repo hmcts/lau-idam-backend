@@ -27,9 +27,9 @@ public class UserDeletionAuditGetSteps extends AbstractSteps {
     @When("I save several IdAM user deletions to {string} endpoint using s2s with data:")
     public void postUserDeletionData(final String path, List<DeletionLog> data) {
         if (!doneIt) {
-            var payload = new UserDeletionPostRequest();
+            UserDeletionPostRequest payload = new UserDeletionPostRequest();
             payload.setDeletionLogs(data);
-            var response = postObject(payload, baseUrl() + path);
+            Response response = postObject(payload, baseUrl() + path);
             httpStatusResponseCode = response.getStatusCode();
             assertEquals(201, httpStatusResponseCode, "Saving dummy deleted accounts failed");
             doneIt = true;
@@ -61,7 +61,7 @@ public class UserDeletionAuditGetSteps extends AbstractSteps {
             .fromJson(responseBodyString, UserDeletionGetResponse.class);
         final BeanUtilsBean bub = new BeanUtilsBean();
 
-        for (var deletionLog: response.getDeletionLogs()) {
+        for (DeletionLog deletionLog: response.getDeletionLogs()) {
             String val = bub.getProperty(deletionLog, name);
             assertEquals(value, val, "Properties do not match");
         }
@@ -102,10 +102,10 @@ public class UserDeletionAuditGetSteps extends AbstractSteps {
         assertThat(response.getTotalNumberOfRecords()).isEqualTo(4);
         assertThat(response.getMoreRecords()).isEqualTo(page == 1);
         assertThat(response.getStartRecordNumber()).isEqualTo((page - 1) * 2L + 1);
-        var expected1 = data.get(0);
-        var returned1 = response.getDeletionLogs().get(0);
-        var expected2 = data.get(1);
-        var returned2 = response.getDeletionLogs().get(1);
+        DeletionLog expected1 = data.get(0);
+        DeletionLog returned1 = response.getDeletionLogs().get(0);
+        DeletionLog expected2 = data.get(1);
+        DeletionLog returned2 = response.getDeletionLogs().get(1);
 
         assertThat(returned1.getUserId()).isEqualTo(expected1.getUserId());
         assertThat(returned2.getUserId()).isEqualTo(expected2.getUserId());

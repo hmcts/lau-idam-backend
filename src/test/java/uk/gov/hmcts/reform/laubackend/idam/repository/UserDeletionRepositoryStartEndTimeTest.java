@@ -44,14 +44,15 @@ class UserDeletionRepositoryStartEndTimeTest {
     private EntityManager entityManager;
 
     @BeforeEach
-    public void setUp() {
-        final var userDeletionAuditInsertRepository = new UserDeletionAuditInsertRepository(entityManager);
+    void setUp() {
+        final UserDeletionAuditInsertRepository userDeletionAuditInsertRepository =
+            new UserDeletionAuditInsertRepository(entityManager);
         //Insert ${RECORD_NUMBER} records
         for (int i = 1; i < RECORD_NUMBER + 1; i++) {
             userDeletionAuditInsertRepository
                 .saveUserDeleteAuditWithEncryption(getUserDeletionAudit(
                     String.valueOf(i),
-                    "Email" + String.valueOf(i) + "@Example.ORG  ",
+                    "Email" + i + "@Example.ORG  ",
                     "   First " + i + " Name ",
                     "  Last " + i + " Name  ",
                     Timestamp.valueOf(now().plusDays(i))

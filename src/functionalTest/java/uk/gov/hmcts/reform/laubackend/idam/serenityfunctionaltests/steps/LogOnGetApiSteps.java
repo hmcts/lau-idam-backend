@@ -14,7 +14,6 @@ import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestCon
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -29,7 +28,7 @@ public class LogOnGetApiSteps extends BaseSteps {
     @SuppressWarnings({"PMD.AvoidUsingHardCodedIP"})
     @Step("When valid params are supplied for Get Logon API")
     public Map<String, String> givenValidParamsAreSuppliedForGetLogonApi() {
-        HashMap<String, String> queryParamMap = new HashMap<>();
+        Map<String, String> queryParamMap = new ConcurrentHashMap<>();
         queryParamMap.put("userId", "3734555");
         queryParamMap.put("emailAddress", "firstname.lastname@company.com");
         queryParamMap.put("service", "idam-web-admin");
@@ -54,7 +53,7 @@ public class LogOnGetApiSteps extends BaseSteps {
 
     }
 
-    @SuppressWarnings({"PMD.DataflowAnomalyAnalysis"})
+    @SuppressWarnings({"PMD.DataflowAnomalyAnalysis", "PMD.AvoidLiteralsInIfCondition"})
     @Step("Then the GET Logon response params match the input")
     public String thenTheGetLogonResponseParamsMatchesTheInput(Map<String, String> inputQueryParamMap,
                                                                     LogOnGetResponseVO logOnGetResponseVO) {

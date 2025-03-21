@@ -70,11 +70,12 @@ class UserDeletionAuditServiceTest {
 
         final UserDeletionGetResponse response = userDeletionAuditService.getUserDeletions(params);
 
-        var pageable = PageRequest.of(0, parseInt(DEFAULT_SIZE), Sort.by(Sort.Direction.DESC, "deletion_timestamp"));
+        PageRequest pageable = PageRequest.of(
+            0, parseInt(DEFAULT_SIZE), Sort.by(Sort.Direction.DESC, "deletion_timestamp"));
         verify(userDeletionAuditFindRepository, times(1))
             .findUserDeletion(params, null, pageable);
         assertThat(response.getDeletionLogs()).hasSize(1);
-        var returned = response.getDeletionLogs().get(0);
+        DeletionLog returned = response.getDeletionLogs().get(0);
         assertEquals("1", returned.getUserId(), "UserId mismatch");
         assertEquals("email", returned.getEmailAddress(), "email mismatch");
         assertEquals(1, response.getTotalNumberOfRecords(), "Expected total responses mismatch");
@@ -109,7 +110,8 @@ class UserDeletionAuditServiceTest {
         when(userDeletionAuditInsertRepository.saveUserDeleteAuditWithEncryption(any(), any()))
             .thenReturn(userDeletionAudit1, userDeletionAudit2);
 
-        final var response = userDeletionAuditService.saveUserDeletion(Arrays.asList(deletionLog, deletionLog));
+        final  List<DeletionLog> response =
+            userDeletionAuditService.saveUserDeletion(Arrays.asList(deletionLog, deletionLog));
 
         verify(userDeletionAuditInsertRepository, times(2)).saveUserDeleteAuditWithEncryption(any(), eq("123"));
         assertThat(response).hasSize(2);
@@ -152,15 +154,15 @@ class UserDeletionAuditServiceTest {
 
         when(userDeletionAuditRepository.save(any())).thenReturn(userDeletionAudit);
 
-        final var response = userDeletionAuditService.saveUserDeletion(Arrays.asList(deletionLog));
+        final List<DeletionLog> response = userDeletionAuditService.saveUserDeletion(List.of(deletionLog));
         verify(userDeletionAuditRepository, times(1)).save(any());
         assertThat(response).hasSize(1);
-        assertEquals("456", response.get(0).getUserId(), "User ids are not equal");
-        assertEquals("email@example.net", response.get(0).getEmailAddress(), "Emails are not equal");
-        assertEquals("First Name", response.get(0).getFirstName(), "First names are not equal");
-        assertEquals("Last Name", response.get(0).getLastName(), "Last names are not equal");
+        assertEquals("456", response.getFirst().getUserId(), "User ids are not equal");
+        assertEquals("email@example.net", response.getFirst().getEmailAddress(), "Emails are not equal");
+        assertEquals("First Name", response.getFirst().getFirstName(), "First names are not equal");
+        assertEquals("Last Name", response.getFirst().getLastName(), "Last names are not equal");
         String timestampStr = new TimestampUtil().timestampConvertor(timestamp);
-        assertEquals(timestampStr, response.get(0).getDeletionTimestamp(), "Timestamps are not equal");
+        assertEquals(timestampStr, response.getFirst().getDeletionTimestamp(), "Timestamps are not equal");
     }
 
     @Test
@@ -209,11 +211,11 @@ class UserDeletionAuditServiceTest {
         final DeletionLogAllUsersRequestParams params = new DeletionLogAllUsersRequestParams("1", DEFAULT_SIZE,  "");
         final UserDeletionGetResponse response = userDeletionAuditService.getAllDeletedUsers(params);
 
-        var pageable = userDeletionAuditService.getPageSorted("1", DEFAULT_SIZE, "desc");
+        Pageable pageable = userDeletionAuditService.getPageSorted("1", DEFAULT_SIZE, "desc");
         verify(userDeletionAuditFindRepository, times(1))
             .findAllDeletedUsers("DESC",null, pageable);
         assertThat(response.getDeletionLogs()).hasSize(2);
-        var returned = response.getDeletionLogs().get(0);
+        DeletionLog returned = response.getDeletionLogs().getFirst();
         assertEquals("1", returned.getUserId(), "UserId mismatch");
         assertEquals("email1", returned.getEmailAddress(), "email mismatch");
         assertEquals("John", returned.getFirstName(), "firstName mismatch");

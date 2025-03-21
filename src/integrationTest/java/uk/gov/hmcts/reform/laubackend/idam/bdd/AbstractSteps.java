@@ -14,7 +14,7 @@ import static uk.gov.hmcts.reform.laubackend.idam.bdd.WiremokInstantiator.INSTAN
 
 public class AbstractSteps {
     private static final String JSON_RESPONSE = "application/json;charset=UTF-8";
-    public final WiremokInstantiator wiremokInstantiator = INSTANCE;
+    public static final WiremokInstantiator WIREMOCK = INSTANCE;
     protected final RestHelper restHelper = new RestHelper();
     public final Gson jsonReader = new Gson();
 
@@ -26,13 +26,13 @@ public class AbstractSteps {
     }
 
     public void setupAuthorisationStub() {
-        wiremokInstantiator.getWireMockServer().stubFor(get(urlPathMatching("/details"))
+        WIREMOCK.getWireMockServer().stubFor(get(urlPathMatching("/details"))
                 .willReturn(aResponse()
                         .withHeader(CONTENT_TYPE_HEADER, JSON_RESPONSE)
                         .withStatus(200)
                         .withBody("lau_frontend")));
 
-        wiremokInstantiator.getWireMockServer().stubFor(get(urlPathMatching("/o/userinfo"))
+        WIREMOCK.getWireMockServer().stubFor(get(urlPathMatching("/o/userinfo"))
                 .willReturn(aResponse()
                         .withHeader(CONTENT_TYPE_HEADER, JSON_RESPONSE)
                         .withStatus(200)

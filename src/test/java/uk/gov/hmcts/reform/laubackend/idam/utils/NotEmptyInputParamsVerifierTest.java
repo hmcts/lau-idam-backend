@@ -164,31 +164,31 @@ class NotEmptyInputParamsVerifierTest {
     void shouldNotThrowExceptionWhenUserDeleteAuditGetParamsArePopulated() {
         String start = "2023-05-23T09:23:54";
         String end = "2023-05-24T09:23:54";
-        final var p1 = new DeletionLogGetRequestParams(
+        final DeletionLogGetRequestParams p1 = new DeletionLogGetRequestParams(
             "userId", "", "", "", start, end, null, null);
         assertDoesNotThrow(() -> verifyUserDeletionGetRequestParamsPresence(p1));
 
-        final var p2 = new DeletionLogGetRequestParams(
+        final DeletionLogGetRequestParams p2 = new DeletionLogGetRequestParams(
             "", "email", "", "", start, end, null, null);
         assertDoesNotThrow(() -> verifyUserDeletionGetRequestParamsPresence(p2));
 
-        final var p3 = new DeletionLogGetRequestParams(
+        final DeletionLogGetRequestParams p3 = new DeletionLogGetRequestParams(
             "", null, "John", "", start, end, null, null);
         assertDoesNotThrow(() -> verifyUserDeletionGetRequestParamsPresence(p3));
 
-        final var p4 = new DeletionLogGetRequestParams(
+        final DeletionLogGetRequestParams p4 = new DeletionLogGetRequestParams(
             null, "", "", "Smith", start, end, null, null);
         assertDoesNotThrow(() -> verifyUserDeletionGetRequestParamsPresence(p4));
 
-        final var p5 = new DeletionLogGetRequestParams(
+        final DeletionLogGetRequestParams p5 = new DeletionLogGetRequestParams(
             null, "", "John", "Smith", start, end, null, null);
         assertDoesNotThrow(() -> verifyUserDeletionGetRequestParamsPresence(p5));
 
-        final var p6 = new DeletionLogGetRequestParams(
+        final DeletionLogGetRequestParams p6 = new DeletionLogGetRequestParams(
             "userId", "email", "John", "Smith", start, end, null, null);
         assertDoesNotThrow(() -> verifyUserDeletionGetRequestParamsPresence(p6));
 
-        final var p7 = new DeletionLogGetRequestParams(
+        final DeletionLogGetRequestParams p7 = new DeletionLogGetRequestParams(
             "userId", "email", null, null, start, end, null, null);
         assertDoesNotThrow(() -> verifyUserDeletionGetRequestParamsPresence(p7));
     }
@@ -197,27 +197,27 @@ class NotEmptyInputParamsVerifierTest {
     void shouldThrowExceptionWhenRequiredUserDeleteAuditGetParamsAreNotPresent() {
         String start = "2023-05-23T09:23:54";
         String end = "2023-05-24T09:23:54";
-        final var p1 = new DeletionLogGetRequestParams(
+        final DeletionLogGetRequestParams p1 = new DeletionLogGetRequestParams(
             "", "", "", "", start, end, null, null);
         assertThrows(InvalidRequestException.class, () -> verifyUserDeletionGetRequestParamsPresence(p1));
 
-        final var p2 = new DeletionLogGetRequestParams(
+        final DeletionLogGetRequestParams p2 = new DeletionLogGetRequestParams(
             null, null, null, null, start, end, null, null);
         assertThrows(InvalidRequestException.class, () -> verifyUserDeletionGetRequestParamsPresence(p2));
 
-        final var p3 = new DeletionLogGetRequestParams(
+        final DeletionLogGetRequestParams p3 = new DeletionLogGetRequestParams(
             "", null, "John", "", null, end, null, null);
         assertThrows(InvalidRequestException.class, () -> verifyUserDeletionGetRequestParamsPresence(p3));
 
-        final var p4 = new DeletionLogGetRequestParams(
+        final DeletionLogGetRequestParams p4 = new DeletionLogGetRequestParams(
             null, "", "", "Smith", start, "", null, null);
         assertThrows(InvalidRequestException.class, () -> verifyUserDeletionGetRequestParamsPresence(p4));
 
-        final var p5 = new DeletionLogGetRequestParams(
+        final DeletionLogGetRequestParams p5 = new DeletionLogGetRequestParams(
             null, "", "John", "Smith", null, "", null, null);
         assertThrows(InvalidRequestException.class, () -> verifyUserDeletionGetRequestParamsPresence(p5));
 
-        final var p6 = new DeletionLogGetRequestParams(
+        final DeletionLogGetRequestParams p6 = new DeletionLogGetRequestParams(
             "userId", "email", "John", "Smith", "", end, null, null);
         assertThrows(InvalidRequestException.class, () -> verifyUserDeletionGetRequestParamsPresence(p6));
     }

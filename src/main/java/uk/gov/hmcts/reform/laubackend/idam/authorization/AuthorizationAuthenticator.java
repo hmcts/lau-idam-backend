@@ -12,7 +12,7 @@ import static uk.gov.hmcts.reform.laubackend.idam.constants.CommonConstants.AUTH
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@SuppressWarnings({"PMD.PreserveStackTrace"})
+@SuppressWarnings({"PMD.PreserveStackTrace", "PMD.ExceptionAsFlowControl"})
 public class AuthorizationAuthenticator {
 
     private final AuthService authService;

@@ -57,7 +57,7 @@ class UserDeletionAuditControllerPostTest {
         final List<DeletionLog> deletionLogs = Arrays.asList(deletionLog);
         final UserDeletionPostRequest request = new UserDeletionPostRequest(deletionLogs);
 
-        final var responseEntity = controller.saveUserDeletion(null, request);
+        final ResponseEntity<UserDeletionPostResponse> responseEntity = controller.saveUserDeletion(null, request);
         verify(userDeletionAuditService, times(1)).saveUserDeletion(deletionLogs);
         verifyNoInteractions(appInsights);
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode(), "Response code not what was expected");
@@ -66,27 +66,31 @@ class UserDeletionAuditControllerPostTest {
     @Test
     void shouldReturnBadRequestOnMissingPostArgs() {
 
-        final var deletionLog1 = new DeletionLog(USERID, EMAIL, FIRST_NAME, LAST_NAME, TIMESTAMP);
-        final var deletionLog2 = new DeletionLog(USERID, null, FIRST_NAME, LAST_NAME, TIMESTAMP);
-        final var deletionLog3 = new DeletionLog(USERID, EMAIL, FIRST_NAME, LAST_NAME, TIMESTAMP);
-        final var deletionLogs = Arrays.asList(deletionLog1, deletionLog2, deletionLog3);
-        final UserDeletionPostRequest request = new UserDeletionPostRequest(deletionLogs);
+        final UserDeletionPostRequest request = getUserDeletionPostRequest();
 
-        final var responseEntity = controller.saveUserDeletion(null, request);
+        final ResponseEntity<UserDeletionPostResponse> responseEntity = controller.saveUserDeletion(null, request);
         verify(appInsights, times(1))
             .trackEvent(eq(POST_DELETION_INVALID_REQUEST_EXCEPTION.toString()), anyMap());
         assertResponseIsBadRequest(responseEntity, "Response is not what was expected");
     }
 
+    private static UserDeletionPostRequest getUserDeletionPostRequest() {
+        final DeletionLog deletionLog1 = new DeletionLog(USERID, EMAIL, FIRST_NAME, LAST_NAME, TIMESTAMP);
+        final DeletionLog deletionLog2 = new DeletionLog(USERID, null, FIRST_NAME, LAST_NAME, TIMESTAMP);
+        final DeletionLog deletionLog3 = new DeletionLog(USERID, EMAIL, FIRST_NAME, LAST_NAME, TIMESTAMP);
+        final List<DeletionLog> deletionLogs = Arrays.asList(deletionLog1, deletionLog2, deletionLog3);
+        return new UserDeletionPostRequest(deletionLogs);
+    }
+
     @Test
     void shouldReturnInternalServerErrorOnPostError() {
         final DeletionLog deletionLog = new DeletionLog(USERID, EMAIL, FIRST_NAME, LAST_NAME, TIMESTAMP);
-        final var deletionLogs = Arrays.asList(deletionLog);
+        final List<DeletionLog> deletionLogs = List.of(deletionLog);
         final UserDeletionPostRequest request = new UserDeletionPostRequest(deletionLogs);
 
         when(userDeletionAuditService.saveUserDeletion(any())).thenThrow(NullPointerException.class);
 
-        final var responseEntity = controller.saveUserDeletion(null, request);
+        final ResponseEntity<UserDeletionPostResponse> responseEntity = controller.saveUserDeletion(null, request);
         verify(appInsights, times(1))
             .trackEvent(eq(POST_DELETION_REQUEST_EXCEPTION.toString()), anyMap());
         assertEquals(
@@ -98,7 +102,7 @@ class UserDeletionAuditControllerPostTest {
 
     @Test
     void shouldReturnBadRequestOnEmptyPostRequest() {
-        final var responseEntity = controller.saveUserDeletion(null, null);
+        final ResponseEntity<UserDeletionPostResponse> responseEntity = controller.saveUserDeletion(null, null);
         assertResponseIsBadRequest(responseEntity, "Empty request didn't return BAD_REQUEST");
     }
 
@@ -107,32 +111,32 @@ class UserDeletionAuditControllerPostTest {
         final String assertMessage = "Invalid request param didn't return BAD_REQUEST";
 
         String longUserId = StringUtils.repeat("a", 65);
-        var log = new DeletionLog(longUserId, EMAIL, FIRST_NAME, LAST_NAME, TIMESTAMP);
-        UserDeletionPostRequest request = new UserDeletionPostRequest(Arrays.asList(log));
-        var response = controller.saveUserDeletion(null, request);
+        DeletionLog log = new DeletionLog(longUserId, EMAIL, FIRST_NAME, LAST_NAME, TIMESTAMP);
+        UserDeletionPostRequest request = new UserDeletionPostRequest(List.of(log));
+        ResponseEntity<UserDeletionPostResponse> response = controller.saveUserDeletion(null, request);
         assertResponseIsBadRequest(response, assertMessage);
 
         String longEmail = StringUtils.repeat("a", 40) + "@" + StringUtils.repeat("b", 40);
         log = new DeletionLog(USERID, longEmail, FIRST_NAME, LAST_NAME, TIMESTAMP);
-        request = new UserDeletionPostRequest(Arrays.asList(log));
+        request = new UserDeletionPostRequest(List.of(log));
         response = controller.saveUserDeletion(null, request);
         assertResponseIsBadRequest(response, assertMessage);
 
         String longFirstName = StringUtils.repeat("a", 65);
         log = new DeletionLog(USERID, EMAIL, longFirstName, LAST_NAME, TIMESTAMP);
-        request = new UserDeletionPostRequest(Arrays.asList(log));
+        request = new UserDeletionPostRequest(List.of(log));
         response = controller.saveUserDeletion(null, request);
         assertResponseIsBadRequest(response, assertMessage);
 
         String longLastName = StringUtils.repeat("a", 65);
         log = new DeletionLog(USERID, EMAIL, FIRST_NAME, longLastName, TIMESTAMP);
-        request = new UserDeletionPostRequest(Arrays.asList(log));
+        request = new UserDeletionPostRequest(List.of(log));
         response = controller.saveUserDeletion(null, request);
         assertResponseIsBadRequest(response, assertMessage);
 
         String invalidTimestamp = "1";
         log = new DeletionLog(USERID, EMAIL, FIRST_NAME, LAST_NAME, invalidTimestamp);
-        request = new UserDeletionPostRequest(Arrays.asList(log));
+        request = new UserDeletionPostRequest(List.of(log));
         response = controller.saveUserDeletion(null, request);
         assertResponseIsBadRequest(response, assertMessage);
 
