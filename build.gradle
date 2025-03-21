@@ -17,7 +17,7 @@ plugins {
     id 'org.flywaydb.flyway' version '11.4.0'
     id 'org.owasp.dependencycheck' version '12.1.0'
     id 'org.sonarqube' version '6.0.1.5171'
-    id 'org.springframework.boot' version '3.4.3'
+    id 'org.springframework.boot' version '3.4.4'
     id 'uk.gov.hmcts.java' version '0.12.65'
     id "info.solidsoft.pitest" version '1.15.0'
     id "org.springdoc.openapi-gradle-plugin" version "1.9.0"
@@ -294,17 +294,17 @@ dependencyCheck {
 dependencyManagement {
   dependencies {
     dependency group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.70'
-    dependencySet(group: 'org.springframework.cloud', version: '4.2.0') {
+    dependencySet(group: 'org.springframework.cloud', version: '4.2.1') {
       entry 'spring-cloud-starter-openfeign'
       entry 'spring-cloud-openfeign-core'
     }
-    dependencySet(group: 'ch.qos.logback', version: '1.5.17') {
+    dependencySet(group: 'ch.qos.logback', version: '1.5.18') {
       entry 'logback-core'
       entry 'logback-classic'
     }
   }
   imports {
-    mavenBom 'org.springframework.cloud:spring-cloud-dependencies:2024.0.0'
+    mavenBom 'org.springframework.cloud:spring-cloud-dependencies:2024.0.1'
   }
 }
 
@@ -334,7 +334,7 @@ def versions = [
   serviceAuthVersion: '5.3.0',
   sonarPitest       : '0.5',
   springBoot        : springBoot.class.package.implementationVersion,
-  springCloud       : '4.2.0',
+  springCloud       : '4.2.1',
   testcontainers    : '1.20.6',
   wiremock          : '3.0.1',
 ]
@@ -366,7 +366,7 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: versions.springCloud
-    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: "4.2.0"
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: "4.2.1"
     implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.8.5'
     implementation group: 'com.microsoft.azure', name: 'applicationinsights-core', version: versions.appinsights
     implementation group: 'com.microsoft.azure', name: 'applicationinsights-web', version: versions.appinsights
