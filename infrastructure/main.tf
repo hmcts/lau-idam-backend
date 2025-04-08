@@ -15,6 +15,12 @@ locals {
   vault_name            = "${var.product}-${var.env}"
   asp_name              = "${var.product}-${var.env}"
   env                   = var.env
+  db_server_name        = "${var.product}-${var.component}-flexible"
+}
+
+data "azurerm_key_vault" "key_vault" {
+  name                = local.vault_name
+  resource_group_name = local.vault_name
 }
 
 module "lau-idam-db-flexible" {
@@ -28,7 +34,7 @@ module "lau-idam-db-flexible" {
   product       = var.product
   component     = var.component
   business_area = "cft"
-  name          = "${var.product}-${var.component}-flexible"
+  name          = local.db_server_name
 
   common_tags = var.common_tags
 
@@ -55,11 +61,10 @@ module "lau-idam-db-flexible" {
   ]
 
   admin_user_object_id = var.jenkins_AAD_objectId
-}
 
-data "azurerm_key_vault" "key_vault" {
-  name                = local.vault_name
-  resource_group_name = local.vault_name
+  action_group_name           = join("-", [var.db_monitor_action_group_name, local.db_server_name, var.env])
+  email_address_key           = var.db_alert_email_address_key
+  email_address_key_vault_id  = data.azurerm_key_vault.key_vault.id
 }
 
 ////////////////////////////////
