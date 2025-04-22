@@ -56,7 +56,7 @@ module "lau-idam-db-flexible" {
   pgsql_server_configuration = [
     {
       name  = "azure.extensions"
-      value = "plpgsql,pg_stat_statements,pg_buffercache,pgcrypto"
+      value = "pg_stat_statements,pg_buffercache,pgcrypto"
     }
   ]
 
