@@ -68,5 +68,5 @@ variable "db_monitor_action_group_name" {
 variable "db_alert_email_address_key" {
   description = "Email address key in azure Key Vault."
   type        = string
-  default     = "caseDisposerAlertEmail"
+  default     = ""
 }
