@@ -329,7 +329,7 @@ def versions = [
   lombok            : '1.18.38',
   pact              : '4.6.17',
   reformLogging     : '6.1.9',
-  restAssured       : '5.5.1',
+  restAssured       : '5.5.2',
   serenity          : '4.2.22',
   serviceAuthVersion: '5.3.2',
   sonarPitest       : '0.5',
