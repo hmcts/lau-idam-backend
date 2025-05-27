@@ -13,7 +13,7 @@ plugins {
     id 'com.github.ben-manes.versions' version '0.52.0'
     id 'com.gorylenko.gradle-git-properties' version '2.5.0'
     id 'io.spring.dependency-management' version '1.1.7'
-    id 'net.serenity-bdd.serenity-gradle-plugin' version '4.2.26'
+    id 'net.serenity-bdd.serenity-gradle-plugin' version '4.2.30'
     id 'org.flywaydb.flyway' version '11.8.2'
     id 'org.owasp.dependencycheck' version '12.1.1'
     id 'org.sonarqube' version '6.1.0.5360'
@@ -329,7 +329,7 @@ def versions = [
   lombok            : '1.18.38',
   pact              : '4.6.17',
   reformLogging     : '6.1.9',
-  restAssured       : '5.5.1',
+  restAssured       : '5.5.2',
   serenity          : '4.2.22',
   serviceAuthVersion: '5.3.2',
   sonarPitest       : '0.5',
