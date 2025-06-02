@@ -30,7 +30,7 @@ public class AuthorizationHeaderHelper {
                 .formParam("redirect_uri", propertyReader.getPropertyValue("idam.redirect.url"))
                 .formParam("scope", SCOPE)
                 .formParam("client_id", propertyReader.getPropertyValue("idam.client.id"))
-                .formParam("client_secret", propertyReader.getPropertyValueFromEnv("idam.client.secret"))
+                .formParam("client_secret", propertyReader.getPropertyValue("idam.client.secret"))
                 .when()
                 .post(propertyReader.getPropertyValue("idam.token.url"));
 

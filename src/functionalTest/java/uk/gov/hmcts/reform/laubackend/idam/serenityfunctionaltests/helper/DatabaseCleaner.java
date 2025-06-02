@@ -65,7 +65,7 @@ public final class DatabaseCleaner {
         final Response deleteResponse = RestAssured
             .given()
             .relaxedHTTPSValidation()
-            .baseUri(propertyReader.getPropertyValueFromEnv("api.url") + endpoint)
+            .baseUri(propertyReader.getPropertyValue("api.url") + endpoint)
             .queryParam(paramName, paramValue)
             .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
             .header(SERVICE_AUTHORISATION_HEADER, authorizationHeaderHelper.getServiceToken(FRONTEND_SERVICE_NAME))
