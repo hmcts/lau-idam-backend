@@ -388,7 +388,7 @@ dependencies {
     implementation group: 'org.apache.httpcomponents', name: 'fluent-hc', version: '4.5.14'
     implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '4.0.5'
 
-    testImplementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.10.1'
+    testImplementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.11.0'
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
     testImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity, {
       exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
