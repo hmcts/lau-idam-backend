@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.laubackend.idam.bdd;
 
 import com.google.gson.Gson;
+import lombok.Getter;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 import uk.gov.hmcts.reform.laubackend.idam.helper.RestHelper;
@@ -12,6 +13,7 @@ import static feign.form.ContentProcessor.CONTENT_TYPE_HEADER;
 import static java.util.List.of;
 import static uk.gov.hmcts.reform.laubackend.idam.bdd.WiremokInstantiator.INSTANCE;
 
+@Getter
 public class AbstractSteps {
     private static final String JSON_RESPONSE = "application/json;charset=UTF-8";
     public static final WiremokInstantiator WIREMOCK = INSTANCE;

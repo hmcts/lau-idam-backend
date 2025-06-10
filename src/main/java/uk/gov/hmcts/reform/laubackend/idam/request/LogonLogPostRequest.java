@@ -12,4 +12,5 @@ import uk.gov.hmcts.reform.laubackend.idam.dto.LogonLog;
 @Setter
 public class LogonLogPostRequest {
     private LogonLog logonLog;
+
 }

@@ -14,3 +14,8 @@ Feature: The application's POST logon audit endpoint
     Given LAU IdAm backend application is healthy
     When I POST "/audit/logon" endpoint with invalid body parameter using s2s
     Then http bad request response is returned for POST logon
+
+  Scenario: The backend is able to process 10 different idam logons POST requests in 10 different threads
+    Given LAU IdAm backend application is healthy
+    When I POST 10 request to "/audit/logon" endpoint with s2s in asynchronous mode
+    Then  logon response body is returned for all ten requests
