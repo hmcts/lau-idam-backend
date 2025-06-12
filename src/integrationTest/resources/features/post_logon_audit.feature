@@ -20,7 +20,8 @@ Feature: The application's POST logon audit endpoint
     When I POST 10 request to "/audit/logon" endpoint with s2s in asynchronous mode
     Then  logon response body is returned for all ten requests
 
-  Scenario: The backend is able to process 10 different caseSearch POST requests with some failures
+  Scenario: The backend is able to process 10 different idam logons POST requests with some failures
     Given LAU IdAm backend application is healthy
     When I POST 10 request to "/audit/logon" endpoint with s2s with simulate failures
     Then   logon response body is returned for passed requests with some failures
+

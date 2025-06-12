@@ -162,7 +162,7 @@ public class LogonAuditPostSteps extends AbstractSteps {
     }
 
     @Then("logon response body is returned for passed requests with some failures")
-    public void caseSearchResponseBodyIsReturnedForAllTenRequestsWithFailures() {
+    public void logonResponseBodyIsReturnedForAllTenRequestsWithFailures() {
         for (int i = 0; i < 10; i++) {
             Response response = ScenarioContext.get(RESPONSE + i);
             if (response != null) {
