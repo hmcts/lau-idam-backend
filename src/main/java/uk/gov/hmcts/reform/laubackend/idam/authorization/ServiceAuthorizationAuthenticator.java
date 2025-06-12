@@ -22,13 +22,17 @@ public class ServiceAuthorizationAuthenticator {
 
     private final AsyncAuthService asyncAuthService;
 
+    private final HttpPostRecordHolder httpPostRecordHolder;
+
     public void authorizeServiceToken(final HttpServletRequest request) {
         final String serviceAuthHeader = request.getHeader(SERVICE_AUTHORISATION_HEADER);
         String method = request.getMethod();
 
         if (POST_METHOD.equalsIgnoreCase(method)) {
+            httpPostRecordHolder.setPost(true);
             handlePostRequest(serviceAuthHeader);
         } else {
+            httpPostRecordHolder.setPost(false);
             handleOtherRequest(serviceAuthHeader);
         }
     }

@@ -15,6 +15,7 @@ import java.util.concurrent.CompletableFuture;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static uk.gov.hmcts.reform.laubackend.idam.helper.LogonAuditPostHelper.getLogonAudit;
 import static uk.gov.hmcts.reform.laubackend.idam.helper.LogonAuditPostHelper.getLogonAuditWithInvalidParameter;
 import static uk.gov.hmcts.reform.laubackend.idam.helper.LogonAuditPostHelper.getLogonAuditWithMissingMandatoryBodyParameter;
@@ -26,6 +27,7 @@ public class LogonAuditPostSteps extends AbstractSteps {
 
     private static final String THREAD_NAME = "threadName";
     private static final String RESPONSE = "response";
+    private static final int FAILURE_ID = 3;
 
     private String logonAuditPostResponseBody;
     private int httpStatusResponseCode;
@@ -120,6 +122,56 @@ public class LogonAuditPostSteps extends AbstractSteps {
         for (int i = 0; i < 10; i++) {
             Response response = ScenarioContext.get(RESPONSE + i);
             assertThat(response.getStatusCode()).isEqualTo(CREATED.value());
+        }
+    }
+
+    @When("I POST 10 request to {string} endpoint with s2s with simulate failures")
+    public void requestMultiplePostLogonAuditEndpointWithFailures(final String path) throws Exception {
+
+        List<CompletableFuture<Response>> futures = new ArrayList<>();
+        final int numRequests = 10;
+
+        for (int i = 0; i < numRequests; i++) {
+            final int idx = i;
+            futures.add(CompletableFuture.supplyAsync(() -> {
+                String threadName = Thread.currentThread().getName();
+                ScenarioContext.set(THREAD_NAME + idx, threadName);
+                if (idx == FAILURE_ID) {
+                    return restHelper.postObjectWithBadServiceHeader(
+                        getLogonAudit(), baseUrl() + path);
+                } else {
+                    return restHelper.postObject(getLogonAudit(), baseUrl() + path);
+                }
+            }).exceptionally(ex -> {
+                ScenarioContext.set("error" + idx, ex.getMessage());
+                return null; // Return null for failed requests
+            }));
+        }
+
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+
+        for (int i = 0; i < numRequests; i++) {
+            CompletableFuture<Response> future = futures.get(i);
+            if (!future.isCompletedExceptionally()) {
+                Response response = future.get();
+                String threadName = ScenarioContext.get(THREAD_NAME + i);
+                assertThat(threadName).isNotEqualTo("main");
+                ScenarioContext.set(RESPONSE + i, response);
+            }
+        }
+    }
+
+    @Then("logon response body is returned for passed requests with some failures")
+    public void caseSearchResponseBodyIsReturnedForAllTenRequestsWithFailures() {
+        for (int i = 0; i < 10; i++) {
+            Response response = ScenarioContext.get(RESPONSE + i);
+            if (response != null) {
+                if (i == FAILURE_ID) {
+                    assertThat(response.getStatusCode()).isEqualTo(FORBIDDEN.value());
+                } else {
+                    assertThat(response.getStatusCode()).isEqualTo(CREATED.value());
+                }
+            }
         }
     }
 }

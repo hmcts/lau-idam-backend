@@ -35,6 +35,9 @@ class ServiceAuthorizationAuthenticatorTest {
     @Mock
     private AsyncAuthService asyncAuthService;
 
+    @Mock
+    private HttpPostRecordHolder httpPostRecordHolder;
+
     @InjectMocks
     private ServiceAuthorizationAuthenticator serviceAuthorizationAuthenticator;
 

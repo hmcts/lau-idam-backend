@@ -10,7 +10,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 @Configuration
 public class RetryableFeignConfig {
 
-    @Value("${remote.delayOnError:3}")
+    @Value("${delayOnError:3}")
     long initialDelay;
     long maxDelay = 20;
     int maxRetries = 3;
