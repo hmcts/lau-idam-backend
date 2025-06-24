@@ -393,7 +393,7 @@ dependencies {
     testImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity, {
       exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
     }
-    testImplementation 'org.jetbrains.kotlin:kotlin-stdlib:2.1.21'
+    testImplementation 'org.jetbrains.kotlin:kotlin-stdlib:2.2.0'
     testImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
     testImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
     testImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
