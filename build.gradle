@@ -378,7 +378,7 @@ dependencies {
     implementation group: "com.networknt", name: "json-schema-validator", version: "1.5.7"
     implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
     implementation group: 'org.springframework.boot', name: 'spring-boot-devtools'
-    implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.5'
+    implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.6.0'
     implementation group: 'org.yaml', name: 'snakeyaml', version: '2.4'
     implementation group: 'commons-net', name: 'commons-net', version: '3.11.1'
     implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
