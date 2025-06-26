@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.laubackend.idam.bdd;
 
+import com.github.tomakehurst.wiremock.client.WireMock;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
@@ -125,53 +126,28 @@ public class LogonAuditPostSteps extends AbstractSteps {
         }
     }
 
-    @When("I POST 10 request to {string} endpoint with s2s with simulate failures")
-    public void requestMultiplePostLogonAuditEndpointWithFailures(final String path) throws Exception {
+    @When("I POST a request to {string} endpoint with s2s with simulate failure")
+    public void requestPostLogonAuditEndpointWithFailure(final String path) throws Exception {
+        WIREMOCK.getWireMockServer().resetRequests();
+        CompletableFuture<Response> future = CompletableFuture.supplyAsync(() -> {
+            String threadName = Thread.currentThread().getName();
+            ScenarioContext.set(THREAD_NAME, threadName);
+            return restHelper.postObjectWithBadServiceHeader(
+                    getLogonAudit(), baseUrl() + path);
+        }).exceptionally(ex -> {
+            ScenarioContext.set("error", ex.getMessage());
+            return null; // Return null for failed requests
+        });
 
-        List<CompletableFuture<Response>> futures = new ArrayList<>();
-        final int numRequests = 10;
-
-        for (int i = 0; i < numRequests; i++) {
-            final int idx = i;
-            futures.add(CompletableFuture.supplyAsync(() -> {
-                String threadName = Thread.currentThread().getName();
-                ScenarioContext.set(THREAD_NAME + idx, threadName);
-                if (idx == FAILURE_ID) {
-                    return restHelper.postObjectWithBadServiceHeader(
-                        getLogonAudit(), baseUrl() + path);
-                } else {
-                    return restHelper.postObject(getLogonAudit(), baseUrl() + path);
-                }
-            }).exceptionally(ex -> {
-                ScenarioContext.set("error" + idx, ex.getMessage());
-                return null; // Return null for failed requests
-            }));
-        }
-
-        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
-
-        for (int i = 0; i < numRequests; i++) {
-            CompletableFuture<Response> future = futures.get(i);
-            if (!future.isCompletedExceptionally()) {
-                Response response = future.get();
-                String threadName = ScenarioContext.get(THREAD_NAME + i);
-                assertThat(threadName).isNotEqualTo("main");
-                ScenarioContext.set(RESPONSE + i, response);
-            }
-        }
+        Response response = future.get();
+        ScenarioContext.set(RESPONSE, response);
     }
 
-    @Then("logon response body is returned for passed requests with some failures")
-    public void logonResponseBodyIsReturnedForAllTenRequestsWithFailures() {
-        for (int i = 0; i < 10; i++) {
-            Response response = ScenarioContext.get(RESPONSE + i);
-            if (response != null) {
-                if (i == FAILURE_ID) {
-                    assertThat(response.getStatusCode()).isEqualTo(FORBIDDEN.value());
-                } else {
-                    assertThat(response.getStatusCode()).isEqualTo(CREATED.value());
-                }
-            }
-        }
+    @Then("it should try making retry call for authorisation details")
+    public void tryToRetryDetailsCall() {
+        Response response = ScenarioContext.get(RESPONSE);
+        assertThat(response.getStatusCode()).isEqualTo(FORBIDDEN.value());
+        WIREMOCK.getWireMockServer().verify(3, WireMock.getRequestedFor(
+            WireMock.urlPathEqualTo("/details")));
     }
 }
