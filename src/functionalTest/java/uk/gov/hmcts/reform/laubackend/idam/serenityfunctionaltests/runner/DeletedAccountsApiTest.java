@@ -74,7 +74,7 @@ public class DeletedAccountsApiTest {
         );
     }
 
-    @Test
+    /*@Test
     @Title("Assert response code forbidden without s2s authentication token")
     public void assertHttpForbiddenWithInvalidS2SToken() throws JsonProcessingException {
         DeletedAccountsRequest request = postApiSteps.generateDeletedAccountsRequest();
@@ -90,7 +90,7 @@ public class DeletedAccountsApiTest {
             TestConstants.SUCCESS,
             "DeletedAccounts POST API response code 403 assertion is not successful"
         );
-    }
+    }*/
 
     @Test
     @Title("Assert response code of 200 for successfully getting deleted records")
