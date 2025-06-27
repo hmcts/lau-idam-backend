@@ -81,7 +81,7 @@ public class DeletedAccountsApiTest {
 
         Response response = postApiSteps.whenThePostServiceIsInvoked(
             TestConstants.DELETED_ACCOUNTS_ENDPOINT,
-            "Bearer something",
+            "BadServiceToken",
             request
         );
         String successOrFailure = postApiSteps.thenAForbiddenResposeIsReturned(response);
