@@ -78,17 +78,12 @@ public class DeletedAccountsApiTest {
     @Title("Assert response code forbidden without s2s authentication token")
     public void assertHttpForbiddenWithInvalidS2SToken() throws JsonProcessingException {
         DeletedAccountsRequest request = postApiSteps.generateDeletedAccountsRequest();
-        String authServiceToken = postApiSteps.givenAValidServiceTokenIsGenerated(
-            TestConstants.DISPOSER_USER_SERVICE_NAME);
-
-        //Creating Invalid token in same format by just replacing one character
-        StringBuilder tokenBuilder = new StringBuilder(authServiceToken);
-        tokenBuilder.setCharAt(14, 'y');
-        String invalidToken  = tokenBuilder.toString();
+        String inavlidServiceToken = postApiSteps.givenAValidServiceTokenIsGenerated(
+            TestConstants.INVALID_SERVICE_NAME);
 
         Response response = postApiSteps.whenThePostServiceIsInvoked(
             TestConstants.DELETED_ACCOUNTS_ENDPOINT,
-            invalidToken,
+            inavlidServiceToken,
             request
         );
         String successOrFailure = postApiSteps.thenAForbiddenResposeIsReturned(response);
