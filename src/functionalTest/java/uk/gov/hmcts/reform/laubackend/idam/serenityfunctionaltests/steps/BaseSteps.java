@@ -39,10 +39,10 @@ public class BaseSteps {
 
         final RequestSpecBuilder specBuilder = new RequestSpecBuilder()
                 .setConfig(config)
-                .setBaseUri(PROPERTY_READER.getPropertyValueFromEnv("api.url"))
+                .setBaseUri("http://lau-idam-backend-aat.service.core-compute-aat.internal")
                 .setRelaxedHTTPSValidation();
 
-        LOGGER.info("Using base API URL: " + PROPERTY_READER.getPropertyValueFromEnv("api.url"));
+        LOGGER.info("Using base API URL: " + "http://lau-idam-backend-aat.service.core-compute-aat.internal");
         if (proxyHost != null) {
             specBuilder.setProxy(proxyHost, proxyPort);
         }
