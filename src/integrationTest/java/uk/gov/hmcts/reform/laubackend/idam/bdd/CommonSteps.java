@@ -51,6 +51,7 @@ public class CommonSteps extends AbstractSteps {
 
     @When("I request GET {string} endpoint without mandatory params")
     public void requestWithoutMandatoryParams(final String path) {
+        WIREMOCK.getWireMockServer().resetRequests();
         response = restHelper.getResponse(getUrl(path), Map.of("nonExistingParam", "nonExistingValue"));
     }
 
@@ -61,6 +62,7 @@ public class CommonSteps extends AbstractSteps {
 
     @When("And I GET {string} without authorization header")
     public void searchWithoutAuthorizationHeader(final String path) {
+        WIREMOCK.getWireMockServer().resetRequests();
         response = getResponseWithoutAuthorizationHeader(getUrl(path));
     }
 
