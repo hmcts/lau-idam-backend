@@ -15,11 +15,13 @@ import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.steps.Deleted
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants;
 
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.helper.DatabaseCleaner.deleteDeletedAccountRecord;
 
 
 @RunWith(SerenityRunner.class)
+@SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
 public class DeletedAccountsApiTest {
 
     @Steps
@@ -76,16 +78,22 @@ public class DeletedAccountsApiTest {
 
     @Test
     @Title("Assert response code forbidden without s2s authentication token")
-    public void assertHttpForbiddenWithInvalidS2SToken() throws JsonProcessingException {
+    public void assertHttpForbiddenWithInvalidS2SToken()  {
         DeletedAccountsRequest request = postApiSteps.generateDeletedAccountsRequest();
-        String invalidServiceToken = postApiSteps.givenAValidServiceTokenIsGenerated(
-            TestConstants.INVALID_SERVICE_NAME);
+        CompletableFuture<Response> futureResponse = CompletableFuture.supplyAsync(() -> {
+            try {
+                return postApiSteps.whenThePostServiceIsInvoked(
+                   TestConstants.DELETED_ACCOUNTS_ENDPOINT,
+                   "Bearer something",
+                   request
+               );
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
-        Response response = postApiSteps.whenThePostServiceIsInvoked(
-            TestConstants.DELETED_ACCOUNTS_ENDPOINT,
-            invalidServiceToken,
-            request
-        );
+        Response response = futureResponse.join(); // Waits for the response to complete
+
         String successOrFailure = postApiSteps.thenAForbiddenResposeIsReturned(response);
         Assert.assertEquals(
             successOrFailure,
