@@ -20,7 +20,6 @@ import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.helper
 
 
 @RunWith(SerenityRunner.class)
-@SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
 public class DeletedAccountsApiTest {
 
     @Steps
@@ -85,7 +84,6 @@ public class DeletedAccountsApiTest {
             "Bearer something",
             request
         );
-        System.out.println("response: " + response);
         String successOrFailure = postApiSteps.thenAForbiddenResposeIsReturned(response);
         Assert.assertEquals(
             successOrFailure,
