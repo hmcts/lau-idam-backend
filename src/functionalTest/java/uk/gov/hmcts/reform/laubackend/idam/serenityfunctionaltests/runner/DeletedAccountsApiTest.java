@@ -78,10 +78,12 @@ public class DeletedAccountsApiTest {
     @Title("Assert response code forbidden without s2s authentication token")
     public void assertHttpForbiddenWithInvalidS2SToken() throws JsonProcessingException {
         DeletedAccountsRequest request = postApiSteps.generateDeletedAccountsRequest();
+        String invalidServiceToken = postApiSteps.givenAValidServiceTokenIsGenerated(
+            TestConstants.INVALID_SERVICE_NAME);
 
         Response response = postApiSteps.whenThePostServiceIsInvoked(
             TestConstants.DELETED_ACCOUNTS_ENDPOINT,
-            "Bearer something",
+            invalidServiceToken,
             request
         );
         String successOrFailure = postApiSteps.thenAForbiddenResposeIsReturned(response);
@@ -91,7 +93,6 @@ public class DeletedAccountsApiTest {
             "DeletedAccounts POST API response code 403 assertion is not successful"
         );
     }
-
 
     @Test
     @Title("Assert response code of 200 for successfully getting deleted records")
