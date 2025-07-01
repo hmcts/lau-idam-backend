@@ -14,3 +14,9 @@ Feature: The application's POST logon audit endpoint
     Given LAU IdAm backend application is healthy
     When I POST "/audit/logon" endpoint with invalid body parameter using s2s
     Then http bad request response is returned for POST logon
+
+  Scenario: The backend is to process IdAM logons POST requests with invalid s2s
+    Given LAU IdAm backend application is healthy
+    When I POST "/audit/logon" endpoint with invalid s2s
+    Then http forbidden response is returned for POST logon
+    And it should try making retry call for authorisation details
