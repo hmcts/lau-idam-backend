@@ -5,7 +5,6 @@ public final class TestConstants {
 
     public static final String FRONTEND_SERVICE_NAME = "lau_frontend";
     public static final String DISPOSER_USER_SERVICE_NAME = "disposer-idam-user";
-    public static final String INVALID_SERVICE_NAME = "invalid-service";
 
     /*Logon endPoint*/
     public static final String LOGON_ENDPOINT = "/audit/logon";
