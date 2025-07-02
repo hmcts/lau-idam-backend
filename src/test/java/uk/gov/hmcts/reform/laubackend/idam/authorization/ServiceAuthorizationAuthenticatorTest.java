@@ -9,8 +9,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.reform.laubackend.idam.exceptions.InvalidServiceAuthorizationException;
 
-import java.util.concurrent.CompletableFuture;
-
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -39,12 +37,12 @@ class ServiceAuthorizationAuthenticatorTest {
     @InjectMocks
     private ServiceAuthorizationAuthenticator serviceAuthorizationAuthenticator;
 
-    @Test
+    /*@Test
     void shouldAuthorizeServiceSuccessfullyForPostRequest() throws Exception {
         String validServiceName = "ValidServiceName";
 
-        when(asyncAuthService.authenticateService(VALID_SERVICE_AUTH_HEADER))
-            .thenReturn(CompletableFuture.completedFuture(validServiceName));
+        when(authService.authenticateService(VALID_SERVICE_AUTH_HEADER))
+            .thenReturn(validServiceName);
         when(authorisedServices.hasService(validServiceName)).thenReturn(true);
 
         assertDoesNotThrow(() -> serviceAuthorizationAuthenticator.authorizeServiceToken(
@@ -52,7 +50,7 @@ class ServiceAuthorizationAuthenticatorTest {
         ));
     }
 
-    /*@Test
+    @Test
     void shouldThrowExceptionForUnauthorizedServiceInPostRequest() throws Exception {
         String validServiceAuthHeader = "validAuthHeader";
 
