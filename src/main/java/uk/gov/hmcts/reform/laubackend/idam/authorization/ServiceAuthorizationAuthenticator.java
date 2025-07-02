@@ -20,7 +20,7 @@ public class ServiceAuthorizationAuthenticator {
 
     private final AuthorisedServices authorisedServices;
 
-    private final AsyncAuthService asyncAuthService;
+    //private final AsyncAuthService asyncAuthService;
 
     private final HttpPostRecordHolder httpPostRecordHolder;
 
