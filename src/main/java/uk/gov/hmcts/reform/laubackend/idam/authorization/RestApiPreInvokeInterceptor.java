@@ -33,25 +33,39 @@ public class RestApiPreInvokeInterceptor implements HandlerInterceptor {
             serviceAuthorizationAuthenticator.authorizeServiceToken(request);
 
             if (request.getMethod().equalsIgnoreCase(GET.name())
-                    || request.getMethod().equalsIgnoreCase(DELETE.name())) {
+                || request.getMethod().equalsIgnoreCase(DELETE.name())) {
                 authorizationAuthenticator.authorizeAuthorizationToken(request);
             }
 
         } catch (final InvalidServiceAuthorizationException exception) {
-            log.error("Service authorization token failed due to error - {}",
-                    exception.getMessage(),
-                    exception);
+            log.error(
+                "Token validation failed due to the following exception - {}",
+                exception.getMessage(),
+                exception
+            );
             response.sendError(SC_FORBIDDEN, exception.getMessage());
 
             return false;
 
         } catch (final InvalidAuthorizationException exception) {
-            log.error("Authorization token failed due to error - {}",
-                    exception.getMessage(),
-                    exception);
+            log.error(
+                "Authorization token failed due to error - {}",
+                exception.getMessage(),
+                exception
+            );
             response.sendError(SC_UNAUTHORIZED, exception.getMessage());
 
             return false;
+        } catch (final Exception exception) {
+            log.error(
+                "Service authorization token failed due to error - {}",
+                exception.getMessage(),
+                exception
+            );
+            response.sendError(SC_FORBIDDEN, exception.getMessage());
+
+            return false;
+
         }
         return true;
     }
