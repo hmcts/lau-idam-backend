@@ -37,7 +37,7 @@ public class ServiceAuthorizationAuthenticator {
         }
     }
 
-    private void handlePostRequest(String serviceAuthHeader) {
+    /*private void handlePostRequest(String serviceAuthHeader) {
         try {
             String serviceName = asyncAuthService.authenticateService(serviceAuthHeader).get();
             validateServiceName(serviceName);
@@ -47,7 +47,7 @@ public class ServiceAuthorizationAuthenticator {
         } catch (Exception e) {
             throw new InvalidServiceAuthorizationException("Service authentication failed: " + e.getMessage());
         }
-    }
+    }*/
 
     private void handleOtherRequest(String serviceAuthHeader) {
         try {
