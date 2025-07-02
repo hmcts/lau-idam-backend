@@ -11,8 +11,6 @@ import uk.gov.hmcts.reform.laubackend.idam.exceptions.InvalidServiceAuthorizatio
 
 import java.util.concurrent.CompletableFuture;
 
-import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
