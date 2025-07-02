@@ -30,7 +30,7 @@ public class ServiceAuthorizationAuthenticator {
 
         if (POST_METHOD.equalsIgnoreCase(method)) {
             httpPostRecordHolder.setPost(true);
-            handlePostRequest(serviceAuthHeader);
+            handleOtherRequest(serviceAuthHeader);
         } else {
             httpPostRecordHolder.setPost(false);
             handleOtherRequest(serviceAuthHeader);
