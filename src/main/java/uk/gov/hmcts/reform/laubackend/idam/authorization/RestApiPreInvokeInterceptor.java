@@ -62,7 +62,7 @@ public class RestApiPreInvokeInterceptor implements HandlerInterceptor {
                 exception.getMessage(),
                 exception
             );
-            response.sendError(SC_FORBIDDEN, exception.getMessage());
+            response.sendError(SC_UNAUTHORIZED, exception.getMessage());
 
             return false;
 
