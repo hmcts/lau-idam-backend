@@ -12,7 +12,7 @@ public class RetryableFeignConfig {
 
     @Value("${delayOnError:3}")
     long initialDelay;
-    long maxDelay = 20;
+    long maxDelay = 10;
     int maxRetries = 3;
 
     @Bean
