@@ -8,7 +8,8 @@ import java.util.Map;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.CommonConstants.AUTHORISATION_HEADER;
-import static uk.gov.hmcts.reform.laubackend.idam.helper.RestConstants.AUTH_TOKEN;
+import static uk.gov.hmcts.reform.laubackend.idam.helper.RestConstants.BAD_S2S_TOKEN;
+import static uk.gov.hmcts.reform.laubackend.idam.helper.RestConstants.GOOD_TOKEN;
 import static uk.gov.hmcts.reform.laubackend.idam.helper.RestConstants.SERVICE_AUTHORISATION_HEADER;
 
 @SuppressWarnings({"unchecked", "PMD.AvoidDuplicateLiterals"})
@@ -32,7 +33,7 @@ public class RestHelper {
                 .relaxedHTTPSValidation()
                 .baseUri(path)
                 .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
-                .header(SERVICE_AUTHORISATION_HEADER, "Bearer " + AUTH_TOKEN)
+                .header(SERVICE_AUTHORISATION_HEADER, "Bearer " + GOOD_TOKEN)
                 .when()
                 .get()
                 .andReturn();
@@ -46,8 +47,8 @@ public class RestHelper {
                 .baseUri(path)
                 .queryParams(queryParams)
                 .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
-                .header(SERVICE_AUTHORISATION_HEADER, "Bearer " + AUTH_TOKEN)
-                .header(AUTHORISATION_HEADER, "Bearer " + AUTH_TOKEN)
+                .header(SERVICE_AUTHORISATION_HEADER, "Bearer " + GOOD_TOKEN)
+                .header(AUTHORISATION_HEADER, "Bearer " + GOOD_TOKEN)
                 .when()
                 .get()
                 .andReturn();
@@ -61,7 +62,7 @@ public class RestHelper {
                 .baseUri(path)
                 .body(object)
                 .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
-                .header(SERVICE_AUTHORISATION_HEADER, "Bearer " + AUTH_TOKEN)
+                .header(SERVICE_AUTHORISATION_HEADER, "Bearer " + GOOD_TOKEN)
                 .when()
                 .post()
                 .andReturn();
@@ -76,8 +77,8 @@ public class RestHelper {
                 .baseUri(path)
                 .queryParam(parameterName, parameterValue)
                 .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
-                .header(SERVICE_AUTHORISATION_HEADER, "Bearer " + AUTH_TOKEN)
-                .header(AUTHORISATION_HEADER, "Bearer " + AUTH_TOKEN)
+                .header(SERVICE_AUTHORISATION_HEADER, "Bearer " + GOOD_TOKEN)
+                .header(AUTHORISATION_HEADER, "Bearer " + GOOD_TOKEN)
                 .when()
                 .delete()
                 .andReturn();
@@ -89,7 +90,7 @@ public class RestHelper {
                 .relaxedHTTPSValidation()
                 .baseUri(path)
                 .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
-                .header(AUTHORISATION_HEADER, "Bearer " + AUTH_TOKEN)
+                .header(AUTHORISATION_HEADER, "Bearer " + GOOD_TOKEN)
                 .when()
                 .delete()
                 .andReturn();
@@ -101,9 +102,22 @@ public class RestHelper {
                 .relaxedHTTPSValidation()
                 .baseUri(path)
                 .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
-                .header(SERVICE_AUTHORISATION_HEADER, "Bearer " + AUTH_TOKEN)
+                .header(SERVICE_AUTHORISATION_HEADER, "Bearer " + GOOD_TOKEN)
                 .when()
                 .delete()
                 .andReturn();
+    }
+
+    public Response postObjectWithBadServiceHeader(final Object object, final String path) {
+        return RestAssured
+            .given()
+            .relaxedHTTPSValidation()
+            .baseUri(path)
+            .body(object)
+            .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+            .header(SERVICE_AUTHORISATION_HEADER, "Bearer " + BAD_S2S_TOKEN)
+            .when()
+            .post()
+            .andReturn();
     }
 }

@@ -8,11 +8,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import uk.gov.hmcts.reform.authorisation.validators.AuthTokenValidator;
 import uk.gov.hmcts.reform.idam.client.IdamClient;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 import uk.gov.hmcts.reform.laubackend.idam.exceptions.InvalidAuthorizationException;
 import uk.gov.hmcts.reform.laubackend.idam.exceptions.InvalidServiceAuthorizationException;
+import uk.gov.hmcts.reform.laubackend.idam.feign.ServiceAuthorizationFeignClient;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -33,19 +33,19 @@ class AuthServiceTest {
     private AuthService authService;
 
     @Mock
-    private AuthTokenValidator authTokenValidator;
+    private ServiceAuthorizationFeignClient serviceAuthorizationFeignClient;
 
     @Mock
     private IdamClient idamClient;
 
     @BeforeEach
     void setUp() {
-        this.authService = new AuthService(authTokenValidator, idamClient);
+        this.authService = new AuthService(serviceAuthorizationFeignClient, idamClient);
     }
 
     @Test
     void testShouldGetServiceAuthName() {
-        when(authTokenValidator.getServiceName(LAU_IDAM_BACKEND_SERVICE_AUTH))
+        when(serviceAuthorizationFeignClient.getServiceName(LAU_IDAM_BACKEND_SERVICE_AUTH))
                 .thenReturn(LAU_IDAM_BACKEND_SERVICE_NAME);
 
         final String actualServiceName = authService.authenticateService(LAU_IDAM_BACKEND_SERVICE_AUTH);

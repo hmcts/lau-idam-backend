@@ -30,7 +30,8 @@ import static uk.gov.hmcts.reform.laubackend.idam.repository.UserDeletionAuditRe
 @TestPropertySource(properties = {
     "spring.jpa.hibernate.ddl-auto=update",
     "spring.liquibase.enabled=false",
-    "spring.flyway.enabled=true"
+    "spring.flyway.enabled=true",
+    "idam.s2s-auth.url=http://localhost:4502"
 })
 @Import({TimestampUtil.class})
 class UserDeletionRepositoryStartEndTimeTest {
