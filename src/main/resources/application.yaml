@@ -81,7 +81,7 @@ idam:
 authorised.services: idam_api,lau_frontend,disposer-idam-user
 authorised.roles: cft-audit-investigator,disposer-idam-user
 db.allow.delete.record: ${DB_ALLOW_DELETE_RECORD:true}
-
+delayOnError: 10
 azure:
   application-insights:
     instrumentation-key: ${lau.AppInsightsInstrumentationKey:00000000-0000-0000-0000-000000000000}
