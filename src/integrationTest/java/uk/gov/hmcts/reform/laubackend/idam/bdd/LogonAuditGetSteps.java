@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.laubackend.idam.bdd;
 
+import com.github.tomakehurst.wiremock.client.WireMock;
 import com.google.gson.Gson;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
@@ -161,5 +162,11 @@ public class LogonAuditGetSteps extends AbstractSteps {
                 .isEqualTo(logonLogPostRequest.getLogonLog().getIpAddress());
         assertThat(logonLogGetResponse.getLogonLog().get(0).getLoginState())
                 .isEqualTo(logonLogPostRequest.getLogonLog().getLoginState());
+    }
+
+    @And("authorization End Point is called only once")
+    public void assertErrorResponse() {
+        WIREMOCK.getWireMockServer().verify(1, WireMock.getRequestedFor(
+            WireMock.urlPathEqualTo("/details")));
     }
 }
