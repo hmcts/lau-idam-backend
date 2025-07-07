@@ -20,7 +20,7 @@ public class FeignErrorDecoder implements feign.codec.ErrorDecoder {
         int status = response.status();
         FeignException exception = FeignException.errorStatus(methodKey, response);
         log.info("Feign response status: {}, message - {}", status, exception.getMessage());
-        if (response.status() >= 400
+        if (response.status() == 503
             && "GET".equalsIgnoreCase(response.request().httpMethod().name())
             && response.request().url().endsWith("/details")
             && httpPostRecordHolder.isPost()) {

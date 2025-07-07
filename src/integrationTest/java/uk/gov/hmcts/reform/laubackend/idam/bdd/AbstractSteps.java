@@ -38,7 +38,7 @@ public class AbstractSteps {
                          .withHeader("Authorization", containing(BAD_S2S_TOKEN))
                          .willReturn(aResponse()
                                          .withHeader(CONTENT_TYPE_HEADER, JSON_RESPONSE)
-                                         .withStatus(401)));
+                                         .withStatus(503)));
 
         WIREMOCK.getWireMockServer().stubFor(get(urlPathMatching("/o/userinfo"))
                 .willReturn(aResponse()

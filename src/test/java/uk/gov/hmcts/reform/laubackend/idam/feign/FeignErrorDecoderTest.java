@@ -18,7 +18,7 @@ import java.util.Collections;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-@SuppressWarnings({"PMD.CloseResource"})
+@SuppressWarnings({"PMD.CloseResource","PMD.TooManyMethods"})
 @ExtendWith(MockitoExtension.class)
 class FeignErrorDecoderTest {
 
@@ -49,16 +49,24 @@ class FeignErrorDecoderTest {
     }
 
     @Test
-    void shouldReturnRetryableExceptionForGetRequestWithDetailsUrlAndStatus400() {
+    void shouldReturnFeignExceptionForGetRequestWithDetailsUrlAndStatus400() {
         Response response = buildResponse(401, GET_METHOD, DETAILS_URL);
-        when(httpPostRecordHolder.isPost()).thenReturn(true);
         Exception ex = feignErrorDecoder.decode(METHOD_KEY, response);
-        assertThat(ex).isInstanceOf(RetryableException.class);
+        assertThat(ex).isInstanceOf(FeignException.class)
+            .isNotInstanceOf(RetryableException.class);
     }
 
     @Test
     void shouldReturnRetryableExceptionForGetRequestWithDetailsUrlAndStatus500() {
         Response response = buildResponse(500, GET_METHOD, DETAILS_URL);
+        Exception ex = feignErrorDecoder.decode(METHOD_KEY, response);
+        assertThat(ex).isInstanceOf(FeignException.class)
+            .isNotInstanceOf(RetryableException.class);
+    }
+
+    @Test
+    void shouldReturnRetryableExceptionForGetRequestWithDetailsUrlAndStatus503() {
+        Response response = buildResponse(503, GET_METHOD, DETAILS_URL);
         when(httpPostRecordHolder.isPost()).thenReturn(true);
         Exception ex = feignErrorDecoder.decode(METHOD_KEY, response);
         assertThat(ex).isInstanceOf(RetryableException.class);
