@@ -79,9 +79,9 @@ public class LogonAuditPostSteps extends AbstractSteps {
     }
 
     @When("I POST {string} endpoint with invalid s2s")
-    public void requestPostLogonAuditEndpointWithFailure(final String path) {
+    public void requestPostLogonAuditEndpointWith503Failure(final String path) {
         WIREMOCK.getWireMockServer().resetRequests();
-        final Response response = restHelper.postObjectWithBadServiceHeader(
+        final Response response = restHelper.postObjectWithServiceUnavailableHeader(
                 getLogonAudit(), baseUrl() + path);
         httpStatusResponseCode = response.getStatusCode();
     }
@@ -94,6 +94,21 @@ public class LogonAuditPostSteps extends AbstractSteps {
     @And("it should try making retry call for authorisation details")
     public void tryToRetryDetailsCall() {
         WIREMOCK.getWireMockServer().verify(3, WireMock.getRequestedFor(
+            WireMock.urlPathEqualTo("/details")));
+    }
+
+    @When("I POST {string} endpoint with invalid s2s 401 failure")
+    public void requestPostLogonAuditEndpointWith401Failure(final String path) {
+        WIREMOCK.getWireMockServer().resetRequests();
+        final Response response = restHelper.postObjectWithBadServiceHeader(
+            getLogonAudit(), baseUrl() + path);
+        httpStatusResponseCode = response.getStatusCode();
+    }
+
+
+    @And("it should not try making retry call for authorisation details")
+    public void notRetryDetailsCall() {
+        WIREMOCK.getWireMockServer().verify(1, WireMock.getRequestedFor(
             WireMock.urlPathEqualTo("/details")));
     }
 }
