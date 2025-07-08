@@ -8,7 +8,10 @@ import java.util.Map;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.CommonConstants.AUTHORISATION_HEADER;
-import static uk.gov.hmcts.reform.laubackend.idam.helper.RestConstants.*;
+import static uk.gov.hmcts.reform.laubackend.idam.helper.RestConstants.BAD_S2S_TOKEN;
+import static uk.gov.hmcts.reform.laubackend.idam.helper.RestConstants.GOOD_TOKEN;
+import static uk.gov.hmcts.reform.laubackend.idam.helper.RestConstants.SERVICE_AUTHORISATION_HEADER;
+import static uk.gov.hmcts.reform.laubackend.idam.helper.RestConstants.SERVICE_UNAVAILABLE_TOKEN;
 
 @SuppressWarnings({"unchecked", "PMD.AvoidDuplicateLiterals"})
 public class RestHelper {
