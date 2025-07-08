@@ -24,7 +24,6 @@ public class ServiceAuthorizationAuthenticator {
     public void authorizeServiceToken(final HttpServletRequest request) {
         try {
             final String serviceAuthHeader = request.getHeader(SERVICE_AUTHORISATION_HEADER);
-            final String serviceName = authService.authenticateService(serviceAuthHeader);
             String method = request.getMethod();
 
             if (POST_METHOD.equalsIgnoreCase(method)) {
@@ -33,6 +32,7 @@ public class ServiceAuthorizationAuthenticator {
                 httpPostRecordHolder.setPost(false);
             }
 
+            final String serviceName = authService.authenticateService(serviceAuthHeader);
             if (!authorisedServices.hasService(serviceName)) {
                 log.info("Service {} has NOT been authorised!", serviceName);
                 throw new InvalidServiceAuthorizationException("Unable to authenticate service name.");

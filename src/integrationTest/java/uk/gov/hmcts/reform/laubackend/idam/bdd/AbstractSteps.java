@@ -13,6 +13,7 @@ import static feign.form.ContentProcessor.CONTENT_TYPE_HEADER;
 import static java.util.List.of;
 import static uk.gov.hmcts.reform.laubackend.idam.bdd.WiremokInstantiator.INSTANCE;
 import static uk.gov.hmcts.reform.laubackend.idam.helper.RestConstants.BAD_S2S_TOKEN;
+import static uk.gov.hmcts.reform.laubackend.idam.helper.RestConstants.SERVICE_UNAVAILABLE_TOKEN;
 
 public class AbstractSteps {
     private static final String JSON_RESPONSE = "application/json;charset=UTF-8";
@@ -36,6 +37,12 @@ public class AbstractSteps {
 
         WIREMOCK.getWireMockServer().stubFor(get(urlPathMatching("/details"))
                          .withHeader("Authorization", containing(BAD_S2S_TOKEN))
+                         .willReturn(aResponse()
+                                         .withHeader(CONTENT_TYPE_HEADER, JSON_RESPONSE)
+                                         .withStatus(401)));
+
+        WIREMOCK.getWireMockServer().stubFor(get(urlPathMatching("/details"))
+                         .withHeader("Authorization", containing(SERVICE_UNAVAILABLE_TOKEN))
                          .willReturn(aResponse()
                                          .withHeader(CONTENT_TYPE_HEADER, JSON_RESPONSE)
                                          .withStatus(503)));
