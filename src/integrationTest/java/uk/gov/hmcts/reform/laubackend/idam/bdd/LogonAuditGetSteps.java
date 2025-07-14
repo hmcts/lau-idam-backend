@@ -22,8 +22,7 @@ import static uk.gov.hmcts.reform.laubackend.idam.helper.RestConstants.END_TIME_
 import static uk.gov.hmcts.reform.laubackend.idam.helper.RestConstants.START_TIME;
 import static uk.gov.hmcts.reform.laubackend.idam.helper.RestConstants.START_TIME_PARAMETER;
 
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.JUnit4TestShouldUseBeforeAnnotation",
-    "PMD.UseObjectForClearerAPI"})
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.UseObjectForClearerAPI"})
 public class LogonAuditGetSteps extends AbstractSteps {
 
     private String logonLogPostResponseBody;

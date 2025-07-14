@@ -64,7 +64,6 @@ class IdamLogonAuditRepositoryTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
     void shouldReturnInDescendingOrderByTimestamp() {
         final Page<IdamLogonAudit> idamLogon = idamLogonAuditFindLogonRepository
             .findIdamLogon(null, null, valueOf(now()),

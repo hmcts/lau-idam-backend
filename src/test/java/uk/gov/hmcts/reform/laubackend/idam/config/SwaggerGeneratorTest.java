@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
  */
 @SpringBootTest
 @TestPropertySource(properties = {"idam.api.url = localhost:5000", "idam.s2s-auth.url = localhost:4502"})
-@SuppressWarnings({"PMD.UnusedPrivateField", "PMD.UnitTestShouldIncludeAssert"})
+@SuppressWarnings({"PMD.UnitTestShouldIncludeAssert"})
 class SwaggerGeneratorTest {
 
     private MockMvc mvc;
@@ -59,7 +59,6 @@ class SwaggerGeneratorTest {
 
     @DisplayName("Generate swagger documentation")
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     void generateDocs() throws Exception {
         byte[] specs = mvc.perform(get("/v2/api-docs"))
                 .andExpect(status().isOk())

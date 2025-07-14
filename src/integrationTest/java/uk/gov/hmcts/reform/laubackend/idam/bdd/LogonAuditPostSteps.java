@@ -18,7 +18,6 @@ import static uk.gov.hmcts.reform.laubackend.idam.helper.LogonAuditPostHelper.ge
 import static uk.gov.hmcts.reform.laubackend.idam.helper.LogonAuditPostHelper.getLogonAuditWithMissingMandatoryBodyParameter;
 import static uk.gov.hmcts.reform.laubackend.idam.helper.RestHelper.postObject;
 
-@SuppressWarnings({"PMD.JUnit4TestShouldUseBeforeAnnotation"})
 public class LogonAuditPostSteps extends AbstractSteps {
 
     private String logonAuditPostResponseBody;

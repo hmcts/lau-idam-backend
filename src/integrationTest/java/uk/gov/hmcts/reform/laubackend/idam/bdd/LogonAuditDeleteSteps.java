@@ -19,7 +19,6 @@ import static uk.gov.hmcts.reform.laubackend.idam.helper.RestConstants.END_TIME_
 import static uk.gov.hmcts.reform.laubackend.idam.helper.RestConstants.START_TIME;
 import static uk.gov.hmcts.reform.laubackend.idam.helper.RestConstants.START_TIME_PARAMETER;
 
-@SuppressWarnings({"PMD.JUnit4TestShouldUseBeforeAnnotation"})
 public class LogonAuditDeleteSteps extends AbstractSteps {
 
     private int httpStatusResponseCode;

@@ -33,7 +33,6 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.util.ReflectionTestUtils.setField;
 
 @ExtendWith(MockitoExtension.class)
-@SuppressWarnings({"PMD.UnusedPrivateField"})
 class LogonLogServiceTest {
 
     @Mock

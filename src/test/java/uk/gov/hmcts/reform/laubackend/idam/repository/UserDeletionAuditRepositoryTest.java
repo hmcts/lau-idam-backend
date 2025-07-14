@@ -83,7 +83,6 @@ class UserDeletionAuditRepositoryTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
     void shouldReturnResultsInDescOrderByTimestamp() {
         final Page<UserDeletionAudit> userDeletion = userDeletionAuditFindRepository
             .findUserDeletion(
