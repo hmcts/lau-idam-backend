@@ -33,7 +33,6 @@ import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.POST
 import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.POST_LOGON_REQUEST_INVALID_REQUEST_EXCEPTION;
 
 @ExtendWith(MockitoExtension.class)
-@SuppressWarnings("PMD.LawOfDemeter")
 class IdamLogonAuditControllerTest {
 
     @Mock

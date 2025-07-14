@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.CyclomaticComplexity"})
+@SuppressWarnings({"PMD.CyclomaticComplexity"})
 public class LogOnGetApiSteps extends BaseSteps {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LogOnGetApiSteps.class);
@@ -53,7 +53,7 @@ public class LogOnGetApiSteps extends BaseSteps {
 
     }
 
-    @SuppressWarnings({"PMD.DataflowAnomalyAnalysis", "PMD.AvoidLiteralsInIfCondition"})
+    @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition"})
     @Step("Then the GET Logon response params match the input")
     public String thenTheGetLogonResponseParamsMatchesTheInput(Map<String, String> inputQueryParamMap,
                                                                     LogOnGetResponseVO logOnGetResponseVO) {

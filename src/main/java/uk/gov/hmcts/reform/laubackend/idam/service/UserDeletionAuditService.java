@@ -28,7 +28,6 @@ import static org.springframework.data.domain.PageRequest.of;
 
 @Service
 @RequiredArgsConstructor
-@SuppressWarnings("PMD.LawOfDemeter")
 public class UserDeletionAuditService {
 
     private final TimestampUtil timestampUtil;
