@@ -73,6 +73,22 @@ class FeignErrorDecoderTest {
     }
 
     @Test
+    void shouldReturnRetryableExceptionForGetRequestWithDetailsUrlAndStatus502() {
+        Response response = buildResponse(502, GET_METHOD, DETAILS_URL);
+        when(httpPostRecordHolder.isPost()).thenReturn(true);
+        Exception ex = feignErrorDecoder.decode(METHOD_KEY, response);
+        assertThat(ex).isInstanceOf(RetryableException.class);
+    }
+
+    @Test
+    void shouldReturnRetryableExceptionForGetRequestWithDetailsUrlAndStatus504() {
+        Response response = buildResponse(504, GET_METHOD, DETAILS_URL);
+        when(httpPostRecordHolder.isPost()).thenReturn(true);
+        Exception ex = feignErrorDecoder.decode(METHOD_KEY, response);
+        assertThat(ex).isInstanceOf(RetryableException.class);
+    }
+
+    @Test
     void shouldReturnFeignExceptionForGetRequestWithoutDetailsUrl() {
         Response response = buildResponse(403, GET_METHOD, "http://localhost/service/validate");
         Exception ex = feignErrorDecoder.decode(METHOD_KEY, response);
@@ -105,8 +121,8 @@ class FeignErrorDecoderTest {
     }
 
     @Test
-    void shouldReturnFeignExceptionForGetRequestWithDetailsUrlAndStatus399() {
-        Response response = buildResponse(399, GET_METHOD, DETAILS_URL);
+    void shouldReturnFeignExceptionForGetRequestWithDetailsUrlAndStatus308() {
+        Response response = buildResponse(308, GET_METHOD, DETAILS_URL);
         Exception ex = feignErrorDecoder.decode(METHOD_KEY, response);
         assertThat(ex).isInstanceOf(FeignException.class)
             .isNotInstanceOf(RetryableException.class);
