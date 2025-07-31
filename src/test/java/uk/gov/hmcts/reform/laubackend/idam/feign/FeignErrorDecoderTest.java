@@ -74,7 +74,7 @@ class FeignErrorDecoderTest {
 
     @Test
     void shouldReturnRetryableExceptionForGetRequestWithDetailsUrlAndStatus502() {
-        Response response = buildResponse(503, GET_METHOD, DETAILS_URL);
+        Response response = buildResponse(502, GET_METHOD, DETAILS_URL);
         when(httpPostRecordHolder.isPost()).thenReturn(true);
         Exception ex = feignErrorDecoder.decode(METHOD_KEY, response);
         assertThat(ex).isInstanceOf(RetryableException.class);
@@ -82,7 +82,7 @@ class FeignErrorDecoderTest {
 
     @Test
     void shouldReturnRetryableExceptionForGetRequestWithDetailsUrlAndStatus504() {
-        Response response = buildResponse(503, GET_METHOD, DETAILS_URL);
+        Response response = buildResponse(504, GET_METHOD, DETAILS_URL);
         when(httpPostRecordHolder.isPost()).thenReturn(true);
         Exception ex = feignErrorDecoder.decode(METHOD_KEY, response);
         assertThat(ex).isInstanceOf(RetryableException.class);
