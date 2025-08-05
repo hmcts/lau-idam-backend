@@ -404,7 +404,7 @@ dependencies {
     testImplementation group: 'org.codehaus.sonar-plugins', name: 'sonar-pitest-plugin', version: versions.sonarPitest
     testImplementation group: 'org.testcontainers', name: 'testcontainers', version: versions.testcontainers
     testImplementation group: 'org.testcontainers', name: 'postgresql', version: versions.testcontainers
-    testImplementation group: 'com.github.hmcts', name: 'fortify-client', version: '1.4.9', classifier: 'all'
+    testImplementation group: 'com.github.hmcts', name: 'fortify-client', version: '1.4.10', classifier: 'all'
     testImplementation group: 'jakarta.el', name: 'jakarta.el-api', version: '6.0.1'
 
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
