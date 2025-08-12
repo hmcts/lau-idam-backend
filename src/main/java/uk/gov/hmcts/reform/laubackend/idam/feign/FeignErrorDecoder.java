@@ -21,11 +21,14 @@ public class FeignErrorDecoder implements feign.codec.ErrorDecoder {
     public Exception decode(String methodKey, Response response) {
         HttpStatus respStatus = HttpStatus.valueOf(response.status());
         FeignException exception = FeignException.errorStatus(methodKey, response);
-        log.info("Feign response status: {}, message - {}", response.status(), exception.getMessage());
+        log.info("Idam backend: Feign response status: {}, message - {}", response.status(), exception.getMessage());
+        log.info("Idam backend: HttpMethod: {}, Request Url - {}, IsPost - {}",
+                 response.request().httpMethod(), response.request().url(),httpPostRecordHolder.isPost());
         if (respStatus.is5xxServerError()
             && HttpMethod.GET.equals(response.request().httpMethod())
             && response.request().url().endsWith("/details")
             && httpPostRecordHolder.isPost()) {
+            log.info("Idam backend:Going to throw RetryableException: {}", response.status());
             return new RetryableException(
                 response.status(),
                 exception.getMessage(),
