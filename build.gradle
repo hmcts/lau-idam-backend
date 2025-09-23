@@ -345,6 +345,9 @@ configurations.all {
             if (details.requested.group in ['org.apache.logging.log4j']) {
                 details.useVersion versions.log4j
             }
+            if (details.requested.name == 'commons-lang3') {
+            details.useVersion '3.18.0'
+            }
         }
     }
 }
