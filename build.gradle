@@ -345,6 +345,9 @@ configurations.all {
             if (details.requested.group in ['org.apache.logging.log4j']) {
                 details.useVersion versions.log4j
             }
+            if (details.requested.name == 'commons-lang3') {
+            details.useVersion '3.18.0'
+            }
         }
     }
 }
@@ -356,8 +359,6 @@ dependencies {
         }
     }
 
-    implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '11.0.11'
-    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.18.0'
     implementation group: 'commons-io', name: 'commons-io', version: versions.commonsIo
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
