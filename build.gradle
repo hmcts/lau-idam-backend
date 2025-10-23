@@ -403,7 +403,7 @@ dependencies {
     testImplementation group: 'com.github.tomakehurst', name: 'wiremock-jre8-standalone', version: versions.wiremock
     testImplementation group: 'org.codehaus.sonar-plugins', name: 'sonar-pitest-plugin', version: versions.sonarPitest
     testImplementation group: 'org.testcontainers', name: 'testcontainers', version: versions.testcontainers
-    testImplementation group: 'org.testcontainers', name: 'postgresql', version: versions.testcontainers
+    testImplementation group: 'org.testcontainers', name: 'testcontainers-postgresql', version: versions.testcontainers
     testImplementation group: 'com.github.hmcts', name: 'fortify-client', version: '1.4.10', classifier: 'all'
     testImplementation group: 'jakarta.el', name: 'jakarta.el-api', version: '6.0.1'
 
@@ -411,13 +411,13 @@ dependencies {
 
     testCompile group: 'info.solidsoft.gradle.pitest', name: 'gradle-pitest-plugin', version: versions.gradlePitest
     testCompile group: 'org.testcontainers', name: 'testcontainers', version: versions.testcontainers
-    testCompile group: 'org.testcontainers', name: 'postgresql', version: versions.testcontainers
+    testCompile group: 'org.testcontainers', name: 'testcontainers-postgresql', version: versions.testcontainers
 
     integrationTestCompile group: 'org.testcontainers', name: 'testcontainers', version: versions.testcontainers
-    integrationTestCompile group: 'org.testcontainers', name: 'postgresql', version: versions.testcontainers
+    integrationTestCompile group: 'org.testcontainers', name: 'testcontainers-postgresql', version: versions.testcontainers
 
     integrationTestImplementation group: 'org.testcontainers', name: 'testcontainers', version: versions.testcontainers
-    integrationTestImplementation group: 'org.testcontainers', name: 'postgresql', version: versions.testcontainers
+    integrationTestImplementation group: 'org.testcontainers', name: 'testcontainers-postgresql', version: versions.testcontainers
     integrationTestImplementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
     integrationTestAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
