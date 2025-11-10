@@ -37,7 +37,6 @@
     </properties>
   </rule>
   <rule ref="category/java/design.xml">
-    <exclude name="AvoidCatchingGenericException"/>
     <exclude name="UseUtilityClass"/>
     <exclude name="LoosePackageCoupling"/>
     <exclude name="DataClass"/>
@@ -59,6 +58,7 @@
     <exclude name="UncommentedEmptyMethodBody"/>
   </rule>
   <rule ref="category/java/errorprone.xml">
+    <exclude name="AvoidCatchingGenericException"/>
     <exclude name="NonSerializableClass"/>
     <exclude name="ReplaceJavaUtilDate"/>
   </rule>
