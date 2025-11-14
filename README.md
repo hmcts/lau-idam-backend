@@ -48,12 +48,12 @@ To build the project execute the following command:
 
 ### Running the application
 
-To run the PostgreSQL 11 LAU database, execute docker-compose to build the database from the postgreSQL docker image:
+To run the PostgreSQL LAU database, execute docker-compose to build the database from the postgreSQL docker image:
 ```
   docker-compose -f docker-compose.yml up lau-idam-database
 ```
 
-To apply flyway database scripts for PostgreSQL 11 LAU database, execute gradle migratePostgresDatabase task command - this will create all necessary users and tables.
+To apply flyway database scripts for PostgreSQL LAU database, execute gradle migratePostgresDatabase task command - this will create all necessary users and tables.
 ```
   ./gradlew migratePostgresDatabase
 ```
@@ -67,9 +67,9 @@ To test database access using psql or your favourite SQL client use the equivale
  ```
   psql -h 0.0.0.0 -p 5054 -d lau_idam -U lauuser
  ```
-On a MAC you may have to put the full path in for psql - something like:
+On a MAC you may have to put the full path in for psql - something like (where 15 is the version of postgres):
  ```
-  /Library/PostgreSQL/11/bin/psql -h 0.0.0.0 -p 5054 -d lau_idam -U lauuser
+  /Library/PostgreSQL/15/bin/psql -h 0.0.0.0 -p 5054 -d lau_idam -U lauuser
  ```
 
 #### Environment variables
@@ -195,4 +195,3 @@ Here are some other functionalities it provides:
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-

@@ -6,7 +6,6 @@ import uk.gov.hmcts.reform.laubackend.idam.exceptions.MigrationScriptException;
 
 import java.util.stream.Stream;
 
-@SuppressWarnings({"PMD.DataflowAnomalyAnalysis"})
 public class FlywayNoOpStrategy implements FlywayMigrationStrategy {
 
     @Override

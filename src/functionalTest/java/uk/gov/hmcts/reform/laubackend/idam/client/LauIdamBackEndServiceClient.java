@@ -5,7 +5,7 @@ import net.serenitybdd.rest.SerenityRest;
 import org.springframework.http.HttpStatus;
 
 @Slf4j
-@SuppressWarnings({"unchecked", "PMD.AvoidDuplicateLiterals"})
+@SuppressWarnings({"unchecked"})
 public class LauIdamBackEndServiceClient {
 
     private final String lauIdamBackEndApiUrl;
@@ -14,7 +14,6 @@ public class LauIdamBackEndServiceClient {
         this.lauIdamBackEndApiUrl = lauIdamBackEndApiUrl;
     }
 
-    @SuppressWarnings("PMD.LawOfDemeter")
     public String getWelcomePage() {
         return SerenityRest
             .get(lauIdamBackEndApiUrl)
@@ -26,7 +25,6 @@ public class LauIdamBackEndServiceClient {
             .asString();
     }
 
-    @SuppressWarnings("PMD.LawOfDemeter")
     public String getHealthPage() {
         return SerenityRest
             .get(lauIdamBackEndApiUrl + "/health")

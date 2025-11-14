@@ -14,6 +14,6 @@ public class RestApiPreInvokeDeleteInterceptor implements HandlerInterceptor {
     public boolean preHandle(final HttpServletRequest request,
                              final HttpServletResponse response,
                              final Object handler) {
-        return allowDeleteRecord != null && allowDeleteRecord.equals("true");
+        return "true".equals(allowDeleteRecord);
     }
 }

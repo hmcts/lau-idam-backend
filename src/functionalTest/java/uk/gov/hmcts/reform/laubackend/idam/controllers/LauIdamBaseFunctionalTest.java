@@ -18,7 +18,7 @@ import uk.gov.hmcts.reform.laubackend.idam.client.LauIdamBackEndServiceClient;
 @ComponentScan("uk.gov.hmcts.reform.laubackend.idam")
 @TestPropertySource("classpath:application-functional.yaml")
 @Slf4j
-@SuppressWarnings({"PMD.AbstractClassWithoutAnyMethod", "PMD.AbstractClassWithoutAbstractMethod"})
+@SuppressWarnings({"PMD.AbstractClassWithoutAbstractMethod"})
 public abstract class LauIdamBaseFunctionalTest {
 
     @Value("${targetInstance}")

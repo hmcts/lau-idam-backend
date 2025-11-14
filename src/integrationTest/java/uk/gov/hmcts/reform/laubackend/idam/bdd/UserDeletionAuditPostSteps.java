@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.laubackend.idam.bdd;
 import io.cucumber.java.DataTableType;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.restassured.response.Response;
 import org.springframework.http.HttpStatus;
 import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLog;
 import uk.gov.hmcts.reform.laubackend.idam.request.UserDeletionPostRequest;
@@ -33,21 +34,22 @@ public class UserDeletionAuditPostSteps extends AbstractSteps {
 
     @When("I POST IdAM user deletion data to {string} endpoint using s2s with data:")
     public void postUserDeletionData(final String path, List<DeletionLog> data) {
-        var payload = new UserDeletionPostRequest();
+        UserDeletionPostRequest payload = new UserDeletionPostRequest();
         payload.setDeletionLogs(data);
-        var response = postObject(payload, baseUrl() + path);
+        Response response = postObject(payload, baseUrl() + path);
         responseStatus = HttpStatus.valueOf(response.getStatusCode());
         userDeletionResponseBody = response.getBody().asString();
     }
 
     @Then("The same user deletions are returned:")
     public void userDeletionAuditReturned(List<DeletionLog> data) {
-        final var response = jsonReader.fromJson(userDeletionResponseBody, UserDeletionPostResponse.class);
+        final UserDeletionPostResponse response =
+            jsonReader.fromJson(userDeletionResponseBody, UserDeletionPostResponse.class);
         assertThat(response.getDeletionLogs()).hasSize(2);
 
         for (int i = 0; i < data.size(); i++) {
-            var requested = data.get(i);
-            var returned = response.getDeletionLogs().get(i);
+            DeletionLog requested = data.get(i);
+            DeletionLog returned = response.getDeletionLogs().get(i);
             assertEquals(requested.getUserId(), returned.getUserId(), "User ids do not match");
             assertEquals(requested.getEmailAddress(), returned.getEmailAddress(), "Emails do not match");
             assertEquals(requested.getFirstName(), returned.getFirstName(), "First names do not match");

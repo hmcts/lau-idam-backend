@@ -1,6 +1,6 @@
 buildscript {
   dependencies {
-    classpath "org.flywaydb:flyway-database-postgresql:11.1.1"
+    classpath "org.flywaydb:flyway-database-postgresql:11.16.0"
   }
 }
 
@@ -9,18 +9,19 @@ plugins {
     id 'checkstyle'
     id 'pmd'
     id 'jacoco'
-    id 'com.github.ben-manes.versions' version '0.51.0'
-    id 'com.gorylenko.gradle-git-properties' version '2.4.2'
+    id 'idea'
+    id 'com.github.ben-manes.versions' version '0.53.0'
+    id 'com.gorylenko.gradle-git-properties' version '2.5.3'
     id 'io.spring.dependency-management' version '1.1.7'
-    id 'net.serenity-bdd.serenity-gradle-plugin' version '4.2.16'
-    id 'org.flywaydb.flyway' version '11.1.1'
-    id 'org.owasp.dependencycheck' version '11.1.1'
-    id 'org.sonarqube' version '6.0.1.5171'
-    id 'org.springframework.boot' version '3.4.2'
-    id 'uk.gov.hmcts.java' version '0.12.65'
+    id 'net.serenity-bdd.serenity-gradle-plugin' version '4.3.2'
+    id 'org.flywaydb.flyway' version '11.16.0'
+    id 'org.owasp.dependencycheck' version '12.1.6'
+    id 'org.sonarqube' version '7.0.1.6134'
+    id 'org.springframework.boot' version '3.5.7'
+    id 'uk.gov.hmcts.java' version '0.12.67'
     id "info.solidsoft.pitest" version '1.15.0'
     id "org.springdoc.openapi-gradle-plugin" version "1.9.0"
-    id 'au.com.dius.pact' version '4.6.16'
+    id 'au.com.dius.pact' version '4.6.18'
 }
 
 group = 'uk.gov.hmcts.reform'
@@ -91,6 +92,17 @@ sourceSets {
 
 tasks.withType(JavaCompile) {
     options.compilerArgs << "-Xlint:unchecked" << "-Werror"
+}
+
+idea {
+  module {
+    testSources.from(project.sourceSets.integrationTest.java.srcDirs)
+    testSources.from(project.sourceSets.functionalTest.java.srcDirs)
+    testSources.from(project.sourceSets.smokeTest.java.srcDirs)
+    testResources.from(project.sourceSets.integrationTest.resources.srcDirs)
+    testResources.from(project.sourceSets.functionalTest.resources.srcDirs)
+    testResources.from(project.sourceSets.smokeTest.resources.srcDirs)
+  }
 }
 
 test {
@@ -184,11 +196,12 @@ task runAndPublishConsumerPactTests(type: Test){
 
 checkstyle {
     maxWarnings = 0
-    toolVersion = '10.21.2'
+    toolVersion = '12.1.2'
     getConfigDirectory().set(new File(rootDir, 'config/checkstyle'))
 }
 
 pmd {
+    toolVersion = "7.18.0"
     sourceSets = [sourceSets.main, sourceSets.test, sourceSets.functionalTest, sourceSets.integrationTest, sourceSets.smokeTest]
     reportsDir = file("$project.buildDir/reports/pmd")
     // https://github.com/pmd/pmd/issues/876
@@ -248,6 +261,8 @@ sonarqube {
         property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
         property "sonar.pitest.mode", "reuseReport"
         property "sonar.pitest.reportsDirectory", "build/reports/pitest"
+        property "sonar.sources", "src/main/java"
+        property "sonar.tests", "src/test/java,src/smokeTest/java,src/functionalTest/java,src/integrationTest/java"
     }
 }
 
@@ -279,17 +294,17 @@ dependencyCheck {
 dependencyManagement {
   dependencies {
     dependency group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.70'
-    dependencySet(group: 'org.springframework.cloud', version: '4.2.0') {
+    dependencySet(group: 'org.springframework.cloud', version: '4.3.0') {
       entry 'spring-cloud-starter-openfeign'
       entry 'spring-cloud-openfeign-core'
     }
-    dependencySet(group: 'ch.qos.logback', version: '1.5.16') {
+    dependencySet(group: 'ch.qos.logback', version: '1.5.21') {
       entry 'logback-core'
       entry 'logback-classic'
     }
   }
   imports {
-    mavenBom 'org.springframework.cloud:spring-cloud-dependencies:2024.0.0'
+    mavenBom 'org.springframework.cloud:spring-cloud-dependencies:2025.0.0'
   }
 }
 
@@ -297,30 +312,30 @@ repositories {
     mavenLocal()
     mavenCentral()
     maven {
-        url 'https://jitpack.io'
+      url = 'https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1'
     }
 }
 
 def versions = [
-  appinsights       : '3.6.2',
-  commonsIo         : '2.18.0',
-  cucumber          : '7.20.1',
-  flywaydb          : '11.1.1',
+  appinsights       : '3.7.6',
+  commonsIo         : '2.21.0',
+  cucumber          : '7.31.0',
+  flywaydb          : '11.16.0',
   gradlePitest      : '1.15.0',
-  idamClient        : '3.0.3',
-  junit             : '5.9.3',
-  junitPlatform     : '1.9.3',
-  log4j             : '2.24.3',
-  lombok            : '1.18.36',
-  pact              : '4.6.16',
-  reformLogging     : '6.1.8',
-  restAssured       : '5.5.0',
-  serenity          : '4.2.16',
-  serviceAuthVersion: '5.3.0',
+  idamClient        : '3.0.4',
+  junit             : '5.12.2',
+  junitPlatform     : '1.12.2',
+  log4j             : '2.25.2',
+  lombok            : '1.18.42',
+  pact              : '4.6.18',
+  reformLogging     : '6.1.9',
+  restAssured       : '5.5.6',
+  serenity          : '4.3.2',
+  serviceAuthVersion: '5.3.3',
   sonarPitest       : '0.5',
   springBoot        : springBoot.class.package.implementationVersion,
-  springCloud       : '4.2.0',
-  testcontainers    : '1.20.4',
+  springCloud       : '4.3.0',
+  testcontainers    : '2.0.1',
   wiremock          : '3.0.1',
 ]
 
@@ -329,6 +344,9 @@ configurations.all {
         eachDependency { DependencyResolveDetails details ->
             if (details.requested.group in ['org.apache.logging.log4j']) {
                 details.useVersion versions.log4j
+            }
+            if (details.requested.name == 'commons-lang3') {
+            details.useVersion '3.18.0'
             }
         }
     }
@@ -351,29 +369,28 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: versions.springCloud
-    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: "4.2.0"
-    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.8.4'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: "4.3.0"
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.8.14'
     implementation group: 'com.microsoft.azure', name: 'applicationinsights-core', version: versions.appinsights
     implementation group: 'com.microsoft.azure', name: 'applicationinsights-web', version: versions.appinsights
     implementation group: 'org.flywaydb', name: 'flyway-core', version: versions.flywaydb
     implementation group: 'org.flywaydb', name: 'flyway-database-postgresql', version: versions.flywaydb
-    implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.5'
+    implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.8'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version:versions.log4j
     implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version:versions.log4j
-    implementation group: "com.networknt", name: "json-schema-validator", version: "1.5.5"
     implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
     implementation group: 'org.springframework.boot', name: 'spring-boot-devtools'
-    implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.5'
-    implementation group: 'org.yaml', name: 'snakeyaml', version: '2.3'
-    implementation group: 'commons-net', name: 'commons-net', version: '3.11.1'
+    implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.6.0'
+    implementation group: 'org.yaml', name: 'snakeyaml', version: '2.5'
+    implementation group: 'commons-net', name: 'commons-net', version: '3.12.0'
     implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
     implementation group: 'com.github.hmcts', name: 'idam-java-client', version: versions.idamClient
     implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.reformLogging
     implementation group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: '6.1.0'
     implementation group: 'org.apache.httpcomponents', name: 'fluent-hc', version: '4.5.14'
-    implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '4.0.5'
+    implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '4.0.6'
 
-    testImplementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.10.0'
+    testImplementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.11.0'
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
     testImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
     testImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
@@ -383,24 +400,23 @@ dependencies {
     testImplementation group: 'io.cucumber', name: 'cucumber-junit', version: versions.cucumber
     testImplementation group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber
     testImplementation group: 'com.github.tomakehurst', name: 'wiremock-jre8-standalone', version: versions.wiremock
+    testImplementation group: 'org.codehaus.sonar-plugins', name: 'sonar-pitest-plugin', version: versions.sonarPitest
     testImplementation group: 'org.testcontainers', name: 'testcontainers', version: versions.testcontainers
-    testImplementation group: 'org.testcontainers', name: 'postgresql', version: versions.testcontainers
-    testImplementation group: 'com.github.hmcts', name: 'fortify-client', version: '1.4.7', classifier: 'all'
+    testImplementation group: 'org.testcontainers', name: 'testcontainers-postgresql', version: versions.testcontainers
+    testImplementation group: 'com.github.hmcts', name: 'fortify-client', version: '1.4.10', classifier: 'all'
     testImplementation group: 'jakarta.el', name: 'jakarta.el-api', version: '6.0.1'
-    testImplementation group: 'net.sourceforge.htmlunit', name: 'htmlunit', version: '2.70.0'
 
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
     testCompile group: 'info.solidsoft.gradle.pitest', name: 'gradle-pitest-plugin', version: versions.gradlePitest
-    testCompile group: 'org.codehaus.sonar-plugins', name: 'sonar-pitest-plugin', version: versions.sonarPitest
     testCompile group: 'org.testcontainers', name: 'testcontainers', version: versions.testcontainers
-    testCompile group: 'org.testcontainers', name: 'postgresql', version: versions.testcontainers
+    testCompile group: 'org.testcontainers', name: 'testcontainers-postgresql', version: versions.testcontainers
 
     integrationTestCompile group: 'org.testcontainers', name: 'testcontainers', version: versions.testcontainers
-    integrationTestCompile group: 'org.testcontainers', name: 'postgresql', version: versions.testcontainers
+    integrationTestCompile group: 'org.testcontainers', name: 'testcontainers-postgresql', version: versions.testcontainers
 
     integrationTestImplementation group: 'org.testcontainers', name: 'testcontainers', version: versions.testcontainers
-    integrationTestImplementation group: 'org.testcontainers', name: 'postgresql', version: versions.testcontainers
+    integrationTestImplementation group: 'org.testcontainers', name: 'testcontainers-postgresql', version: versions.testcontainers
     integrationTestImplementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
     integrationTestAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
@@ -425,9 +441,9 @@ dependencies {
     testImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
     testImplementation group: 'io.rest-assured', name: 'json-path', version: versions.restAssured
     testImplementation group: 'io.rest-assured', name: 'xml-path', version: versions.restAssured
-    testImplementation group: 'com.google.code.gson', name: 'gson', version: '2.12.1'
+    testImplementation group: 'com.google.code.gson', name: 'gson', version: '2.13.2'
     testImplementation group: 'com.googlecode.junit-toolbox', name: 'junit-toolbox', version: '2.4'
-    testImplementation group: 'org.testng', name: 'testng', version: '7.10.2'
+    testImplementation group: 'org.testng', name: 'testng', version: '7.11.0'
 
     cucumberRuntime group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber
     cucumberRuntime group: 'org.springframework', name: 'spring-web', version: versions.springFramework
@@ -436,9 +452,9 @@ dependencies {
     cucumberRuntime group: 'io.rest-assured', name: 'json-path', version: versions.restAssured
     cucumberRuntime group: 'io.rest-assured', name: 'xml-path', version: versions.restAssured
     cucumberRuntime group: 'net.serenity-bdd', name: 'serenity-rest-assured'
-    cucumberRuntime group: 'com.google.code.gson', name: 'gson', version: '2.12.1'
+    cucumberRuntime group: 'com.google.code.gson', name: 'gson', version: '2.13.2'
     cucumberRuntime group: 'com.googlecode.junit-toolbox', name: 'junit-toolbox', version: '2.4'
-    cucumberRuntime group: 'org.testng', name: 'testng', version: '7.10.2'
+    cucumberRuntime group: 'org.testng', name: 'testng', version: '7.11.0'
 
     testCompileOnly group: 'org.projectlombok', name: 'lombok'
     testAnnotationProcessor group: 'org.projectlombok', name: 'lombok'

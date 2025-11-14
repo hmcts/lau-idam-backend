@@ -40,13 +40,13 @@ public final class DatabaseCleaner {
 
     public static void deleteDeletedAccountRecord(Response response) {
         final Gson jsonReader = new Gson();
-        var deletedAccountsResponse = jsonReader.fromJson(
+        DeletedAccountsResponse deletedAccountsResponse = jsonReader.fromJson(
             response.getBody().asString(),
             DeletedAccountsResponse.class);
 
         try {
             for (DeletedAccount deletedAccount: deletedAccountsResponse.getDeletionLogs()) {
-                var userId = deletedAccount.getUserId();
+                String userId = deletedAccount.getUserId();
                 makeRequest(DELETED_ACCOUNTS_DELETE_ENDPOINT, "userId", userId, NO_CONTENT.value());
             }
         } catch (JSONException je) {

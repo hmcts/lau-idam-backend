@@ -34,6 +34,7 @@ class AppInsightsTest {
     }
 
     @AfterEach
+    @SuppressWarnings("PMD.SignatureDeclareThrowsException")
     void close() throws Exception {
         autoCloseable.close();
     }
