@@ -322,7 +322,7 @@ def versions = [
   cucumber          : '7.31.0',
   flywaydb          : '11.17.2',
   gradlePitest      : '1.15.0',
-  idamClient        : '3.0.4',
+  idamClient        : '3.0.5',
   junit             : '5.12.2',
   junitPlatform     : '1.12.2',
   log4j             : '2.25.2',
