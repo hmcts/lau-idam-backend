@@ -335,7 +335,7 @@ def versions = [
   sonarPitest       : '0.5',
   springBoot        : springBoot.class.package.implementationVersion,
   springCloud       : '4.3.0',
-  testcontainers    : '2.0.2',
+  testcontainers    : '2.0.3',
   wiremock          : '3.0.1',
 ]
 
