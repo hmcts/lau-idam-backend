@@ -20,6 +20,8 @@ spring:
 idam:
   api:
     url: ${IDAM_API_URL:http://localhost:8891}
+  client:
+    secret: 12345678
 
 logging:
   level:
