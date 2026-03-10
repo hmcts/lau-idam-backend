@@ -38,3 +38,7 @@ pact:
     username: lau-pact-user@hmcts.net
     password: Password123
     scope: openid profile roles
+
+security:
+  db:
+    backend-encryption-key: ThisIsATestKeyForEncryption
