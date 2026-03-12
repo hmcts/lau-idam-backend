@@ -24,6 +24,11 @@ management:
 
 #If you use a database then uncomment below lines and update db properties accordingly
 spring:
+  cloud:
+    discovery:
+      client:
+        health-indicator:
+          enabled: false
   config:
     import: "optional:configtree:/mnt/secrets/lau/"
   application:

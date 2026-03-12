@@ -12,7 +12,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
