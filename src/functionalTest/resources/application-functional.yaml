@@ -3,16 +3,6 @@ targetInstance: ${TEST_URL:http://localhost:4550}
 server:
   port: 4550
 
-management:
-  endpoint:
-    health:
-      show-details: "always"
-  endpoints:
-    web:
-      base-path: /
-      exposure:
-        include: health, info, prometheus
-
 #Application specific properties
 api-error-messages:
   bad_request: Invalid Request

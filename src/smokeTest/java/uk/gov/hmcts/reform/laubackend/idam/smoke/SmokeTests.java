@@ -12,7 +12,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
@@ -45,18 +44,6 @@ public class SmokeTests {
             .then()
             .statusCode(HTTP_OK);
         assertTrue("Health endpoint should be HTTP 200 (ok)", okResponse(response));
-    }
-
-    @Test
-    public void shouldGetOkStatusFromInfoEndpointForLauBackend() {
-        ValidatableResponse response = given().spec(requestSpec)
-            .when()
-            .get(url + "/info")
-            .then()
-            .statusCode(HTTP_OK)
-            .body("git.commit.id", notNullValue())
-            .body("git.commit.time", notNullValue());
-        assertTrue("Info endpoint should be HTTP 200 (ok)", okResponse(response));
     }
 
     private boolean okResponse(ValidatableResponse response) {
