@@ -48,7 +48,7 @@ class IdamLogonAuditRepositoryTest {
     private EntityManager entityManager;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         final IdamLogonAuditInsertRepository idamLogonAuditInsertRepository =
                 new IdamLogonAuditInsertRepository(entityManager);
         //Insert 20 records

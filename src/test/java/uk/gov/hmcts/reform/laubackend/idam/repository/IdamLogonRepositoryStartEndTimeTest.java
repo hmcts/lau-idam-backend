@@ -43,7 +43,7 @@ class IdamLogonRepositoryStartEndTimeTest {
     private IdamLogonAuditFindLogonRepository idamLogonAuditFindLogonRepository;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         final IdamLogonAuditInsertRepository idamLogonAuditInsertRepository =
                 new IdamLogonAuditInsertRepository(entityManager);
         //Insert ${NUMBER_OF_ENTRIES} records
