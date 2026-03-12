@@ -53,7 +53,7 @@ class SwaggerGeneratorTest {
     private IdamApi idamApi;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         this.mvc = webAppContextSetup(webAppContext).build();
     }
 

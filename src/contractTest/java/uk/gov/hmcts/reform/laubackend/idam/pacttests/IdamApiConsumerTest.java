@@ -39,13 +39,13 @@ import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VAL
 @PactDirectory("pacts")
 @MockServerConfig(port = "8891")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class IdamApiConsumerTest {
+class IdamApiConsumerTest {
 
     @Inject
     private IdamApi idamApi;
 
     @Value("${pact.idam.grant_type}")
-    private String grantType = "password";
+    private String grantType;
 
     @Value("${pact.idam.client_id}")
     private String clientId;
@@ -66,7 +66,8 @@ public class IdamApiConsumerTest {
     private String scope;
 
     @BeforeEach
-    public void setUp() throws InterruptedException {
+    @SuppressWarnings("PMD.DoNotUseThreads")
+    void setUp() throws InterruptedException {
         Thread.sleep(2000);
     }
 
@@ -116,14 +117,14 @@ public class IdamApiConsumerTest {
 
     @Test
     @PactTestFor(pactMethod = "generateOpenIdToken")
-    public void verifyIdamTokenRequest() {
+    void verifyIdamTokenRequest() {
         TokenResponse token = idamApi.generateOpenIdToken(buildTokenRequestMap());
         assertThat(token.accessToken).startsWith("eyJ0eXAiOiJKV1QiLCJraWQiOiJiL082T3ZWdjEre");
     }
 
     @Test
     @PactTestFor(pactMethod = "retrieveUserInfo")
-    public void verifyIdamUserInfoRequest() {
+    void verifyIdamUserInfoRequest() {
         UserInfo userInfo = idamApi.retrieveUserInfo("Bearer some-access-token");
 
         assertThat(userInfo).isNotNull();

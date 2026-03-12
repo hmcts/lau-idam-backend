@@ -51,7 +51,7 @@ class UserDeletionAuditRepositoryTest {
     private EntityManager entityManager;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         final UserDeletionAuditInsertRepository userDeletionAuditInsertRepository =
             new UserDeletionAuditInsertRepository(entityManager);
         //Insert ${RECORD_NUMBER} records
