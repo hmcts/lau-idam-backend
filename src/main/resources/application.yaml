@@ -4,12 +4,23 @@ server:
 management:
   endpoint:
     health:
-      show-details: "always"
+      probes:
+        enabled: true
+      show-details: never
+      show-components: always
+
+  health:
+    ping:
+      enabled: false
+    ssl:
+      enabled: false
+    refresh:
+      enabled: false
   endpoints:
     web:
       base-path: /
       exposure:
-        include: health, info, prometheus
+        include: health
 
 #If you use a database then uncomment below lines and update db properties accordingly
 spring:

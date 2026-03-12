@@ -47,18 +47,6 @@ public class SmokeTests {
         assertTrue("Health endpoint should be HTTP 200 (ok)", okResponse(response));
     }
 
-    @Test
-    public void shouldGetOkStatusFromInfoEndpointForLauBackend() {
-        ValidatableResponse response = given().spec(requestSpec)
-            .when()
-            .get(url + "/info")
-            .then()
-            .statusCode(HTTP_OK)
-            .body("git.commit.id", notNullValue())
-            .body("git.commit.time", notNullValue());
-        assertTrue("Info endpoint should be HTTP 200 (ok)", okResponse(response));
-    }
-
     private boolean okResponse(ValidatableResponse response) {
         return response.extract().statusCode() == HTTP_OK ? Boolean.TRUE : Boolean.FALSE;
     }
