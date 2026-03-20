@@ -9,13 +9,22 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.security.Security;
+
+import static org.springframework.http.HttpMethod.DELETE;
+import static org.springframework.http.HttpMethod.GET;
 
 @Configuration
 @EnableWebSecurity
 @Order(1)
 public class SecurityConfiguration {
+
+    @Bean
+    public BearerHeaderAuthenticationFilter bearerHeaderAuthenticationFilter() {
+        return new BearerHeaderAuthenticationFilter();
+    }
 
     @Bean
     @SuppressWarnings("PMD.SignatureDeclareThrowsException")
@@ -26,10 +35,13 @@ public class SecurityConfiguration {
             .exceptionHandling(exc -> exc.authenticationEntryPoint(
                 (req, rsp, e) -> rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED))
             )
-            .authorizeHttpRequests(
-                authz -> authz.requestMatchers("/**").permitAll()
-                    .requestMatchers("/audit/**")
-                    .authenticated()
+            .addFilterBefore(bearerHeaderAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+            .authorizeHttpRequests(authz -> authz
+                // Require an Authorization header-based authentication for GET/DELETE audit endpoints
+                .requestMatchers(GET, "/audit/**").authenticated()
+                .requestMatchers(DELETE, "/audit/**").authenticated()
+                // Everything else remains open (service/user auth enforced by MVC interceptors)
+                .requestMatchers("/**").permitAll()
             );
 
         Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());

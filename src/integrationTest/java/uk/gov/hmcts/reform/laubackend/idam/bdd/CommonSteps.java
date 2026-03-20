@@ -45,8 +45,8 @@ public class CommonSteps extends AbstractSteps {
     }
 
     @When("And I GET {string} without service authorization header")
-    public void searchIdamLogonWithoutAuthHeader(final String path) {
-        response = RestHelper.getResponseWithoutHeader(getUrl(path));
+    public void searchIdamLogonWithoutServiceAuthHeader(final String path) {
+        response = RestHelper.getResponseWithoutServiceAuthHeader(getUrl(path));
     }
 
     @When("I request GET {string} endpoint without mandatory params")

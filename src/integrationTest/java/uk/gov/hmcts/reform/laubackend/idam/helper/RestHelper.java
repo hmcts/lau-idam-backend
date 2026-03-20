@@ -16,16 +16,16 @@ import static uk.gov.hmcts.reform.laubackend.idam.helper.RestConstants.SERVICE_U
 @SuppressWarnings({"unchecked", "PMD.AvoidDuplicateLiterals"})
 public class RestHelper {
 
-    public static Response getResponseWithoutHeader(final String path) {
-
+    public static Response getResponseWithoutServiceAuthHeader(final String path) {
         return RestAssured
-                .given()
-                .relaxedHTTPSValidation()
-                .baseUri(path)
-                .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
-                .when()
-                .get()
-                .andReturn();
+            .given()
+            .relaxedHTTPSValidation()
+            .baseUri(path)
+            .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+            .header(AUTHORISATION_HEADER, "Bearer " + GOOD_TOKEN)
+            .when()
+            .get()
+            .andReturn();
     }
 
     public static Response getResponseWithoutAuthorizationHeader(final String path) {
