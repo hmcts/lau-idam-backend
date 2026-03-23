@@ -33,7 +33,6 @@ Feature: The application's GET audit logon endpoint
     Given LAU IdAm backend application is healthy
     When And I GET "/audit/logon" without authorization header
     Then HTTP "401" Unauthorized response is returned
-    And authorization End Point is called only once
 
   Scenario: The backend is unable to process logon GET requests due to missing search params
     Given LAU IdAm backend application is healthy

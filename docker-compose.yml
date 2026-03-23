@@ -8,7 +8,7 @@ services:
         - http_proxy
         - https_proxy
         - no_proxy
-    image: hmctspublic.azurecr.io/spring-boot/template
+    image: hmctsprod.azurecr.io/spring-boot/template
     environment:
       # these environment variables are used by java-logging library
       - ROOT_APPENDER
@@ -38,7 +38,7 @@ services:
       - lau-idam-database-data:/var/lib/postgresql/data
 
   service-auth-provider-api:
-    image: hmctspublic.azurecr.io/rpe/service-auth-provider:latest
+    image: hmctsprod.azurecr.io/rpe/service-auth-provider:latest
     healthcheck:
       interval: 10s
       timeout: 10s
