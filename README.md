@@ -144,7 +144,7 @@ Run the following to install the azure and kubernetes command-line tools
   brew install azure-cli
   az acs kubernetes install-cli
 ```
-login to azure - you'll not need hmctsprivate access for LAU.
+login to azure
 ```bash
   az login (will open a browser to login)
   az acr login --name hmctsprod --subscription DCD-CNP-Prod
