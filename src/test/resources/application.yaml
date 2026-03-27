@@ -18,6 +18,11 @@ api-version-number: 1
 spring:
   application:
     name: LAU Idam Backend
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${IDAM_API_URL:http://localhost:5000}/o/jwks
   datasource:
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
     url: jdbc:tc:postgresql:15://localhost/lau-idam

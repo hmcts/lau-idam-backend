@@ -23,6 +23,7 @@ public class RestHelper {
                 .relaxedHTTPSValidation()
                 .baseUri(path)
                 .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+                .header(AUTHORISATION_HEADER, "Bearer " + GOOD_TOKEN)
                 .when()
                 .get()
                 .andReturn();
