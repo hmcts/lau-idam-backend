@@ -24,6 +24,11 @@ management:
 
 #If you use a database then uncomment below lines and update db properties accordingly
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${IDAM_API_URL:http://localhost:5000}/o/jwks
   cloud:
     discovery:
       client:

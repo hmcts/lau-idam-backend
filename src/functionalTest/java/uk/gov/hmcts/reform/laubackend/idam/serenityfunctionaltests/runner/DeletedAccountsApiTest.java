@@ -162,14 +162,14 @@ public class DeletedAccountsApiTest {
 
     @Test
     @Title("Assert response code forbidden without s2s authentication token")
-    public void assertGetHttpForbiddenWithInvalidS2SToken() {
-
+    public void assertGetHttpForbiddenWithInvalidS2SToken() throws JSONException {
+        String authToken = getApiSteps.validAuthorizationTokenIsGenerated();
         Response response = getApiSteps.performGetOperation(
             TestConstants.DELETED_ACCOUNTS_ENDPOINT,
             null,
             null,
             "serviceToken",
-            "Bearer something"
+            authToken
         );
 
         String successOrFailure = getApiSteps.thenBadResponseIsReturned(response, 403);
