@@ -1,7 +1,7 @@
 package uk.gov.hmcts.reform.laubackend.idam.utils;
 
 import org.flywaydb.core.Flyway;
-import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
+import org.springframework.boot.flyway.autoconfigure.FlywayMigrationStrategy;
 import uk.gov.hmcts.reform.laubackend.idam.exceptions.MigrationScriptException;
 
 import java.util.stream.Stream;

@@ -17,7 +17,7 @@ plugins {
     id 'org.flywaydb.flyway' version '12.6.0'
     id 'org.owasp.dependencycheck' version '12.2.1'
     id 'org.sonarqube' version '7.2.3.7755'
-    id 'org.springframework.boot' version '3.5.14'
+    id 'org.springframework.boot' version '4.0.6'
     id 'uk.gov.hmcts.java' version '0.12.68'
     id "info.solidsoft.pitest" version '1.19.0'
     id "org.springdoc.openapi-gradle-plugin" version "1.9.0"
@@ -294,17 +294,13 @@ dependencyCheck {
 dependencyManagement {
   dependencies {
     dependency group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.70'
-    dependencySet(group: 'org.springframework.cloud', version: '4.3.2') {
-      entry 'spring-cloud-starter-openfeign'
-      entry 'spring-cloud-openfeign-core'
-    }
     dependencySet(group: 'ch.qos.logback', version: '1.5.32') {
       entry 'logback-core'
       entry 'logback-classic'
     }
   }
   imports {
-    mavenBom 'org.springframework.cloud:spring-cloud-dependencies:2025.0.2'
+    mavenBom 'org.springframework.cloud:spring-cloud-dependencies:2025.1.1'
   }
 }
 
@@ -322,19 +318,18 @@ def versions = [
   cucumber          : '7.34.3',
   flywaydb          : '12.6.0',
   gradlePitest      : '1.15.0',
-  idamClient        : '3.0.5',
+  idamClient        : '4.0.0',
   junit             : '5.12.2',
   junitPlatform     : '1.12.2',
   log4j             : '2.25.4',
   lombok            : '1.18.46',
   pact              : '4.6.20',
   reformLogging     : '8.0.0',
-  restAssured       : '5.5.7',
+  restAssured       : '6.0.0',
   serenity          : '4.3.4',
   serviceAuthVersion: '5.3.3',
   sonarPitest       : '0.5',
   springBoot        : springBoot.class.package.implementationVersion,
-  springCloud       : '4.3.2',
   testcontainers    : '2.0.5',
   wiremock          : '3.0.1',
 ]
@@ -360,17 +355,17 @@ dependencies {
     }
 
     implementation group: 'commons-io', name: 'commons-io', version: versions.commonsIo
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-webmvc'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-json'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jackson'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-flyway'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
-    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: versions.springCloud
-    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: "4.3.2"
-    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.8.17'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign'
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '3.0.3'
     implementation group: 'com.microsoft.azure', name: 'applicationinsights-core', version: versions.appinsights
     implementation group: 'com.microsoft.azure', name: 'applicationinsights-web', version: versions.appinsights
     implementation group: 'org.flywaydb', name: 'flyway-core', version: versions.flywaydb
@@ -380,7 +375,7 @@ dependencies {
     implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version:versions.log4j
     implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
     implementation group: 'org.springframework.boot', name: 'spring-boot-devtools'
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-oauth2-resource-server'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security-oauth2-resource-server'
     implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.6.0'
     implementation group: 'org.yaml', name: 'snakeyaml', version: '2.6'
     implementation group: 'commons-net', name: 'commons-net', version: '3.13.0'
@@ -393,6 +388,10 @@ dependencies {
 
     testImplementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.11.0'
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa-test'
+    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-flyway-test'
+    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-security-test'
+    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-webmvc-test'
     testImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
     testImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
     testImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
