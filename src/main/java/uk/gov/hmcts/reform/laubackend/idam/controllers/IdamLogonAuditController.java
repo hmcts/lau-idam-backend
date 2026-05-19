@@ -107,7 +107,7 @@ public class IdamLogonAuditController {
             appInsights.trackEvent(
                 POST_LOGON_REQUEST_INVALID_REQUEST_EXCEPTION.toString(),
                 appInsights.trackingMap(EXCEPTION, invalidRequestException.getMessage()));
-            return new ResponseEntity<>(null, BAD_REQUEST);
+            return ResponseEntity.status(BAD_REQUEST).build();
         } catch (final Exception exception) {
             log.error("saveLogonLog API call failed due to error - {}",
                     exception.getMessage(),
@@ -115,7 +115,7 @@ public class IdamLogonAuditController {
             );
             appInsights.trackEvent(POST_LOGON_REQUEST_EXCEPTION.toString(), appInsights.trackingMap(
                 EXCEPTION, exception.getMessage()));
-            return new ResponseEntity<>(null, INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -190,7 +190,7 @@ public class IdamLogonAuditController {
             );
             appInsights.trackEvent(GET_LOGON_REQUEST_INVALID_REQUEST_EXCEPTION.toString(), appInsights.trackingMap(
                 EXCEPTION, invalidRequestException.getMessage()));
-            return new ResponseEntity<>(null, BAD_REQUEST);
+            return ResponseEntity.status(BAD_REQUEST).build();
         }
     }
 }

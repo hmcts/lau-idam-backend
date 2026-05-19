@@ -103,7 +103,7 @@ public class UserDeletionAuditController {
                 POST_DELETION_INVALID_REQUEST_EXCEPTION.toString(),
                 appInsights.trackingMap(EXCEPTION, ire.getMessage())
             );
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
         } catch (final Exception exception) {
             log.error("saveUserDeletion API call failed due to error - {}",
@@ -113,7 +113,7 @@ public class UserDeletionAuditController {
                 POST_DELETION_REQUEST_EXCEPTION.toString(),
                 appInsights.trackingMap(EXCEPTION, exception.getMessage())
             );
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -167,7 +167,7 @@ public class UserDeletionAuditController {
                 GET_DELETED_ACCOUNTS_INVALID_REQUEST_EXCEPTION.toString(),
                 appInsights.trackingMap(EXCEPTION, ire.getMessage())
             );
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
     }
@@ -220,7 +220,7 @@ public class UserDeletionAuditController {
                 GET_ALL_DELETED_ACCOUNTS_INVALID_REQUEST_EXCEPTION.toString(),
                 appInsights.trackingMap(EXCEPTION, ire.getMessage())
             );
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 }
