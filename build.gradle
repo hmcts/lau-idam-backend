@@ -347,6 +347,8 @@ configurations.all {
     }
 }
 
+ext['tomcat.version'] = '11.0.22'
+
 dependencies {
     modules {
         module("com.google.collections:google-collections") {
