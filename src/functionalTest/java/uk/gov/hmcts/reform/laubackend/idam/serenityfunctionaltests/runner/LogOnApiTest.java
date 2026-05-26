@@ -5,12 +5,12 @@ package uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.runner;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.response.Response;
-import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.annotations.Steps;
 import net.serenitybdd.annotations.Title;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
 import org.json.JSONException;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.testng.Assert;
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.model.LogOnGetResponseVO;
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.model.LogOnRequestVO;
@@ -23,8 +23,8 @@ import java.util.Map;
 
 import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.helper.DatabaseCleaner.deleteLogonRecord;
 
-@RunWith(SerenityRunner.class)
-public class LogOnApiTest {
+@ExtendWith(SerenityJUnit5Extension.class)
+class LogOnApiTest {
 
 
     @Steps
@@ -34,7 +34,7 @@ public class LogOnApiTest {
 
     @Test
     @Title("Assert response code of 201 for POST Request LogonApi")
-    public void assertHttpSuccessResponseCodeForPostRequestCaseViewApi()
+    void assertHttpSuccessResponseCodeForPostRequestCaseViewApi()
             throws JsonProcessingException, JSONException {
 
         String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated(
@@ -57,7 +57,7 @@ public class LogOnApiTest {
 
     @Test
     @Title("Assert response code of 400 for Invalid POST request body for LogonApi")
-    public void assertHttpBadResponseCodeForInvalidPostRequestBodyLogonApi()
+    void assertHttpBadResponseCodeForInvalidPostRequestBodyLogonApi()
         throws JsonProcessingException {
 
         String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated(
@@ -78,7 +78,7 @@ public class LogOnApiTest {
 
     @Test
     @Title("Assert response code of 200 for GET LogonApi with valid headers and valid request params")
-    public void assertHttpSuccessResponseCodeForCaseViewApi() throws JsonProcessingException, ParseException,
+    void assertHttpSuccessResponseCodeForCaseViewApi() throws JsonProcessingException, ParseException,
         JSONException {
 
         String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated(
@@ -119,7 +119,7 @@ public class LogOnApiTest {
     @SuppressWarnings({"PMD.AvoidDuplicateLiterals"})
     @Test
     @Title("Assert response code of 400 for GET LogonApi with Empty Params")
-    public void assertResponseCodeOf400WithInvalidParamsForLogonApi() throws JSONException {
+    void assertResponseCodeOf400WithInvalidParamsForLogonApi() throws JSONException {
         String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated(
             TestConstants.FRONTEND_SERVICE_NAME);
         final String authorizationToken = logOnGetApiSteps.validAuthorizationTokenIsGenerated();
@@ -135,7 +135,7 @@ public class LogOnApiTest {
 
     @Test
     @Title("Assert response code of 403 for GET LogonApi with missing ServiceAuthorization token")
-    public void assertResponseCodeOf403ForMissingS2SForLogonApi() throws JSONException {
+    void assertResponseCodeOf403ForMissingS2SForLogonApi() throws JSONException {
         final String authorizationToken = logOnGetApiSteps.validAuthorizationTokenIsGenerated();
         Map<String, String> queryParamMap = logOnGetApiSteps.givenValidParamsAreSuppliedForGetLogonApi();
         Response response = logOnGetApiSteps.whenTheGetLogonServiceIsInvokedWithTheGivenParams(
@@ -149,7 +149,7 @@ public class LogOnApiTest {
 
     @Test
     @Title("Assert response code of 401 for GET LogonApi with missing User Authorization token")
-    public void assertResponseCodeOf401ForMissingAuthorizationTokenForLogonApi() {
+    void assertResponseCodeOf401ForMissingAuthorizationTokenForLogonApi() {
         String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated(
             TestConstants.FRONTEND_SERVICE_NAME);
         Map<String, String> queryParamMap = logOnGetApiSteps.givenValidParamsAreSuppliedForGetLogonApi();
@@ -164,7 +164,7 @@ public class LogOnApiTest {
 
     @Test
     @Title("Assert response code of 401 for GET LogonApi with invalid User Authorization token")
-    public void assertResponseCodeOf401ForInvalidAuthorizationTokenForLogonApi() throws JSONException {
+    void assertResponseCodeOf401ForInvalidAuthorizationTokenForLogonApi() throws JSONException {
         String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated(
             TestConstants.FRONTEND_SERVICE_NAME);
         final String authorizationToken = logOnGetApiSteps.givenTheInvalidAuthorizationTokenIsGenerated();
