@@ -2,12 +2,12 @@ package uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.runner;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.restassured.response.Response;
-import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.annotations.Steps;
 import net.serenitybdd.annotations.Title;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
 import org.json.JSONException;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.testng.Assert;
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.model.DeletedAccountsRequest;
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.steps.DeletedAccountsGetApiSteps;
@@ -19,8 +19,8 @@ import java.util.Map;
 import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.helper.DatabaseCleaner.deleteDeletedAccountRecord;
 
 
-@RunWith(SerenityRunner.class)
-public class DeletedAccountsApiTest {
+@ExtendWith(SerenityJUnit5Extension.class)
+class DeletedAccountsApiTest {
 
     @Steps
     DeletedAccountsPostApiSteps postApiSteps;
@@ -30,7 +30,7 @@ public class DeletedAccountsApiTest {
 
     @Test
     @Title("Assert response code of 201 for POST Request deletedAccounts")
-    public void assertHttpSuccessResponseCodeForPostRequestDeletedAccountsApi()
+    void assertHttpSuccessResponseCodeForPostRequestDeletedAccountsApi()
         throws JsonProcessingException {
 
         String authServiceToken = postApiSteps.givenAValidServiceTokenIsGenerated(
@@ -55,7 +55,7 @@ public class DeletedAccountsApiTest {
 
     @Test
     @Title("Assert response code of 400 for Invalid POST request body for deletedAccounts")
-    public void assertHttpBadResponseCodeForInvalidPostRequestBodyLogonApi()
+    void assertHttpBadResponseCodeForInvalidPostRequestBodyLogonApi()
         throws JsonProcessingException {
 
         String authServiceToken = postApiSteps.givenAValidServiceTokenIsGenerated(
@@ -76,7 +76,7 @@ public class DeletedAccountsApiTest {
 
     @Test
     @Title("Assert response code forbidden without s2s authentication token")
-    public void assertHttpForbiddenWithInvalidS2SToken() throws JsonProcessingException {
+    void assertHttpForbiddenWithInvalidS2SToken() throws JsonProcessingException {
         DeletedAccountsRequest request = postApiSteps.generateDeletedAccountsRequest();
 
         Response response = postApiSteps.whenThePostServiceIsInvoked(
@@ -94,7 +94,7 @@ public class DeletedAccountsApiTest {
 
     @Test
     @Title("Assert response code of 200 for successfully getting deleted records")
-    public void assertHttpSuccessResponseCodeForGetRequestDeletedAccountsApi() throws JSONException {
+    void assertHttpSuccessResponseCodeForGetRequestDeletedAccountsApi() throws JSONException {
         String serviceToken = getApiSteps.givenAValidServiceTokenIsGenerated(
             TestConstants.DISPOSER_USER_SERVICE_NAME);
 
@@ -119,7 +119,7 @@ public class DeletedAccountsApiTest {
 
     @Test
     @Title("Assert response code bad request without start timestamp")
-    public void assertHttpBadRequestWithoutStartTimestamp() throws JsonProcessingException {
+    void assertHttpBadRequestWithoutStartTimestamp() throws JsonProcessingException {
 
         String serviceToken = getApiSteps.givenAValidServiceTokenIsGenerated(
             TestConstants.DISPOSER_USER_SERVICE_NAME);
@@ -140,7 +140,7 @@ public class DeletedAccountsApiTest {
 
     @Test
     @Title("Assert response code unauthorized request without authentication token")
-    public void assertUnauthorizedRequest() {
+    void assertUnauthorizedRequest() {
 
         String serviceToken = getApiSteps.givenAValidServiceTokenIsGenerated(
             TestConstants.DISPOSER_USER_SERVICE_NAME);
@@ -162,7 +162,7 @@ public class DeletedAccountsApiTest {
 
     @Test
     @Title("Assert response code forbidden without s2s authentication token")
-    public void assertGetHttpForbiddenWithInvalidS2SToken() throws JSONException {
+    void assertGetHttpForbiddenWithInvalidS2SToken() throws JSONException {
         String authToken = getApiSteps.validAuthorizationTokenIsGenerated();
         Response response = getApiSteps.performGetOperation(
             TestConstants.DELETED_ACCOUNTS_ENDPOINT,
