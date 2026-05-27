@@ -3,20 +3,20 @@ package uk.gov.hmcts.reform.laubackend.idam.smoke;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertTrue;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {SmokeTestConfiguration.class})
-public class SmokeTests {
+class SmokeTests {
 
     @Value("${test.instance.uri}")
     private String url;
@@ -25,8 +25,8 @@ public class SmokeTests {
 
     RequestSpecification requestSpec;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         RequestSpecBuilder builder = new RequestSpecBuilder();
         builder.addParam("http.connection.timeout", "60000");
         builder.addParam("http.socket.timeout", "60000");
@@ -36,7 +36,7 @@ public class SmokeTests {
     }
 
     @Test
-    public void shouldGetOkStatusFromHealthEndpointForLauBackend() {
+    void shouldGetOkStatusFromHealthEndpointForLauBackend() {
 
         ValidatableResponse response = given().spec(requestSpec)
             .when()
