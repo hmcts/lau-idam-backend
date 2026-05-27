@@ -155,6 +155,7 @@ task smoke(type: Test) {
     description = "Runs Smoke Tests"
     testClassesDirs = sourceSets.smokeTest.output.classesDirs
     classpath = sourceSets.smokeTest.runtimeClasspath
+    useJUnitPlatform()
 }
 
 task fortifyScan(type: JavaExec) {
@@ -294,7 +295,6 @@ dependencyCheck {
 
 dependencyManagement {
   dependencies {
-    dependency group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.70'
     dependencySet(group: 'ch.qos.logback', version: '1.5.32') {
       entry 'logback-core'
       entry 'logback-classic'
@@ -332,7 +332,7 @@ def versions = [
   sonarPitest       : '0.5',
   springBoot        : springBoot.class.package.implementationVersion,
   testcontainers    : '2.0.5',
-  wiremock          : '3.0.1',
+  wiremock          : '3.13.2',
 ]
 
 configurations.all {
@@ -401,7 +401,7 @@ dependencies {
     testImplementation group: 'io.cucumber', name: 'cucumber-spring', version: versions.cucumber
     testImplementation group: 'io.cucumber', name: 'cucumber-junit', version: versions.cucumber
     testImplementation group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber
-    testImplementation group: 'com.github.tomakehurst', name: 'wiremock-jre8-standalone', version: versions.wiremock
+    testImplementation group: 'org.wiremock', name: 'wiremock-standalone', version: versions.wiremock
     testImplementation group: 'org.codehaus.sonar-plugins', name: 'sonar-pitest-plugin', version: versions.sonarPitest
     testImplementation group: 'org.testcontainers', name: 'testcontainers', version: versions.testcontainers
     testImplementation group: 'org.testcontainers', name: 'testcontainers-postgresql', version: versions.testcontainers
