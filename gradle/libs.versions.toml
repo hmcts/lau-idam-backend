@@ -1,0 +1,117 @@
+[versions]
+appinsights = "3.7.8"
+checkstyle-tool = "13.4.2"
+commons-beanutils = "1.11.0"
+commons-fileupload = "1.6.0"
+commons-io = "2.22.0"
+commons-lang3 = "3.18.0"
+commons-net = "3.13.0"
+cucumber = "7.34.3"
+flyway = "12.6.2"
+fluent-hc = "4.5.14"
+fortify-client = "1.4.10"
+gradle-pitest = "1.15.0"
+gson = "2.14.0"
+idam-client = "4.0.0"
+jakarta-el = "6.0.1"
+jakarta-servlet = "6.1.0"
+jaxb-runtime = "4.0.8"
+junit = "5.12.2"
+junit-platform = "1.12.2"
+junit-toolbox = "2.4"
+log4j = "2.26.0"
+logback = "1.5.32"
+lombok = "1.18.46"
+pact = "4.7.1"
+pitest-junit5-plugin = "1.2.1"
+pmd-tool = "7.24.0"
+postgresql = "42.7.11"
+reform-logging = "8.0.0"
+rest-assured = "6.0.0"
+serenity = "5.3.10"
+service-auth-provider = "5.3.3"
+snakeyaml = "2.6"
+sonar-pitest = "0.5"
+spring-cloud-dependencies = "2025.1.1"
+springdoc-openapi = "3.0.3"
+testcontainers = "2.0.5"
+testng = "7.12.0"
+tomcat = "11.0.22"
+wiremock = "3.13.2"
+
+[libraries]
+applicationinsights-core = { module = "com.microsoft.azure:applicationinsights-core", version.ref = "appinsights" }
+applicationinsights-web = { module = "com.microsoft.azure:applicationinsights-web", version.ref = "appinsights" }
+commons-beanutils = { module = "commons-beanutils:commons-beanutils", version.ref = "commons-beanutils" }
+commons-fileupload = { module = "commons-fileupload:commons-fileupload", version.ref = "commons-fileupload" }
+commons-io = { module = "commons-io:commons-io", version.ref = "commons-io" }
+commons-net = { module = "commons-net:commons-net", version.ref = "commons-net" }
+cucumber-java = { module = "io.cucumber:cucumber-java", version.ref = "cucumber" }
+cucumber-junit = { module = "io.cucumber:cucumber-junit", version.ref = "cucumber" }
+cucumber-spring = { module = "io.cucumber:cucumber-spring", version.ref = "cucumber" }
+flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway" }
+flyway-database-postgresql = { module = "org.flywaydb:flyway-database-postgresql", version.ref = "flyway" }
+fortify-client = { module = "com.github.hmcts:fortify-client", version.ref = "fortify-client" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+gradle-pitest-plugin = { module = "info.solidsoft.gradle.pitest:gradle-pitest-plugin", version.ref = "gradle-pitest" }
+hmcts-idam-java-client = { module = "com.github.hmcts:idam-java-client", version.ref = "idam-client" }
+hmcts-service-auth-provider-java-client = { module = "com.github.hmcts:service-auth-provider-java-client", version.ref = "service-auth-provider" }
+httpcomponents-fluent-hc = { module = "org.apache.httpcomponents:fluent-hc", version.ref = "fluent-hc" }
+jakarta-el-api = { module = "jakarta.el:jakarta.el-api", version.ref = "jakarta-el" }
+jakarta-servlet-api = { module = "jakarta.servlet:jakarta.servlet-api", version.ref = "jakarta-servlet" }
+jaxb-runtime = { module = "org.glassfish.jaxb:jaxb-runtime", version.ref = "jaxb-runtime" }
+junit-toolbox = { module = "com.googlecode.junit-toolbox:junit-toolbox", version.ref = "junit-toolbox" }
+log4j-api = { module = "org.apache.logging.log4j:log4j-api", version.ref = "log4j" }
+log4j-to-slf4j = { module = "org.apache.logging.log4j:log4j-to-slf4j", version.ref = "log4j" }
+lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
+pact-consumer-core = { module = "au.com.dius.pact:consumer", version.ref = "pact" }
+pact-consumer-junit5 = { module = "au.com.dius.pact.consumer:junit5", version.ref = "pact" }
+reform-java-logging = { module = "com.github.hmcts.java-logging:logging", version.ref = "reform-logging" }
+rest-assured-common = { module = "io.rest-assured:rest-assured-common", version.ref = "rest-assured" }
+rest-assured-core = { module = "io.rest-assured:rest-assured", version.ref = "rest-assured" }
+rest-assured-json-path = { module = "io.rest-assured:json-path", version.ref = "rest-assured" }
+rest-assured-xml-path = { module = "io.rest-assured:xml-path", version.ref = "rest-assured" }
+serenity-core = { module = "net.serenity-bdd:serenity-core", version.ref = "serenity" }
+serenity-junit5 = { module = "net.serenity-bdd:serenity-junit5", version.ref = "serenity" }
+serenity-rest-assured = { module = "net.serenity-bdd:serenity-rest-assured", version.ref = "serenity" }
+snakeyaml = { module = "org.yaml:snakeyaml", version.ref = "snakeyaml" }
+sonar-pitest-plugin = { module = "org.codehaus.sonar-plugins:sonar-pitest-plugin", version.ref = "sonar-pitest" }
+spring-boot-devtools = { module = "org.springframework.boot:spring-boot-devtools" }
+spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
+spring-boot-starter-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa" }
+spring-boot-starter-flyway = { module = "org.springframework.boot:spring-boot-starter-flyway" }
+spring-boot-starter-jackson = { module = "org.springframework.boot:spring-boot-starter-jackson" }
+spring-boot-starter-jdbc = { module = "org.springframework.boot:spring-boot-starter-jdbc" }
+spring-boot-starter-oauth2-resource-server = { module = "org.springframework.boot:spring-boot-starter-security-oauth2-resource-server" }
+spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security" }
+spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
+spring-boot-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation" }
+spring-boot-starter-webmvc = { module = "org.springframework.boot:spring-boot-starter-webmvc" }
+spring-boot-test-starter-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa-test" }
+spring-boot-test-starter-flyway = { module = "org.springframework.boot:spring-boot-starter-flyway-test" }
+spring-boot-test-starter-security = { module = "org.springframework.boot:spring-boot-starter-security-test" }
+spring-boot-test-starter-webmvc = { module = "org.springframework.boot:spring-boot-starter-webmvc-test" }
+spring-cloud-starter-bootstrap = { module = "org.springframework.cloud:spring-cloud-starter-bootstrap" }
+spring-cloud-starter-openfeign = { module = "org.springframework.cloud:spring-cloud-starter-openfeign" }
+spring-security-test = { module = "org.springframework.security:spring-security-test" }
+spring-web = { module = "org.springframework:spring-web" }
+springdoc-openapi-starter-webmvc-ui = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc-openapi" }
+testcontainers-core = { module = "org.testcontainers:testcontainers", version.ref = "testcontainers" }
+testcontainers-postgresql = { module = "org.testcontainers:testcontainers-postgresql", version.ref = "testcontainers" }
+testng = { module = "org.testng:testng", version.ref = "testng" }
+wiremock-standalone = { module = "org.wiremock:wiremock-standalone", version.ref = "wiremock" }
+
+[plugins]
+ben-manes-versions = { id = "com.github.ben-manes.versions", version = "0.54.0" }
+flyway = { id = "org.flywaydb.flyway", version.ref = "flyway" }
+git-properties = { id = "com.gorylenko.gradle-git-properties", version = "3.0.3" }
+hmcts-java = { id = "uk.gov.hmcts.java", version = "0.12.70" }
+openapi-gradle-plugin = { id = "org.springdoc.openapi-gradle-plugin", version = "1.9.0" }
+owasp = { id = "org.owasp.dependencycheck", version = "12.2.1" }
+pact = { id = "au.com.dius.pact", version.ref = "pact" }
+pitest = { id = "info.solidsoft.pitest", version = "1.19.0" }
+serenity-gradle-plugin = { id = "net.serenity-bdd.serenity-gradle-plugin", version = "5.3.9" }
+sonarqube = { id = "org.sonarqube", version = "7.3.0.8198" }
+spring-boot = { id = "org.springframework.boot", version = "4.0.6" }
+spring-dependency-management = { id = "io.spring.dependency-management", version = "1.1.7" }
