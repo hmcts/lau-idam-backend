@@ -7,11 +7,12 @@ import net.serenitybdd.junit5.SerenityJUnit5Extension;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.testng.Assert;
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.steps.DeletedAccountsGetApiSteps;
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants;
 
 import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SerenityJUnit5Extension.class)
 class AllDeletedAccountsApiTest {
@@ -37,7 +38,7 @@ class AllDeletedAccountsApiTest {
         );
 
         String successOrFailure = getApiSteps.thenASuccessResposeIsReturned(response);
-        Assert.assertEquals(
+        assertEquals(
             successOrFailure,
             TestConstants.SUCCESS,
             "GetAllDeletedAccounts Get API response code 200 is not successful"
@@ -59,7 +60,7 @@ class AllDeletedAccountsApiTest {
             "authToken"
         );
         String successOrFailure = getApiSteps.thenBadResponseIsReturned(response, 401);
-        Assert.assertEquals(
+        assertEquals(
             successOrFailure,
             TestConstants.SUCCESS,
             "GetAllDeletedAccounts GET API response code 401 assertion is not successful"
@@ -79,7 +80,7 @@ class AllDeletedAccountsApiTest {
         );
 
         String successOrFailure = getApiSteps.thenBadResponseIsReturned(response, 403);
-        Assert.assertEquals(
+        assertEquals(
             successOrFailure,
             TestConstants.SUCCESS,
             "GetAllDeletedAccounts GET API response code 403 assertion is not successful"
@@ -102,7 +103,7 @@ class AllDeletedAccountsApiTest {
             authToken
         );
         String successOrFailure = getApiSteps.thenBadResponseIsReturned(response, 400);
-        Assert.assertEquals(
+        assertEquals(
             successOrFailure,
             TestConstants.SUCCESS,
             "GetAllDeletedAccounts GET API response code 400 assertion is not successful"

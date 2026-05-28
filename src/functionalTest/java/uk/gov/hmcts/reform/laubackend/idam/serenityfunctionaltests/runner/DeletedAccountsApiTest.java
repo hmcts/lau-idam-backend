@@ -8,7 +8,6 @@ import net.serenitybdd.junit5.SerenityJUnit5Extension;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.testng.Assert;
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.model.DeletedAccountsRequest;
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.steps.DeletedAccountsGetApiSteps;
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.steps.DeletedAccountsPostApiSteps;
@@ -16,6 +15,7 @@ import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestCon
 
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.helper.DatabaseCleaner.deleteDeletedAccountRecord;
 
 
@@ -43,7 +43,7 @@ class DeletedAccountsApiTest {
             request
         );
         String successOrFailure = postApiSteps.thenASuccessResposeIsReturned(response);
-        Assert.assertEquals(
+        assertEquals(
             successOrFailure,
             TestConstants.SUCCESS,
             "DeletedAccounts POST API response code 201 assertion is not successful"
@@ -67,7 +67,7 @@ class DeletedAccountsApiTest {
             request
         );
         String successOrFailure = postApiSteps.thenBadResponseIsReturned(response, 400);
-        Assert.assertEquals(
+        assertEquals(
             successOrFailure,
             TestConstants.SUCCESS,
             "Logon POST API response code 400 assertion is not successful"
@@ -85,7 +85,7 @@ class DeletedAccountsApiTest {
             request
         );
         String successOrFailure = postApiSteps.thenAForbiddenResposeIsReturned(response);
-        Assert.assertEquals(
+        assertEquals(
             successOrFailure,
             TestConstants.SUCCESS,
             "DeletedAccounts POST API response code 403 assertion is not successful"
@@ -110,7 +110,7 @@ class DeletedAccountsApiTest {
         );
 
         String successOrFailure = getApiSteps.thenASuccessResposeIsReturned(response);
-        Assert.assertEquals(
+        assertEquals(
             successOrFailure,
             TestConstants.SUCCESS,
             "DeletedAccounts POST API response code 200 assertion is not successful"
@@ -131,7 +131,7 @@ class DeletedAccountsApiTest {
             request
         );
         String successOrFailure = getApiSteps.thenBadResponseIsReturned(response, 400);
-        Assert.assertEquals(
+        assertEquals(
             successOrFailure,
             TestConstants.SUCCESS,
             "DeletedAccountsSearch GET API response code 400 assertion is not successful"
@@ -153,7 +153,7 @@ class DeletedAccountsApiTest {
             "authToken"
         );
         String successOrFailure = getApiSteps.thenBadResponseIsReturned(response, 401);
-        Assert.assertEquals(
+        assertEquals(
             successOrFailure,
             TestConstants.SUCCESS,
             "DeletedAccountsSearch GET API response code 401 assertion is not successful"
@@ -173,7 +173,7 @@ class DeletedAccountsApiTest {
         );
 
         String successOrFailure = getApiSteps.thenBadResponseIsReturned(response, 403);
-        Assert.assertEquals(
+        assertEquals(
             successOrFailure,
             TestConstants.SUCCESS,
             "DeletedAccountsSearch GET API response code 403 assertion is not successful"
