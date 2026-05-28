@@ -1,7 +1,5 @@
 package uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.runner;
 
-
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.response.Response;
@@ -11,7 +9,6 @@ import net.serenitybdd.junit5.SerenityJUnit5Extension;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.testng.Assert;
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.model.LogOnGetResponseVO;
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.model.LogOnRequestVO;
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.steps.LogOnGetApiSteps;
@@ -21,6 +18,7 @@ import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestCon
 import java.text.ParseException;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.helper.DatabaseCleaner.deleteLogonRecord;
 
 @ExtendWith(SerenityJUnit5Extension.class)
@@ -46,7 +44,7 @@ class LogOnApiTest {
             logOnRequestVO
         );
         String successOrFailure = logOnGetApiSteps.thenASuccessResposeIsReturned(response);
-        Assert.assertEquals(
+        assertEquals(
             successOrFailure,
             TestConstants.SUCCESS,
             "Logon POST API response code 201 assertion is not successful"
@@ -69,7 +67,7 @@ class LogOnApiTest {
             logOnRequestVO
         );
         String successOrFailure = logOnGetApiSteps.thenBadResponseIsReturned(response, 400);
-        Assert.assertEquals(
+        assertEquals(
             successOrFailure,
             TestConstants.SUCCESS,
             "Logon POST API response code 400 assertion is not successful"
@@ -109,7 +107,7 @@ class LogOnApiTest {
             queryParamMap,
             logOnGetResponseVO
         );
-        Assert.assertEquals(successOrFailure, TestConstants.SUCCESS,
+        assertEquals(successOrFailure, TestConstants.SUCCESS,
                             "The assertion for GET Logon API response code 200 is not successful"
         );
         //Delete DB record
@@ -130,7 +128,7 @@ class LogOnApiTest {
             queryParamMap
         );
         String successOrFailure = logOnGetApiSteps.thenBadResponseIsReturned(response, 400);
-        Assert.assertEquals(successOrFailure, TestConstants.SUCCESS, "The assertion is not successful");
+        assertEquals(successOrFailure, TestConstants.SUCCESS, "The assertion is not successful");
     }
 
     @Test
@@ -144,7 +142,7 @@ class LogOnApiTest {
             queryParamMap
         );
         String successOrFailure = logOnGetApiSteps.thenBadResponseIsReturned(response, 403);
-        Assert.assertEquals(successOrFailure, TestConstants.SUCCESS, "The assertion is not successful");
+        assertEquals(successOrFailure, TestConstants.SUCCESS, "The assertion is not successful");
     }
 
     @Test
@@ -159,7 +157,7 @@ class LogOnApiTest {
             queryParamMap
         );
         String successOrFailure = logOnGetApiSteps.thenBadResponseIsReturned(response, 401);
-        Assert.assertEquals(successOrFailure, TestConstants.SUCCESS, "The assertion is not successful");
+        assertEquals(successOrFailure, TestConstants.SUCCESS, "The assertion is not successful");
     }
 
     @Test
@@ -175,7 +173,7 @@ class LogOnApiTest {
             queryParamMap
         );
         String successOrFailure = logOnGetApiSteps.thenBadResponseIsReturned(response, 401);
-        Assert.assertEquals(successOrFailure, TestConstants.SUCCESS, "The assertion is not successful");
+        assertEquals(successOrFailure, TestConstants.SUCCESS, "The assertion is not successful");
     }
 
 }
