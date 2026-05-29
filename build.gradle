@@ -294,12 +294,6 @@ dependencyCheck {
 }
 
 dependencyManagement {
-  dependencies {
-    dependencySet(group: 'ch.qos.logback', version: '1.5.32') {
-      entry 'logback-core'
-      entry 'logback-classic'
-    }
-  }
   imports {
     mavenBom 'org.springframework.cloud:spring-cloud-dependencies:2025.1.1'
   }
