@@ -387,7 +387,6 @@ dependencies {
     implementation "com.github.hmcts.java-logging:logging:${versions.reformLogging}"
     implementation "jakarta.servlet:jakarta.servlet-api:6.1.0"
     implementation "org.apache.httpcomponents:fluent-hc:4.5.14"
-    implementation "org.glassfish.jaxb:jaxb-runtime:4.0.8"
 
     testImplementation "commons-beanutils:commons-beanutils:1.11.0"
     testImplementation "org.springframework.boot:spring-boot-starter-test"
