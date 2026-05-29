@@ -122,49 +122,49 @@ configurations {
     contractTestRuntimeOnly.extendsFrom(testRuntimeOnly)
 }
 
-task unit(type: Test, description: 'Runs the unit tests.', group: 'Verification') {
-    testClassesDirs = sourceSets.test.output.classesDirs
-    classpath = sourceSets.test.runtimeClasspath
-    useJUnitPlatform()
+tasks.register('unit', Test) {
+  testClassesDirs = sourceSets.test.output.classesDirs
+  classpath = sourceSets.test.runtimeClasspath
+  useJUnitPlatform()
 }
 
-task functional(type: Test) {
+tasks.register('functional', Test) {
 
-    systemProperty "scenario", System.getProperty('scenario')
+  systemProperty "scenario", System.getProperty('scenario')
 
-    description = "Runs functional tests"
-    group = "Verification"
-    testClassesDirs = sourceSets.functionalTest.output.classesDirs
-    classpath = sourceSets.functionalTest.runtimeClasspath
-    useJUnitPlatform()
-    finalizedBy aggregate
+  description = "Runs functional tests"
+  group = "Verification"
+  testClassesDirs = sourceSets.functionalTest.output.classesDirs
+  classpath = sourceSets.functionalTest.runtimeClasspath
+  useJUnitPlatform()
+  finalizedBy aggregate
 }
 
-task integration(type: Test) {
-    description = "Runs integration tests"
-    group = "Verification"
-    testClassesDirs = sourceSets.integrationTest.output.classesDirs
-    classpath = sourceSets.integrationTest.runtimeClasspath
-    mustRunAfter test
+tasks.register('integration', Test) {
+  description = "Runs integration tests"
+  group = "Verification"
+  testClassesDirs = sourceSets.integrationTest.output.classesDirs
+  classpath = sourceSets.integrationTest.runtimeClasspath
+  mustRunAfter test
 }
 
 check.dependsOn integration
 
 
-task smoke(type: Test) {
-    description = "Runs Smoke Tests"
-    testClassesDirs = sourceSets.smokeTest.output.classesDirs
-    classpath = sourceSets.smokeTest.runtimeClasspath
-    useJUnitPlatform()
+tasks.register('smoke', Test) {
+  description = "Runs Smoke Tests"
+  testClassesDirs = sourceSets.smokeTest.output.classesDirs
+  classpath = sourceSets.smokeTest.runtimeClasspath
+  useJUnitPlatform()
 }
 
-task fortifyScan(type: JavaExec) {
-    mainClass = "uk.gov.hmcts.fortifyclient.FortifyClientMainApp"
-    classpath += sourceSets.test.runtimeClasspath
-    jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
+tasks.register('fortifyScan', JavaExec) {
+  mainClass = "uk.gov.hmcts.fortifyclient.FortifyClientMainApp"
+  classpath += sourceSets.test.runtimeClasspath
+  jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
 }
 
-task contract(type: Test, description: 'Runs the pact contract tests.', group: 'Verification') {
+tasks.register('contract', Test) {
   description = "Runs the consumer Pact tests"
   useJUnitPlatform()
   testClassesDirs = sourceSets.contractTest.output.classesDirs
@@ -188,11 +188,8 @@ pact {
   }
 }
 
-task runAndPublishConsumerPactTests(type: Test){
+tasks.register('runAndPublishConsumerPactTests', Test) {
   dependsOn(contract)
-  logger.lifecycle("Runs pact Tests")
-  testClassesDirs = sourceSets.contractTest.output.classesDirs
-  classpath = sourceSets.contractTest.runtimeClasspath
   finalizedBy(pactPublish)
 }
 
@@ -210,8 +207,6 @@ pmd {
     ruleSets = []
     ruleSetFiles = files("config/pmd/ruleset.xml")
 }
-
-runAndPublishConsumerPactTests.dependsOn contract
 
 project.tasks['jacocoTestReport'].dependsOn test, integration
 
