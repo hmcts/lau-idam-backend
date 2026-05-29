@@ -203,7 +203,7 @@ checkstyle {
 }
 
 pmd {
-    toolVersion = "7.24.0"
+    toolVersion = "7.25.0"
     sourceSets = [sourceSets.main, sourceSets.test, sourceSets.functionalTest, sourceSets.integrationTest, sourceSets.smokeTest]
     reportsDir = file("$project.buildDir/reports/pmd")
     // https://github.com/pmd/pmd/issues/876
@@ -294,12 +294,6 @@ dependencyCheck {
 }
 
 dependencyManagement {
-  dependencies {
-    dependencySet(group: 'ch.qos.logback', version: '1.5.32') {
-      entry 'logback-core'
-      entry 'logback-classic'
-    }
-  }
   imports {
     mavenBom 'org.springframework.cloud:spring-cloud-dependencies:2025.1.1'
   }
@@ -387,7 +381,6 @@ dependencies {
     implementation "com.github.hmcts.java-logging:logging:${versions.reformLogging}"
     implementation "jakarta.servlet:jakarta.servlet-api:6.1.0"
     implementation "org.apache.httpcomponents:fluent-hc:4.5.14"
-    implementation "org.glassfish.jaxb:jaxb-runtime:4.0.8"
 
     testImplementation "commons-beanutils:commons-beanutils:1.11.0"
     testImplementation "org.springframework.boot:spring-boot-starter-test"
