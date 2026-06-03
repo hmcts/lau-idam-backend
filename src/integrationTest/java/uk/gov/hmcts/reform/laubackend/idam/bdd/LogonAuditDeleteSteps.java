@@ -42,7 +42,7 @@ public class LogonAuditDeleteSteps extends AbstractSteps {
 
         logonId = logonLogPostResponse.getLogonLog().getId();
 
-        assertThat(logonId).isNotEqualTo(null);
+        assertThat(logonId).isNotNull();
     }
 
     @And("I request DELETE {string} logon endpoint")
@@ -81,6 +81,6 @@ public class LogonAuditDeleteSteps extends AbstractSteps {
         final LogonLogGetResponse caseActionGetResponse = jsonReader
                 .fromJson(logonLogResponseBody, LogonLogGetResponse.class);
 
-        assertThat(caseActionGetResponse.getLogonLog().size()).isEqualTo(0);
+        assertThat(caseActionGetResponse.getLogonLog()).isEmpty();
     }
 }

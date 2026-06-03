@@ -32,7 +32,7 @@ public class CommonSteps extends AbstractSteps {
 
     @Given("^LAU IdAm backend application is healthy$")
     public void checkApplication() {
-        final Response response = RestAssured
+        final Response welcomeResponse = RestAssured
                 .given()
                 .relaxedHTTPSValidation()
                 .baseUri(getUrl(""))
@@ -41,7 +41,7 @@ public class CommonSteps extends AbstractSteps {
                 .get()
                 .andReturn();
 
-        assertThat(response.getBody().asString()).contains("Welcome");
+        assertThat(welcomeResponse.getBody().asString()).contains("Welcome");
     }
 
     @When("And I GET {string} without service authorization header")

@@ -2,12 +2,12 @@ package uk.gov.hmcts.reform.laubackend.idam.authorization;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.mock.web.MockHttpServletResponse;
 import uk.gov.hmcts.reform.laubackend.idam.exceptions.InvalidAuthorizationException;
 import uk.gov.hmcts.reform.laubackend.idam.exceptions.InvalidServiceAuthorizationException;
@@ -25,17 +25,29 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @ExtendWith(MockitoExtension.class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class RestApiPreInvokeInterceptorTest {
+
+    @Mock
+    private ObjectProvider<ServiceAuthorizationAuthenticator> serviceAuthorizationAuthenticatorProvider;
 
     @Mock
     private ServiceAuthorizationAuthenticator serviceAuthorizationAuthenticator;
 
     @Mock
+    private ObjectProvider<AuthorizationAuthenticator> authorizationAuthenticatorProvider;
+
+    @Mock
     private AuthorizationAuthenticator authorizationAuthenticator;
 
-    @InjectMocks
     private RestApiPreInvokeInterceptor restApiPreInvokeInterceptor;
+
+    @BeforeEach
+    void setUp() {
+        restApiPreInvokeInterceptor = new RestApiPreInvokeInterceptor(
+            serviceAuthorizationAuthenticatorProvider,
+            authorizationAuthenticatorProvider
+        );
+    }
 
     @Test
     void shouldReturnTrueWhenServiceAndAuthTokenIsValid() throws IOException {
@@ -43,6 +55,7 @@ class RestApiPreInvokeInterceptorTest {
         final HttpServletResponse httpServletResponse = new MockHttpServletResponse();
         final Object object = mock(Object.class);
 
+        when(serviceAuthorizationAuthenticatorProvider.getObject()).thenReturn(serviceAuthorizationAuthenticator);
         doNothing().when(serviceAuthorizationAuthenticator).authorizeServiceToken(httpServletRequest);
 
         when(httpServletRequest.getMethod()).thenReturn(POST.name());
@@ -59,6 +72,7 @@ class RestApiPreInvokeInterceptorTest {
         final MockHttpServletResponse httpServletResponse = new MockHttpServletResponse();
         final Object object = mock(Object.class);
 
+        when(serviceAuthorizationAuthenticatorProvider.getObject()).thenReturn(serviceAuthorizationAuthenticator);
         doThrow(new InvalidServiceAuthorizationException("Yabba Dabba Doo"))
                 .when(serviceAuthorizationAuthenticator)
                 .authorizeServiceToken(httpServletRequest);
@@ -79,8 +93,10 @@ class RestApiPreInvokeInterceptorTest {
         final MockHttpServletResponse httpServletResponse = new MockHttpServletResponse();
         final Object object = mock(Object.class);
 
+        when(serviceAuthorizationAuthenticatorProvider.getObject()).thenReturn(serviceAuthorizationAuthenticator);
         doNothing().when(serviceAuthorizationAuthenticator).authorizeServiceToken(httpServletRequest);
         when(httpServletRequest.getMethod()).thenReturn(GET.name());
+        when(authorizationAuthenticatorProvider.getObject()).thenReturn(authorizationAuthenticator);
         doThrow(new InvalidAuthorizationException("Scooby Doo"))
                 .when(authorizationAuthenticator)
                 .authorizeAuthorizationToken(httpServletRequest);

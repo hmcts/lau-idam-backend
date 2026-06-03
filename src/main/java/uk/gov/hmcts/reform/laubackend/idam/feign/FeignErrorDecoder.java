@@ -5,17 +5,12 @@ import feign.Response;
 import feign.Request.HttpMethod;
 import feign.RetryableException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
-import uk.gov.hmcts.reform.laubackend.idam.authorization.HttpPostRecordHolder;
 
 @Configuration
 @Slf4j
 public class FeignErrorDecoder implements feign.codec.ErrorDecoder {
-
-    @Autowired
-    private HttpPostRecordHolder httpPostRecordHolder;
 
     @Override
     public Exception decode(String methodKey, Response response) {
@@ -24,8 +19,7 @@ public class FeignErrorDecoder implements feign.codec.ErrorDecoder {
         log.info("Idam backend: Feign response status: {}, message - {}", response.status(), exception.getMessage());
         if (respStatus.is5xxServerError()
             && HttpMethod.GET == response.request().httpMethod()
-            && response.request().url().endsWith("/details")
-            && httpPostRecordHolder.isPost()) {
+            && response.request().url().endsWith("/details")) {
             return new RetryableException(
                 response.status(),
                 exception.getMessage(),

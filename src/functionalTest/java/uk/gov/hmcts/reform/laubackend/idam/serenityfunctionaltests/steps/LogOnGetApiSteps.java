@@ -123,9 +123,9 @@ public class LogOnGetApiSteps extends BaseSteps {
         Date inputEndTimestamp = new SimpleDateFormat(dateFormat, Locale.UK).parse(timeStampEndInputParam);
         Date responseTimestamp = new SimpleDateFormat(responseDateFormat, Locale.UK).parse(timeStampResponse);
 
-        LOGGER.info("Input start date : " + inputStartTimestamp.getTime());
-        LOGGER.info("Input end date : " + inputEndTimestamp.getTime());
-        LOGGER.info("Output date : " + responseTimestamp.getTime());
+        LOGGER.info("Input start date : {}", inputStartTimestamp.getTime());
+        LOGGER.info("Input end date : {}", inputEndTimestamp.getTime());
+        LOGGER.info("Output date : {}", responseTimestamp.getTime());
 
         Assert.assertTrue("Verify record response timestamp",
                 responseTimestamp.after(inputStartTimestamp) && responseTimestamp.before(

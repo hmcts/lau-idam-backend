@@ -129,9 +129,7 @@ tasks.register('unit', Test) {
 }
 
 tasks.register('functional', Test) {
-
   systemProperty "scenario", System.getProperty('scenario')
-
   description = "Runs functional tests"
   group = "Verification"
   testClassesDirs = sourceSets.functionalTest.output.classesDirs
@@ -146,6 +144,7 @@ tasks.register('integration', Test) {
   testClassesDirs = sourceSets.integrationTest.output.classesDirs
   classpath = sourceSets.integrationTest.runtimeClasspath
   mustRunAfter test
+  useJUnitPlatform()
 }
 
 check.dependsOn integration
@@ -386,9 +385,6 @@ dependencies {
     testImplementation "net.serenity-bdd:serenity-core:${versions.serenity}"
     testImplementation "net.serenity-bdd:serenity-junit5:${versions.serenity}"
     testImplementation "net.serenity-bdd:serenity-rest-assured:${versions.serenity}"
-    testImplementation "io.cucumber:cucumber-spring:${versions.cucumber}"
-    testImplementation "io.cucumber:cucumber-junit:${versions.cucumber}"
-    testImplementation "io.cucumber:cucumber-java:${versions.cucumber}"
     testImplementation "org.wiremock:wiremock-standalone:${versions.wiremock}"
     testImplementation "org.codehaus.sonar-plugins:sonar-pitest-plugin:${versions.sonarPitest}"
     testImplementation "org.testcontainers:testcontainers:${versions.testcontainers}"
@@ -408,6 +404,11 @@ dependencies {
     integrationTestImplementation "org.testcontainers:testcontainers:${versions.testcontainers}"
     integrationTestImplementation "org.testcontainers:testcontainers-postgresql:${versions.testcontainers}"
     integrationTestImplementation "org.projectlombok:lombok:${versions.lombok}"
+    integrationTestImplementation "io.cucumber:cucumber-java:${versions.cucumber}"
+    integrationTestImplementation "io.cucumber:cucumber-spring:${versions.cucumber}"
+    integrationTestImplementation "io.cucumber:cucumber-junit-platform-engine:${versions.cucumber}"
+    integrationTestImplementation "org.junit.platform:junit-platform-suite"
+
     integrationTestAnnotationProcessor "org.projectlombok:lombok:${versions.lombok}"
 
     integrationTestImplementation sourceSets.main.runtimeClasspath
@@ -427,20 +428,11 @@ dependencies {
     smokeTestImplementation "io.rest-assured:json-path:${versions.restAssured}"
     smokeTestImplementation "io.rest-assured:xml-path:${versions.restAssured}"
 
-//Added for FN tests
+    //Added for FN tests
     testImplementation "io.rest-assured:rest-assured:${versions.restAssured}"
     testImplementation "io.rest-assured:json-path:${versions.restAssured}"
     testImplementation "io.rest-assured:xml-path:${versions.restAssured}"
     testImplementation "com.google.code.gson:gson:2.14.0"
-
-    cucumberRuntime "io.cucumber:cucumber-java:${versions.cucumber}"
-    cucumberRuntime "org.springframework:spring-web"
-    cucumberRuntime "org.springframework.security:spring-security-test"
-    cucumberRuntime "io.rest-assured:rest-assured:${versions.restAssured}"
-    cucumberRuntime "io.rest-assured:json-path:${versions.restAssured}"
-    cucumberRuntime "io.rest-assured:xml-path:${versions.restAssured}"
-    cucumberRuntime "net.serenity-bdd:serenity-rest-assured"
-    cucumberRuntime "com.google.code.gson:gson:2.14.0"
 
     testCompileOnly "org.projectlombok:lombok"
     testAnnotationProcessor "org.projectlombok:lombok"
@@ -451,7 +443,6 @@ dependencies {
 
     contractTestImplementation sourceSets.main.runtimeClasspath
     contractTestImplementation sourceSets.test.runtimeClasspath
-
 }
 
 flyway {
@@ -470,11 +461,12 @@ flyway {
 }
 
 import org.flywaydb.gradle.task.FlywayMigrateTask
-task migratePostgresDatabase(type: FlywayMigrateTask) {
-    baselineOnMigrate = true
-    if (project.hasProperty("dburl")) {
-        url = "jdbc:postgresql://${dburl}"
-    }
+
+tasks.register('migratePostgresDatabase', FlywayMigrateTask) {
+  baselineOnMigrate = true
+  if (project.hasProperty("dburl")) {
+    url = "jdbc:postgresql://${dburl}"
+  }
 }
 
 application {

@@ -2,8 +2,10 @@ package uk.gov.hmcts.reform.laubackend.idam.authorization;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import uk.gov.hmcts.reform.laubackend.idam.exceptions.InvalidAuthorizationException;
 import uk.gov.hmcts.reform.laubackend.idam.exceptions.InvalidServiceAuthorizationException;
@@ -16,13 +18,13 @@ import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @Slf4j
+@RequiredArgsConstructor
+@Component
 public class RestApiPreInvokeInterceptor implements HandlerInterceptor {
 
-    @Autowired
-    private ServiceAuthorizationAuthenticator serviceAuthorizationAuthenticator;
+    private final ObjectProvider<ServiceAuthorizationAuthenticator> serviceAuthorizationAuthenticator;
 
-    @Autowired
-    private AuthorizationAuthenticator authorizationAuthenticator;
+    private final ObjectProvider<AuthorizationAuthenticator> authorizationAuthenticator;
 
     @Override
     public boolean preHandle(final HttpServletRequest request,
@@ -30,11 +32,11 @@ public class RestApiPreInvokeInterceptor implements HandlerInterceptor {
                              final Object handler) throws IOException {
 
         try {
-            serviceAuthorizationAuthenticator.authorizeServiceToken(request);
+            serviceAuthorizationAuthenticator.getObject().authorizeServiceToken(request);
 
             if (request.getMethod().equalsIgnoreCase(GET.name())
                     || request.getMethod().equalsIgnoreCase(DELETE.name())) {
-                authorizationAuthenticator.authorizeAuthorizationToken(request);
+                authorizationAuthenticator.getObject().authorizeAuthorizationToken(request);
             }
 
         } catch (final InvalidServiceAuthorizationException exception) {
