@@ -1,6 +1,6 @@
 buildscript {
   dependencies {
-    classpath "org.flywaydb:flyway-database-postgresql:12.6.2"
+    classpath "org.flywaydb:flyway-database-postgresql:12.7.0"
   }
 }
 
@@ -14,7 +14,7 @@ plugins {
     id 'com.gorylenko.gradle-git-properties' version '3.0.3'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'net.serenity-bdd.serenity-gradle-plugin' version '5.3.9'
-    id 'org.flywaydb.flyway' version '12.6.2'
+    id 'org.flywaydb.flyway' version '12.7.0'
     id 'org.owasp.dependencycheck' version '12.2.1'
     id 'org.sonarqube' version '7.3.0.8198'
     id 'org.springframework.boot' version '4.0.6'
@@ -194,7 +194,7 @@ tasks.register('runAndPublishConsumerPactTests', Test) {
 
 checkstyle {
     maxWarnings = 0
-    toolVersion = '13.4.2'
+    toolVersion = '13.5.0'
     getConfigDirectory().set(new File(rootDir, 'config/checkstyle'))
 }
 
@@ -305,7 +305,7 @@ def versions = [
   appinsights       : '3.7.8',
   commonsIo         : '2.22.0',
   cucumber          : '7.34.3',
-  flywaydb          : '12.6.2',
+  flywaydb          : '12.7.0',
   gradlePitest      : '1.15.0',
   idamClient        : '4.0.0',
   junit             : '5.12.2',
