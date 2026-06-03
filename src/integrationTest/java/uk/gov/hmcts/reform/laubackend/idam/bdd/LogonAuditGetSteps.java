@@ -150,7 +150,7 @@ public class LogonAuditGetSteps extends AbstractSteps {
 
     private void assertObject(final LogonLogGetResponse logonLogGetResponse,
                               final LogonLogPostRequest logonLogPostRequest) {
-        assertThat(logonLogGetResponse.getLogonLog().size()).isEqualTo(1);
+        assertThat(logonLogGetResponse.getLogonLog()).hasSize(1);
         assertThat(logonLogGetResponse.getLogonLog().get(0).getUserId())
                 .isEqualTo(logonLogPostRequest.getLogonLog().getUserId());
         assertThat(logonLogGetResponse.getLogonLog().get(0).getService())

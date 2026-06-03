@@ -1,11 +1,11 @@
 package uk.gov.hmcts.reform.laubackend.idam.utils;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import uk.gov.hmcts.reform.laubackend.idam.dto.LogonInputParamsHolder;
 import uk.gov.hmcts.reform.laubackend.idam.exceptions.InvalidRequestException;
 
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -20,7 +20,7 @@ class LogonInputParamsVerifierGetExceptionTest {
 
     @Test
     void shouldNotVerifyUserId() {
-        final String userId = randomAlphanumeric(65);
+        final String userId = RandomStringUtils.secure().nextAlphanumeric(65);
         try {
             final LogonInputParamsHolder inputParamsHolder = new LogonInputParamsHolder(userId,
                     null,
@@ -41,8 +41,9 @@ class LogonInputParamsVerifierGetExceptionTest {
     @Test
     void shouldNotVerifyEmailAddress() {
         try {
-            final LogonInputParamsHolder inputParamsHolder = new LogonInputParamsHolder(null,
-                    randomAlphanumeric(71),
+            final LogonInputParamsHolder inputParamsHolder = new LogonInputParamsHolder(
+                null,
+                RandomStringUtils.secure().nextAlphanumeric(71),
                     null,
                     null,
                     null,

@@ -1,11 +1,11 @@
 package uk.gov.hmcts.reform.laubackend.idam.utils;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import uk.gov.hmcts.reform.laubackend.idam.dto.LogonLog;
 import uk.gov.hmcts.reform.laubackend.idam.exceptions.InvalidRequestException;
 
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
@@ -23,7 +23,7 @@ class InputParamsVerifierTest {
 
     @Test
     void shouldNotVerifyUserIdForLogonLog() {
-        final String userId = randomAlphanumeric(65);
+        final String userId = RandomStringUtils.secure().nextAlphanumeric(65);
         try {
             final LogonLog logonLog = new LogonLog();
             logonLog.setUserId(userId);
@@ -41,7 +41,7 @@ class InputParamsVerifierTest {
     void shouldNotVerifyEmailAddressForLogonLog() {
         try {
             final LogonLog logonLog = new LogonLog();
-            logonLog.setEmailAddress(randomAlphanumeric(71));
+            logonLog.setEmailAddress(RandomStringUtils.secure().nextAlphanumeric(71));
 
             verifyRequestLogonLogParamsConditions(logonLog);
 
@@ -70,7 +70,7 @@ class InputParamsVerifierTest {
 
     @Test
     void shouldNotVerifyServiceForLogonLog() {
-        final String service = randomAlphanumeric(71);
+        final String service = RandomStringUtils.secure().nextAlphanumeric(71);
         try {
             final LogonLog logonLog = new LogonLog();
             logonLog.setService(service);
@@ -88,7 +88,7 @@ class InputParamsVerifierTest {
     void shouldNotVerifyIpaddressForLogonLog() {
         try {
             final LogonLog logonLog = new LogonLog();
-            logonLog.setIpAddress(randomAlphanumeric(71));
+            logonLog.setIpAddress(RandomStringUtils.secure().nextAlphanumeric(71));
 
             verifyRequestLogonLogParamsConditions(logonLog);
 

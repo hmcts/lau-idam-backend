@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.laubackend.idam.utils;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLogGetRequestParams;
@@ -7,7 +8,6 @@ import uk.gov.hmcts.reform.laubackend.idam.dto.LogonInputParamsHolder;
 import uk.gov.hmcts.reform.laubackend.idam.dto.LogonLog;
 import uk.gov.hmcts.reform.laubackend.idam.exceptions.InvalidRequestException;
 
-import static org.apache.commons.lang3.RandomStringUtils.random;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -69,7 +69,7 @@ class NotEmptyInputParamsVerifierTest {
     @Test
     void shouldVerifyRequestParamsAreNotEmptyForUserIdLogonLog() {
         assertDoesNotThrow(() -> verifyRequestLogonParamsAreNotEmpty(new LogonInputParamsHolder(
-            random(71, "123456"),
+            RandomStringUtils.secure().next(71, "123456"),
                 null,
                 "345",
                 "735",

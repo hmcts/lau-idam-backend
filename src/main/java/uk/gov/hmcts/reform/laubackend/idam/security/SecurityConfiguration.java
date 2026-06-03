@@ -20,9 +20,10 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Order(1)
 public class SecurityConfiguration {
 
+    private static final String AUDIT_ENDPOINT = "/audit/**";
+
     @Bean
-    @SuppressWarnings("PMD.SignatureDeclareThrowsException")
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) {
         httpSecurity
             .csrf(AbstractHttpConfigurer::disable)
             .sessionManagement(session ->
@@ -34,13 +35,13 @@ public class SecurityConfiguration {
                                    )
             )
             .authorizeHttpRequests(authz -> authz
-                //Interceptor is checking ServiceAuthorization Header for post as no Authorization header is expected 
-                // for post request, hence permitting all post requests to /audit/** endpoint. 
-                // For get and delete request, both ServiceAuthorization and 
+                //Interceptor is checking ServiceAuthorization Header for post as no Authorization header is expected
+                // for post request, hence permitting all post requests to /audit/** endpoint.
+                // For get and delete request, both ServiceAuthorization and
                 // Authorization header is expected, hence authenticated.
-                .requestMatchers(HttpMethod.POST, "/audit/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/audit/**").authenticated()
-                .requestMatchers(HttpMethod.DELETE, "/audit/**").authenticated()
+                .requestMatchers(HttpMethod.POST, AUDIT_ENDPOINT).permitAll()
+                .requestMatchers(HttpMethod.GET, AUDIT_ENDPOINT).authenticated()
+                .requestMatchers(HttpMethod.DELETE, AUDIT_ENDPOINT).authenticated()
                 .anyRequest().permitAll()
             )
             .oauth2ResourceServer(oauth2 ->

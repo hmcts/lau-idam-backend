@@ -39,8 +39,8 @@ class AllDeletedAccountsApiTest {
 
         String successOrFailure = getApiSteps.thenASuccessResposeIsReturned(response);
         assertEquals(
-            successOrFailure,
             TestConstants.SUCCESS,
+            successOrFailure,
             "GetAllDeletedAccounts Get API response code 200 is not successful"
         );
     }
@@ -61,8 +61,8 @@ class AllDeletedAccountsApiTest {
         );
         String successOrFailure = getApiSteps.thenBadResponseIsReturned(response, 401);
         assertEquals(
-            successOrFailure,
             TestConstants.SUCCESS,
+            successOrFailure,
             "GetAllDeletedAccounts GET API response code 401 assertion is not successful"
         );
     }
@@ -81,8 +81,8 @@ class AllDeletedAccountsApiTest {
 
         String successOrFailure = getApiSteps.thenBadResponseIsReturned(response, 403);
         assertEquals(
-            successOrFailure,
             TestConstants.SUCCESS,
+            successOrFailure,
             "GetAllDeletedAccounts GET API response code 403 assertion is not successful"
         );
     }
@@ -104,8 +104,8 @@ class AllDeletedAccountsApiTest {
         );
         String successOrFailure = getApiSteps.thenBadResponseIsReturned(response, 400);
         assertEquals(
-            successOrFailure,
             TestConstants.SUCCESS,
+            successOrFailure,
             "GetAllDeletedAccounts GET API response code 400 assertion is not successful"
         );
     }

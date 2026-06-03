@@ -42,7 +42,7 @@ public class BaseSteps {
                 .setBaseUri(PROPERTY_READER.getPropertyValueFromEnv("api.url"))
                 .setRelaxedHTTPSValidation();
 
-        LOGGER.info("Using base API URL: " + PROPERTY_READER.getPropertyValueFromEnv("api.url"));
+        LOGGER.info("Using base API URL: {}", PROPERTY_READER.getPropertyValueFromEnv("api.url"));
         if (proxyHost != null) {
             specBuilder.setProxy(proxyHost, proxyPort);
         }
@@ -145,12 +145,12 @@ public class BaseSteps {
         return performPostOperation(endpoint, null, null, body, serviceToken);
     }
 
-    @SuppressWarnings({"PMD.SimplifiableTestAssertion"})
     @Step("Then bad response is returned")
     public String thenBadResponseIsReturned(Response response, int expectedStatusCode) {
-        Assert.assertTrue(
+        Assert.assertEquals(
             "Response status code is not " + expectedStatusCode + ", but it is " + response.getStatusCode(),
-            response.statusCode() == expectedStatusCode
+            response.statusCode(),
+            expectedStatusCode
         );
         return TestConstants.SUCCESS;
     }

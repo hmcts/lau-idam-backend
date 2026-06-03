@@ -205,7 +205,7 @@ public class UserDeletionAuditFindRepository {
     }
 
     String getSort(DeletionLogAllUsersRequestParams params) {
-        return params.sort() == null || params.sort().length() == 0  ? DESC : params.sort();
+        return params.sort() == null || params.sort().isEmpty()  ? DESC : params.sort();
     }
 
 
