@@ -11,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.reform.laubackend.idam.domain.UserDeletionAudit;
-import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLogAllUsersRequestParams;
 import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLogGetRequestParams;
 import uk.gov.hmcts.reform.laubackend.idam.utils.TimestampUtil;
 
@@ -203,10 +202,5 @@ public class UserDeletionAuditFindRepository {
 
         return ((Number) query.getSingleResult()).intValue();
     }
-
-    String getSort(DeletionLogAllUsersRequestParams params) {
-        return params.sort() == null || params.sort().isEmpty()  ? DESC : params.sort();
-    }
-
 
 }
