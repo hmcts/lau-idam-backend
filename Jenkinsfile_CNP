@@ -1,6 +1,6 @@
 #!groovy
 
-@Library("Infrastructure")
+@Library("Infrastructure@cve-dashboard")
 
 import uk.gov.hmcts.contino.AppPipelineDsl
 import uk.gov.hmcts.contino.GradleBuilder
@@ -38,6 +38,7 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 GradleBuilder builder = new GradleBuilder(this, product)
 
 withPipeline(type, product, component) {
+  enableCveDashboardIngestion()
   onPR {
     enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
   }
