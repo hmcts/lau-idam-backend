@@ -310,7 +310,7 @@ def versions = [
   idamClient        : '4.0.0',
   junit             : '5.12.2',
   junitPlatform     : '1.12.2',
-  log4j             : '2.26.0',
+  log4j             : '2.26.1',
   lombok            : '1.18.46',
   pact              : '4.7.3',
   reformLogging     : '8.0.0',
