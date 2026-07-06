@@ -145,7 +145,7 @@ public class IdamLogonAuditController {
         path = "/audit/logon",
         produces = APPLICATION_JSON_VALUE
     )
-    @SuppressWarnings({"PMD.UseObjectForClearerAPI"})
+
     public ResponseEntity<LogonLogGetResponse> getLogonLog(
         @Parameter(name = "Authorization", example = "Bearer eyJ0eXAiOiJK.........")
         @RequestHeader(value = AUTHORISATION_HEADER) String authToken,

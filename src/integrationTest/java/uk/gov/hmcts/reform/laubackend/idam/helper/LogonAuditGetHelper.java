@@ -3,7 +3,6 @@ package uk.gov.hmcts.reform.laubackend.idam.helper;
 import uk.gov.hmcts.reform.laubackend.idam.dto.LogonLog;
 import uk.gov.hmcts.reform.laubackend.idam.request.LogonLogPostRequest;
 
-@SuppressWarnings({"PMD.UseObjectForClearerAPI"})
 public final class LogonAuditGetHelper {
 
     private static final String DEFAULT_USER_ID = "1";
