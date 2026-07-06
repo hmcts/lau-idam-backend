@@ -45,8 +45,8 @@ class LogOnApiTest {
         );
         String successOrFailure = logOnGetApiSteps.thenASuccessResposeIsReturned(response);
         assertEquals(
-            successOrFailure,
             TestConstants.SUCCESS,
+            successOrFailure,
             "Logon POST API response code 201 assertion is not successful"
         );
         //Delete DB record
@@ -68,8 +68,8 @@ class LogOnApiTest {
         );
         String successOrFailure = logOnGetApiSteps.thenBadResponseIsReturned(response, 400);
         assertEquals(
-            successOrFailure,
             TestConstants.SUCCESS,
+            successOrFailure,
             "Logon POST API response code 400 assertion is not successful"
         );
     }
@@ -107,8 +107,10 @@ class LogOnApiTest {
             queryParamMap,
             logOnGetResponseVO
         );
-        assertEquals(successOrFailure, TestConstants.SUCCESS,
-                            "The assertion for GET Logon API response code 200 is not successful"
+        assertEquals(
+            TestConstants.SUCCESS,
+            successOrFailure,
+            "The assertion for GET Logon API response code 200 is not successful"
         );
         //Delete DB record
         deleteLogonRecord(postResponse);
@@ -128,7 +130,7 @@ class LogOnApiTest {
             queryParamMap
         );
         String successOrFailure = logOnGetApiSteps.thenBadResponseIsReturned(response, 400);
-        assertEquals(successOrFailure, TestConstants.SUCCESS, "The assertion is not successful");
+        assertEquals(TestConstants.SUCCESS, successOrFailure, "The assertion is not successful");
     }
 
     @Test
@@ -142,7 +144,7 @@ class LogOnApiTest {
             queryParamMap
         );
         String successOrFailure = logOnGetApiSteps.thenBadResponseIsReturned(response, 403);
-        assertEquals(successOrFailure, TestConstants.SUCCESS, "The assertion is not successful");
+        assertEquals(TestConstants.SUCCESS, successOrFailure, "The assertion is not successful");
     }
 
     @Test
@@ -157,7 +159,7 @@ class LogOnApiTest {
             queryParamMap
         );
         String successOrFailure = logOnGetApiSteps.thenBadResponseIsReturned(response, 401);
-        assertEquals(successOrFailure, TestConstants.SUCCESS, "The assertion is not successful");
+        assertEquals(TestConstants.SUCCESS, successOrFailure, "The assertion is not successful");
     }
 
     @Test
@@ -173,7 +175,7 @@ class LogOnApiTest {
             queryParamMap
         );
         String successOrFailure = logOnGetApiSteps.thenBadResponseIsReturned(response, 401);
-        assertEquals(successOrFailure, TestConstants.SUCCESS, "The assertion is not successful");
+        assertEquals(TestConstants.SUCCESS, successOrFailure, "The assertion is not successful");
     }
 
 }
