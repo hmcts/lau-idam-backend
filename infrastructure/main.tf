@@ -7,7 +7,6 @@ provider "azurerm" {
   skip_provider_registration = "true"
   features {}
   alias = "postgres_network"
-
 }
 
 locals {
@@ -16,6 +15,25 @@ locals {
   asp_name              = "${var.product}-${var.env}"
   env                   = var.env
   db_server_name        = "${var.product}-${var.component}-flexible"
+}
+
+data "azurerm_client_config" "current" {}
+
+data "azurerm_user_assigned_identity" "jenkins_preview" {
+  count               = var.env == "aat" ? 1 : 0
+  name                = "jenkins-preview-mi"
+  resource_group_name = "managed-identities-preview-rg"
+}
+
+resource "azurerm_key_vault_access_policy" "jenkins_preview" {
+  count        = var.env == "aat" ? 1 : 0
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+  object_id    = data.azurerm_user_assigned_identity.jenkins_preview[0].principal_id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+
+  key_permissions         = ["Get", "List"]
+  certificate_permissions = ["Get", "List"]
+  secret_permissions      = ["Get", "List"]
 }
 
 data "azurerm_key_vault" "key_vault" {
