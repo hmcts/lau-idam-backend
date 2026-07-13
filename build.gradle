@@ -194,7 +194,7 @@ tasks.register('runAndPublishConsumerPactTests', Test) {
 
 checkstyle {
     maxWarnings = 0
-    toolVersion = '13.7.0'
+    toolVersion = '13.8.0'
     getConfigDirectory().set(new File(rootDir, 'config/checkstyle'))
 }
 
