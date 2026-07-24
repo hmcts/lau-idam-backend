@@ -304,7 +304,7 @@ repositories {
 def versions = [
   appinsights       : '3.7.9',
   commonsIo         : '2.22.0',
-  cucumber          : '7.34.4',
+  cucumber          : '7.34.5',
   flywaydb          : '12.11.0',
   gradlePitest      : '1.15.0',
   idamClient        : '4.0.0',
