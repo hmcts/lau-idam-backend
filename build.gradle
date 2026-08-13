@@ -365,7 +365,6 @@ dependencies {
     implementation "org.apache.logging.log4j:log4j-api:${versions.log4j}"
     implementation "org.apache.logging.log4j:log4j-to-slf4j:${versions.log4j}"
     implementation "org.projectlombok:lombok:${versions.lombok}"
-    implementation "org.springframework.boot:spring-boot-devtools"
     implementation "org.springframework.boot:spring-boot-starter-security-oauth2-resource-server"
     implementation "commons-fileupload:commons-fileupload:1.6.0"
     implementation "org.yaml:snakeyaml:2.6"
