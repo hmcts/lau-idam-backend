@@ -336,7 +336,7 @@ configurations.all {
     }
 }
 
-ext['tomcat.version'] = '11.0.24'
+ext['tomcat.version'] = '11.0.25'
 
 dependencies {
     modules {
