@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.runner;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.restassured.response.Response;
 import net.serenitybdd.annotations.Steps;
 import net.serenitybdd.annotations.Title;
@@ -30,8 +29,7 @@ class DeletedAccountsApiTest {
 
     @Test
     @Title("Assert response code of 201 for POST Request deletedAccounts")
-    void assertHttpSuccessResponseCodeForPostRequestDeletedAccountsApi()
-        throws JsonProcessingException {
+    void assertHttpSuccessResponseCodeForPostRequestDeletedAccountsApi() {
 
         String authServiceToken = postApiSteps.givenAValidServiceTokenIsGenerated(
             TestConstants.DISPOSER_USER_SERVICE_NAME);
@@ -55,8 +53,7 @@ class DeletedAccountsApiTest {
 
     @Test
     @Title("Assert response code of 400 for Invalid POST request body for deletedAccounts")
-    void assertHttpBadResponseCodeForInvalidPostRequestBodyLogonApi()
-        throws JsonProcessingException {
+    void assertHttpBadResponseCodeForInvalidPostRequestBodyLogonApi() {
 
         String authServiceToken = postApiSteps.givenAValidServiceTokenIsGenerated(
             TestConstants.DISPOSER_USER_SERVICE_NAME);
@@ -76,7 +73,7 @@ class DeletedAccountsApiTest {
 
     @Test
     @Title("Assert response code forbidden without s2s authentication token")
-    void assertHttpForbiddenWithInvalidS2SToken() throws JsonProcessingException {
+    void assertHttpForbiddenWithInvalidS2SToken() {
         DeletedAccountsRequest request = postApiSteps.generateDeletedAccountsRequest();
 
         Response response = postApiSteps.whenThePostServiceIsInvoked(
@@ -119,7 +116,7 @@ class DeletedAccountsApiTest {
 
     @Test
     @Title("Assert response code bad request without start timestamp")
-    void assertHttpBadRequestWithoutStartTimestamp() throws JsonProcessingException {
+    void assertHttpBadRequestWithoutStartTimestamp() {
 
         String serviceToken = getApiSteps.givenAValidServiceTokenIsGenerated(
             TestConstants.DISPOSER_USER_SERVICE_NAME);

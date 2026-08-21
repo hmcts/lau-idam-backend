@@ -1,7 +1,5 @@
 package uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.steps;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.config.EncoderConfig;
 import io.restassured.config.RestAssuredConfig;
@@ -14,6 +12,7 @@ import org.json.JSONException;
 import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.databind.ObjectMapper;
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.helper.AuthorizationHeaderHelper;
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.helper.PropertyReader;
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.utils.TestConstants;
@@ -92,7 +91,7 @@ public class BaseSteps {
                                          Map<String, String> queryParams,
                                          Object body,
                                          String authServiceToken
-    ) throws JsonProcessingException {
+    ) {
 
         RequestSpecification requestSpecification = rest()
                 .given().header("ServiceAuthorization", authServiceToken)
@@ -141,7 +140,7 @@ public class BaseSteps {
         String endpoint,
         String serviceToken,
         Object body
-    ) throws JsonProcessingException {
+    ) {
         return performPostOperation(endpoint, null, null, body, serviceToken);
     }
 
