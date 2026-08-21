@@ -1,7 +1,5 @@
 package uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.runner;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.response.Response;
 import net.serenitybdd.annotations.Steps;
 import net.serenitybdd.annotations.Title;
@@ -9,6 +7,7 @@ import net.serenitybdd.junit5.SerenityJUnit5Extension;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import tools.jackson.databind.ObjectMapper;
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.model.LogOnGetResponseVO;
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.model.LogOnRequestVO;
 import uk.gov.hmcts.reform.laubackend.idam.serenityfunctionaltests.steps.LogOnGetApiSteps;
@@ -32,8 +31,7 @@ class LogOnApiTest {
 
     @Test
     @Title("Assert response code of 201 for POST Request LogonApi")
-    void assertHttpSuccessResponseCodeForPostRequestCaseViewApi()
-            throws JsonProcessingException, JSONException {
+    void assertHttpSuccessResponseCodeForPostRequestCaseViewApi() throws JSONException {
 
         String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated(
             TestConstants.FRONTEND_SERVICE_NAME);
@@ -55,8 +53,7 @@ class LogOnApiTest {
 
     @Test
     @Title("Assert response code of 400 for Invalid POST request body for LogonApi")
-    void assertHttpBadResponseCodeForInvalidPostRequestBodyLogonApi()
-        throws JsonProcessingException {
+    void assertHttpBadResponseCodeForInvalidPostRequestBodyLogonApi() {
 
         String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated(
             TestConstants.FRONTEND_SERVICE_NAME);
@@ -76,8 +73,7 @@ class LogOnApiTest {
 
     @Test
     @Title("Assert response code of 200 for GET LogonApi with valid headers and valid request params")
-    void assertHttpSuccessResponseCodeForCaseViewApi() throws JsonProcessingException, ParseException,
-        JSONException {
+    void assertHttpSuccessResponseCodeForCaseViewApi() throws ParseException, JSONException {
 
         String authServiceToken = logOnGetApiSteps.givenAValidServiceTokenIsGenerated(
             TestConstants.FRONTEND_SERVICE_NAME);
