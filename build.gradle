@@ -339,6 +339,10 @@ configurations.all {
 ext['tomcat.version'] = '11.0.25'
 
 dependencies {
+    constraints {
+        implementation "com.fasterxml.jackson.core:jackson-databind:2.22.1"
+    }
+
     modules {
         module("com.google.collections:google-collections") {
             replacedBy("com.google.guava:guava", "google-collections is part of guava")
