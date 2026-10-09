@@ -19,7 +19,6 @@ import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLog;
 import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLogAllUsersRequestParams;
 import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLogGetRequestParams;
 import uk.gov.hmcts.reform.laubackend.idam.exceptions.InvalidRequestException;
-import uk.gov.hmcts.reform.laubackend.idam.insights.AppInsights;
 import uk.gov.hmcts.reform.laubackend.idam.request.UserDeletionPostRequest;
 import uk.gov.hmcts.reform.laubackend.idam.response.UserDeletionGetResponse;
 import uk.gov.hmcts.reform.laubackend.idam.response.UserDeletionPostResponse;
@@ -30,10 +29,6 @@ import java.util.List;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.CommonConstants.AUTHORISATION_HEADER;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.CommonConstants.SERVICE_AUTHORISATION_HEADER;
-import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.GET_ALL_DELETED_ACCOUNTS_INVALID_REQUEST_EXCEPTION;
-import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.GET_DELETED_ACCOUNTS_INVALID_REQUEST_EXCEPTION;
-import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.POST_DELETION_INVALID_REQUEST_EXCEPTION;
-import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.POST_DELETION_REQUEST_EXCEPTION;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifier.verifyAllUserDeletionGetRequestParams;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifier.verifyUserDeletionGetRequestParams;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifier.verifyUserDeletionPostRequestParams;
@@ -46,12 +41,11 @@ import static uk.gov.hmcts.reform.laubackend.idam.utils.NotEmptyInputParamsVerif
 @Tag(name = "User deletion operations", description = ""
     + "This is the Log and Audit Back-End API that will audit user account deletions. "
     + "The API will be invoked by IdAM service.")
-@SuppressWarnings({"PMD.ExcessiveImports","PMD.UnnecessaryAnnotationValueElement", "PMD.ExceptionAsFlowControl"})
+@SuppressWarnings({"PMD.UnnecessaryAnnotationValueElement", "PMD.ExceptionAsFlowControl"})
 public class UserDeletionAuditController {
 
     private static final String EXCEPTION = "exception";
 
-    private final AppInsights appInsights;
     private final UserDeletionAuditService userDeletionAuditService;
 
     @Operation(tags = "User Accounts endpoints", summary = "Save IdAM user deletion audit",
@@ -99,20 +93,12 @@ public class UserDeletionAuditController {
             log.error("saveUserDeletion API call failed due to error - {}",
                       ire.getMessage(),
                       ire);
-            appInsights.trackEvent(
-                POST_DELETION_INVALID_REQUEST_EXCEPTION.toString(),
-                appInsights.trackingMap(EXCEPTION, ire.getMessage())
-            );
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
         } catch (final Exception exception) {
             log.error("saveUserDeletion API call failed due to error - {}",
                       exception.getMessage(),
                       exception);
-            appInsights.trackEvent(
-                POST_DELETION_REQUEST_EXCEPTION.toString(),
-                appInsights.trackingMap(EXCEPTION, exception.getMessage())
-            );
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -159,13 +145,9 @@ public class UserDeletionAuditController {
             return new ResponseEntity<>(response, HttpStatus.OK);
 
         } catch (final InvalidRequestException ire) {
-            log.error("getDeletedAccounts API call failed due to error - {}",
+            log.error("getUserDeletions API call failed due to error - {}",
                       ire.getMessage(),
                       ire
-            );
-            appInsights.trackEvent(
-                GET_DELETED_ACCOUNTS_INVALID_REQUEST_EXCEPTION.toString(),
-                appInsights.trackingMap(EXCEPTION, ire.getMessage())
             );
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -212,13 +194,9 @@ public class UserDeletionAuditController {
             return new ResponseEntity<>(response, HttpStatus.OK);
 
         } catch (final InvalidRequestException ire) {
-            log.error("getAllDeletedAccounts API call failed due to error - {}",
+            log.error("getAllDeletedUsers API call failed due to error - {}",
                       ire.getMessage(),
                       ire
-            );
-            appInsights.trackEvent(
-                GET_ALL_DELETED_ACCOUNTS_INVALID_REQUEST_EXCEPTION.toString(),
-                appInsights.trackingMap(EXCEPTION, ire.getMessage())
             );
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

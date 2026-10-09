@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLog;
-import uk.gov.hmcts.reform.laubackend.idam.insights.AppInsights;
 import uk.gov.hmcts.reform.laubackend.idam.request.UserDeletionPostRequest;
 import uk.gov.hmcts.reform.laubackend.idam.response.UserDeletionPostResponse;
 import uk.gov.hmcts.reform.laubackend.idam.service.UserDeletionAuditService;
@@ -21,14 +20,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyMap;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.POST_DELETION_INVALID_REQUEST_EXCEPTION;
-import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.POST_DELETION_REQUEST_EXCEPTION;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
@@ -43,9 +37,6 @@ class UserDeletionAuditControllerPostTest {
     @Mock
     private UserDeletionAuditService userDeletionAuditService;
 
-    @Mock
-    private AppInsights appInsights;
-
     @InjectMocks
     private UserDeletionAuditController controller;
 
@@ -59,7 +50,6 @@ class UserDeletionAuditControllerPostTest {
 
         final ResponseEntity<UserDeletionPostResponse> responseEntity = controller.saveUserDeletion(null, request);
         verify(userDeletionAuditService, times(1)).saveUserDeletion(deletionLogs);
-        verifyNoInteractions(appInsights);
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode(), "Response code not what was expected");
     }
 
@@ -69,8 +59,6 @@ class UserDeletionAuditControllerPostTest {
         final UserDeletionPostRequest request = getUserDeletionPostRequest();
 
         final ResponseEntity<UserDeletionPostResponse> responseEntity = controller.saveUserDeletion(null, request);
-        verify(appInsights, times(1))
-            .trackEvent(eq(POST_DELETION_INVALID_REQUEST_EXCEPTION.toString()), anyMap());
         assertResponseIsBadRequest(responseEntity, "Response is not what was expected");
     }
 
@@ -91,8 +79,6 @@ class UserDeletionAuditControllerPostTest {
         when(userDeletionAuditService.saveUserDeletion(any())).thenThrow(NullPointerException.class);
 
         final ResponseEntity<UserDeletionPostResponse> responseEntity = controller.saveUserDeletion(null, request);
-        verify(appInsights, times(1))
-            .trackEvent(eq(POST_DELETION_REQUEST_EXCEPTION.toString()), anyMap());
         assertEquals(
             HttpStatus.INTERNAL_SERVER_ERROR,
             responseEntity.getStatusCode(),
