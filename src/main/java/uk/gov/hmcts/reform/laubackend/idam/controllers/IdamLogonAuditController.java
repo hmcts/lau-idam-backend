@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.laubackend.idam.dto.LogonInputParamsHolder;
 import uk.gov.hmcts.reform.laubackend.idam.exceptions.InvalidRequestException;
-import uk.gov.hmcts.reform.laubackend.idam.insights.AppInsights;
 import uk.gov.hmcts.reform.laubackend.idam.request.LogonLogPostRequest;
 import uk.gov.hmcts.reform.laubackend.idam.response.LogonLogGetResponse;
 import uk.gov.hmcts.reform.laubackend.idam.response.LogonLogPostResponse;
@@ -33,16 +32,9 @@ import static uk.gov.hmcts.reform.laubackend.idam.constants.CommonConstants.SERV
 import static uk.gov.hmcts.reform.laubackend.idam.constants.RequestConstants.EMAIL_ADDRESS;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.RequestConstants.END_TIME;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.RequestConstants.PAGE;
-import static uk.gov.hmcts.reform.laubackend.idam.constants.RequestConstants.PERF_THRESHOLD_MESSAGE_ABOVE;
-import static uk.gov.hmcts.reform.laubackend.idam.constants.RequestConstants.PERF_THRESHOLD_MESSAGE_BELOW;
-import static uk.gov.hmcts.reform.laubackend.idam.constants.RequestConstants.PERF_TOLERANCE_THRESHOLD_MS;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.RequestConstants.SIZE;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.RequestConstants.START_TIME;
 import static uk.gov.hmcts.reform.laubackend.idam.constants.RequestConstants.USER_ID;
-import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.GET_LOGON_REQUEST_INFO;
-import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.GET_LOGON_REQUEST_INVALID_REQUEST_EXCEPTION;
-import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.POST_LOGON_REQUEST_EXCEPTION;
-import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.POST_LOGON_REQUEST_INVALID_REQUEST_EXCEPTION;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifier.verifyRequestLogonLogParamsConditions;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.InputParamsVerifier.verifyRequestLogonParamsConditions;
 import static uk.gov.hmcts.reform.laubackend.idam.utils.NotEmptyInputParamsVerifier.verifyLogonLogRequestAreNotEmpty;
@@ -58,8 +50,6 @@ import static uk.gov.hmcts.reform.laubackend.idam.utils.NotEmptyInputParamsVerif
 public class IdamLogonAuditController {
 
     private final LogonLogService logonLogService;
-
-    private final AppInsights appInsights;
 
     private static final String EXCEPTION = "exception";
 
@@ -104,17 +94,12 @@ public class IdamLogonAuditController {
                     invalidRequestException.getMessage(),
                     invalidRequestException
             );
-            appInsights.trackEvent(
-                POST_LOGON_REQUEST_INVALID_REQUEST_EXCEPTION.toString(),
-                appInsights.trackingMap(EXCEPTION, invalidRequestException.getMessage()));
             return ResponseEntity.status(BAD_REQUEST).build();
         } catch (final Exception exception) {
             log.error("saveLogonLog API call failed due to error - {}",
                     exception.getMessage(),
                     exception
             );
-            appInsights.trackEvent(POST_LOGON_REQUEST_EXCEPTION.toString(), appInsights.trackingMap(
-                EXCEPTION, exception.getMessage()));
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -171,16 +156,10 @@ public class IdamLogonAuditController {
                                                                                          endTime,
                                                                                          size,
                                                                                          page);
-            final long timeStart = System.currentTimeMillis();
             verifyRequestLogonParamsAreNotEmpty(inputParamsHolder);
             verifyRequestLogonParamsConditions(inputParamsHolder);
 
             final LogonLogGetResponse logonLog = logonLogService.getLogonLog(inputParamsHolder);
-            final long timeEnd = System.currentTimeMillis();
-            final String report = (timeEnd - timeStart) > PERF_TOLERANCE_THRESHOLD_MS
-                ? PERF_THRESHOLD_MESSAGE_ABOVE : PERF_THRESHOLD_MESSAGE_BELOW;
-            appInsights.trackEvent(GET_LOGON_REQUEST_INFO.toString(), appInsights.trackingMap(
-                "GET /audit/logon", report));
             return new ResponseEntity<>(logonLog, OK);
         } catch (final InvalidRequestException invalidRequestException) {
             log.error(
@@ -188,8 +167,6 @@ public class IdamLogonAuditController {
                 invalidRequestException.getMessage(),
                 invalidRequestException
             );
-            appInsights.trackEvent(GET_LOGON_REQUEST_INVALID_REQUEST_EXCEPTION.toString(), appInsights.trackingMap(
-                EXCEPTION, invalidRequestException.getMessage()));
             return ResponseEntity.status(BAD_REQUEST).build();
         }
     }

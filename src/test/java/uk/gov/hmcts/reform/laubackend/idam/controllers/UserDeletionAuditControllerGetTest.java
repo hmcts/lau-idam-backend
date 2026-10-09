@@ -10,19 +10,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.laubackend.idam.dto.DeletionLogGetRequestParams;
-import uk.gov.hmcts.reform.laubackend.idam.insights.AppInsights;
 import uk.gov.hmcts.reform.laubackend.idam.response.UserDeletionGetResponse;
 import uk.gov.hmcts.reform.laubackend.idam.service.UserDeletionAuditService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyMap;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.reform.laubackend.idam.insights.AppInsightsEvent.GET_DELETED_ACCOUNTS_INVALID_REQUEST_EXCEPTION;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
@@ -34,9 +30,6 @@ class UserDeletionAuditControllerGetTest {
 
     @Mock
     private UserDeletionAuditService userDeletionAuditService;
-
-    @Mock
-    private AppInsights appInsights;
 
     @InjectMocks
     private UserDeletionAuditController controller;
@@ -74,8 +67,6 @@ class UserDeletionAuditControllerGetTest {
         );
         ResponseEntity<UserDeletionGetResponse> response = controller.getUserDeletions(null, null, params);
         assertResponseIsBadRequest(response, "Http status code mismatch");
-        verify(appInsights, times(1))
-            .trackEvent(eq(GET_DELETED_ACCOUNTS_INVALID_REQUEST_EXCEPTION.toString()), anyMap());
     }
 
     @Test
@@ -92,8 +83,6 @@ class UserDeletionAuditControllerGetTest {
         );
         ResponseEntity<UserDeletionGetResponse> response = controller.getUserDeletions(null, null, params);
         assertResponseIsBadRequest(response, "Http status code mismatch");
-        verify(appInsights, times(1))
-            .trackEvent(eq(GET_DELETED_ACCOUNTS_INVALID_REQUEST_EXCEPTION.toString()), anyMap());
     }
 
     void assertResponseIsBadRequest(ResponseEntity<UserDeletionGetResponse> response, String message) {
