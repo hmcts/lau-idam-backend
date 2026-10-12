@@ -363,7 +363,7 @@ dependencies {
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:3.1.1"
     implementation "org.flywaydb:flyway-core:${versions.flywaydb}"
     implementation "org.flywaydb:flyway-database-postgresql:${versions.flywaydb}"
-    implementation "org.postgresql:postgresql:42.7.13"
+    implementation "org.postgresql:postgresql:42.7.14"
     implementation "org.apache.logging.log4j:log4j-api:${versions.log4j}"
     implementation "org.apache.logging.log4j:log4j-to-slf4j:${versions.log4j}"
     implementation "org.projectlombok:lombok:${versions.lombok}"
