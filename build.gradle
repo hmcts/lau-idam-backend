@@ -432,7 +432,7 @@ dependencies {
     testImplementation "io.rest-assured:rest-assured:${versions.restAssured}"
     testImplementation "io.rest-assured:json-path:${versions.restAssured}"
     testImplementation "io.rest-assured:xml-path:${versions.restAssured}"
-    testImplementation "com.google.code.gson:gson:2.14.0"
+    testImplementation "com.google.code.gson:gson:2.15.0"
 
     testCompileOnly "org.projectlombok:lombok"
     testAnnotationProcessor "org.projectlombok:lombok"
