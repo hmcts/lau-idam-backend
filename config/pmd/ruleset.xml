@@ -37,7 +37,7 @@
     </properties>
   </rule>
   <rule ref="category/java/design.xml">
-    <exclude name="UseUtilityClass"/>
+    <exclude name="InstantiableUtilityClass"/>
     <exclude name="LoosePackageCoupling"/>
     <exclude name="DataClass"/>
     <exclude name="LawOfDemeter"/>
