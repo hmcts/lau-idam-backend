@@ -19,6 +19,7 @@
     <exclude name="TooManyStaticImports"/>
     <exclude name="CommentDefaultAccessModifier"/>
     <exclude name="UseDiamondOperator"/>
+    <exclude name="LocalVariableDeclarationShouldBeAtStartOfBlock"/>
   </rule>
   <rule ref="category/java/codestyle.xml/ClassNamingConventions">
     <properties>
